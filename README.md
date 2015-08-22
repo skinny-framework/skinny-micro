@@ -50,8 +50,6 @@ See the examples under [samples](https://github.com/skinny-framework/skinny-micr
 
 ## Under The MIT License
 
-Others are under The MIT License.
-
 (The MIT License)
 
 Copyright (c) skinny-framework.org
