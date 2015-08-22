@@ -1,0 +1,2 @@
+<%@val name: String %>
+<html><body>Hello, ${name}</body></html>
