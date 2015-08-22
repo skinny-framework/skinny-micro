@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.0"
+  lazy val currentVersion = "0.9.1"
 
   lazy val json4SVersion = "3.3.0.RC3"
   lazy val scalikeJDBCVersion = "2.2.8"
@@ -101,7 +101,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-json",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.8.1"                   % Compile,
+        "joda-time"         %  "joda-time"          % "2.8.2"                   % Compile,
         "org.joda"          %  "joda-convert"       % "1.7"                     % Compile,
         "org.scalatra"      %% "scalatra-specs2"    % compatibleScalatraVersion % Test,
         "org.scalatra"      %% "scalatra-scalatest" % compatibleScalatraVersion % Test,

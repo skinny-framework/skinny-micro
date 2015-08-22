@@ -3,7 +3,7 @@ package skinny.standalone
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.DefaultServlet
 import org.eclipse.jetty.webapp.WebAppContext
-import skinny.micro.SkinnyMicroListener
+import skinny.micro.SkinnyListener
 import skinny.logging.LoggerProvider
 
 /**
@@ -34,7 +34,7 @@ trait JettyServer extends LoggerProvider {
       val location = domain.getCodeSource.getLocation
       location.toExternalForm
     })
-    context.addEventListener(new SkinnyMicroListener)
+    context.addEventListener(new SkinnyListener)
     context.addServlet(classOf[DefaultServlet], "/")
     server.setHandler(context)
     server.start

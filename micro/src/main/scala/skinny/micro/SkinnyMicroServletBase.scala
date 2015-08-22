@@ -47,8 +47,8 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
    * This action can be overridden by a notFound block.
    */
   protected var doNotFound: Action = () => {
-    serveStaticResource()(skinnyMicroContext)
-      .getOrElse(resourceNotFound()(skinnyMicroContext))
+    serveStaticResource()(skinnyContext)
+      .getOrElse(resourceNotFound()(skinnyContext))
   }
 
   /**

@@ -15,8 +15,8 @@ trait MainThreadLocalEverywhere
   /**
    * Skinny Micro Context
    */
-  override implicit def skinnyMicroContext(implicit ctx: ServletContext): SkinnyContext = {
-    super.skinnyMicroContext(ctx)
+  override implicit def skinnyContext(implicit ctx: ServletContext): SkinnyContext = {
+    super.skinnyContext(ctx)
   }
 
 }

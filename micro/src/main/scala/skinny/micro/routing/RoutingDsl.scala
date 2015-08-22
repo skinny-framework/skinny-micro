@@ -96,7 +96,7 @@ trait RoutingDsl
   }
 
   private[this] def addStatusRoute(codes: Range, action: => Any): Unit = {
-    val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyMicroContext(servletContext)))
+    val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyContext(servletContext)))
     routes.addStatusRoute(codes, route)
   }
 

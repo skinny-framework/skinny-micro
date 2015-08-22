@@ -47,7 +47,7 @@ trait SkinnyMicroContextInitializer {
   /**
    * Skinny Micro Context
    */
-  def skinnyMicroContext(implicit ctx: ServletContext): SkinnyContext = {
+  def skinnyContext(implicit ctx: ServletContext): SkinnyContext = {
     (mainThreadDynamicRequest.value, mainThreadDynamicResponse.value) match {
       case (Some(req), _) if (req.threadId != currentThreadId) =>
         // dynamic variable access from another thread detected
@@ -65,7 +65,7 @@ trait SkinnyMicroContextInitializer {
     }
   }
 
-  def context: SkinnyContext = skinnyMicroContext(servletContext)
+  def context: SkinnyContext = skinnyContext(servletContext)
 
   def request(implicit ctx: SkinnyContext = context): HttpServletRequest = ctx.request
 

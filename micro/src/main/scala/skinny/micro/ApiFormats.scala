@@ -181,7 +181,7 @@ trait ApiFormats extends SkinnyMicroBase with RicherStringImplicits {
   }
 
   protected override def withRouteMultiParams[S](matchedRoute: Option[MatchedRoute])(thunk: => S): S = {
-    val originalParams: MultiParams = multiParams(skinnyMicroContext)
+    val originalParams: MultiParams = multiParams(skinnyContext)
     val routeParams: Map[String, Seq[String]] = {
       matchedRoute.map(_.multiParams).getOrElse(Map.empty).map {
         case (key, values) =>

@@ -135,9 +135,9 @@ trait SkinnyMicroBase
           },
           errorHandler =
             e => {
-              SkinnyMicroBase.runCallbacks(Failure(e))(skinnyMicroContext)
+              SkinnyMicroBase.runCallbacks(Failure(e))(skinnyContext)
               try {
-                renderUncaughtException(e)(skinnyMicroContext)
+                renderUncaughtException(e)(skinnyContext)
               } finally {
                 SkinnyMicroBase.runRenderCallbacks(Failure(e))(context)
               }
@@ -433,11 +433,11 @@ trait SkinnyMicroBase
     } catch {
       case scala.util.control.NonFatal(e) =>
         runCallbacks(Failure(e))(ctx)
-        renderUncaughtException(e)(skinnyMicroContext)
+        renderUncaughtException(e)(skinnyContext)
         runCallbacks(Failure(e))(ctx)
       case e: Throwable =>
         runCallbacks(Failure(e))(ctx)
-        renderUncaughtException(e)(skinnyMicroContext)
+        renderUncaughtException(e)(skinnyContext)
         runCallbacks(Failure(e))(ctx)
         throw e
     }
@@ -463,7 +463,7 @@ trait SkinnyMicroBase
   }
 
   private[this] def addStatusRoute(codes: Range, action: => Any): Unit = {
-    val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyMicroContext))
+    val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyContext))
     routes.addStatusRoute(codes, route)
   }
 

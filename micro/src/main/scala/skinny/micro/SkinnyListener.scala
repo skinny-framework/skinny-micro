@@ -4,9 +4,9 @@ import javax.servlet.{ ServletContext, ServletContextEvent, ServletContextListen
 
 import skinny.micro.implicits.RicherStringImplicits
 import skinny.logging.LoggerProvider
-import SkinnyMicroListener._
+import SkinnyListener._
 
-class SkinnyMicroListener extends ServletContextListener with LoggerProvider {
+class SkinnyListener extends ServletContextListener with LoggerProvider {
 
   import RicherStringImplicits._
 
@@ -97,7 +97,7 @@ class SkinnyMicroListener extends ServletContextListener with LoggerProvider {
   }
 }
 
-object SkinnyMicroListener {
+object SkinnyListener {
 
   val DefaultLifeCycle: String = "Bootstrap"
 
