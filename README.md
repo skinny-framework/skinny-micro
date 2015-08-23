@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
   "org.skinny-framework" %% "skinny-micro-json"    % skinnyMicroVersion,
   // Scalate integration for skinny-micro
   "org.skinny-framework" %% "skinny-micro-scalate" % skinnyMicroVersion,
-  // Standalone Web server (Jetty 9.2)
+  // Standalone Web server (Jetty 9.2 / Servlet 3.1)
   "org.skinny-framework" %% "skinny-micro-server"  % skinnyMicroVersion
 )
 ```
@@ -68,7 +68,7 @@ class Bootstrap extends LifeCycle {
 /***
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.2"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.4"
 */
 import skinny.micro._
 object HelloApp extends WebApp {
@@ -90,6 +90,4 @@ See the examples under [samples](https://github.com/skinny-framework/skinny-micr
 (The MIT License)
 
 Copyright (c) skinny-framework.org
-
-
 
