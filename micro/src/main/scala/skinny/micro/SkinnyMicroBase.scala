@@ -91,35 +91,86 @@ trait SkinnyMicroBase
    * $ 4. Executes the after filters with `runFilters`.
    * $ 5. The action result is passed to `renderResponse`.
    */
-  protected def executeRoutes(request: HttpServletRequest, response: HttpServletResponse) {
+  protected def executeRoutes(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+
     var result: Any = null
     var rendered = true
 
-    def runActions(request: HttpServletRequest, response: HttpServletResponse) = {
-      val prehandleException = request.get(SkinnyMicroBase.PrehandleExceptionKey)
-      if (prehandleException.isEmpty) {
-        SkinnyMicroBase.onCompleted { _ =>
-          val className = this.getClass.toString
-          this match {
-            case f: Filter if !request.contains(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") =>
-              request(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") = new {}
-              runFilters(routes.afterFilters)
-            case f: HttpServlet if !request.contains("skinny.micro.SkinnyMicroServlet.afterFilters.Run") =>
-              request("skinny.micro.SkinnyMicroServlet.afterFilters.Run") = new {}
-              runFilters(routes.afterFilters)
-            case _ =>
+    /**
+     * Invokes each filters with `invoke`.
+     * The results of the filters are discarded.
+     */
+    def runFilters(filters: Traversable[Route]): Unit = {
+      for {
+        route: Route <- filters
+        matchedRoute: MatchedRoute <- route(requestPath(context))
+      } invoke(matchedRoute)
+    }
+    def handleStatusCode(status: Int): Option[Any] = {
+      for {
+        handler <- routes(status)
+        matchedHandler <- handler(requestPath(context))
+        handlerResult <- invoke(matchedHandler)
+      } yield handlerResult
+    }
+    def extractStatusCode(e: HaltException): Int = e match {
+      case HaltException(Some(status), _, _, _) => status
+      case _ => response.status.code
+    }
+
+    def runActions(request: HttpServletRequest, response: HttpServletResponse): Any = {
+      request.get(SkinnyMicroBase.CapturedExceptionBeforeHandleMethod) match {
+        case Some(exception) => throw exception.asInstanceOf[Exception]
+        case _ =>
+          SkinnyMicroBase.onCompleted { _ =>
+            val className = this.getClass.toString
+            this match {
+              case f: Filter if !request.contains(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") =>
+                request(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") = new {}
+                runFilters(routes.afterFilters)
+              case f: HttpServlet if !request.contains("skinny.micro.SkinnyMicroServlet.afterFilters.Run") =>
+                request("skinny.micro.SkinnyMicroServlet.afterFilters.Run") = new {}
+                runFilters(routes.afterFilters)
+              case _ =>
+            }
+          }(context)
+          runFilters(routes.beforeFilters)
+          val actionResult = runRoutes(routes(request.requestMethod)).headOption
+          // Give the status code handler a chance to override the actionResult
+          val r = handleStatusCode(status) getOrElse {
+            actionResult.orElse {
+              val allow = routes.matchingMethodsExcept(request.requestMethod, requestPath(context))
+              if (allow.isEmpty) None else liftAction(() => doMethodNotAllowed(allow))
+            }.getOrElse(doNotFound())
           }
-        }(context)
-        runFilters(routes.beforeFilters)
-        val actionResult = runRoutes(routes(request.requestMethod)).headOption
-        // Give the status code handler a chance to override the actionResult
-        val r = handleStatusCode(status) getOrElse {
-          actionResult orElse matchOtherMethods() getOrElse doNotFound()
+          rendered = false
+          r
+      }
+    }
+
+    def cradleHalt(body: => Any, errorHandler: Throwable => Any): Any = {
+      try {
+        body
+      } catch {
+        case e: HaltException =>
+          try {
+            handleStatusCode(extractStatusCode(e)) match {
+              case Some(result) => renderResponse(result)(context)
+              case _ => renderHaltException(e)(context)
+            }
+          } catch {
+            case e: HaltException => renderHaltException(e)(context)
+            case scala.util.control.NonFatal(e) => errorHandler.apply(e)
+            case e: Throwable => {
+              errorHandler.apply(e)
+              throw e
+            }
+          }
+        case scala.util.control.NonFatal(e) => errorHandler.apply(e)
+        case e: Throwable => {
+          errorHandler.apply(e)
+          throw e
         }
-        rendered = false
-        r
-      } else {
-        throw prehandleException.get.asInstanceOf[Exception]
       }
     }
 
@@ -145,32 +196,8 @@ trait SkinnyMicroBase
         )
       }
     )
-    if (!rendered) renderResponse(result)(context)
-  }
-
-  private[this] def cradleHalt(body: => Any, errorHandler: Throwable => Any): Any = {
-    try {
-      body
-    } catch {
-      case e: HaltException =>
-        try {
-          handleStatusCode(extractStatusCode(e)) match {
-            case Some(result) => renderResponse(result)(context)
-            case _ => renderHaltException(e)(context)
-          }
-        } catch {
-          case e: HaltException => renderHaltException(e)(context)
-          case scala.util.control.NonFatal(e) => errorHandler.apply(e)
-          case e: Throwable => {
-            errorHandler.apply(e)
-            throw e
-          }
-        }
-      case scala.util.control.NonFatal(e) => errorHandler.apply(e)
-      case e: Throwable => {
-        errorHandler.apply(e)
-        throw e
-      }
+    if (!rendered) {
+      renderResponse(result)(context)
     }
   }
 
@@ -183,37 +210,22 @@ trait SkinnyMicroBase
   }
 
   /**
-   * Invokes each filters with `invoke`.
-   * The results of the filters are discarded.
-   */
-  private[this] def runFilters(filters: Traversable[Route]): Unit = {
-    for {
-      route <- filters
-      matchedRoute <- route(requestPath(context))
-    } invoke(matchedRoute)
-  }
-
-  /**
    * Lazily invokes routes with `invoke`.
    * The results of the routes are returned as a stream.
    */
   protected def runRoutes(routes: Traversable[Route]): Stream[Any] = {
+    def saveMatchedRoute(matchedRoute: MatchedRoute): MatchedRoute = {
+      request(context)("skinny.micro.MatchedRoute") = matchedRoute
+      setMultiparams(Some(matchedRoute), multiParams(context))(context)
+      matchedRoute
+    }
+
     for {
       route <- routes.toStream // toStream makes it lazy so we stop after match
       matchedRoute <- route.apply(requestPath(context))
       saved = saveMatchedRoute(matchedRoute)
       actionResult <- invoke(saved)
     } yield actionResult
-  }
-
-  private[this] def saveMatchedRoute(matchedRoute: MatchedRoute): MatchedRoute = {
-    request(context)("skinny.micro.MatchedRoute") = matchedRoute
-    setMultiparams(Some(matchedRoute), multiParams(context))(context)
-    matchedRoute
-  }
-
-  private[this] def matchedRoute(implicit ctx: SkinnyContext): Option[MatchedRoute] = {
-    ctx.request.get("skinny.micro.MatchedRoute").map(_.asInstanceOf[MatchedRoute])
   }
 
   /**
@@ -266,19 +278,6 @@ trait SkinnyMicroBase
 
   def methodNotAllowed(f: Set[HttpMethod] => Any): Unit = {
     doMethodNotAllowed = f
-  }
-
-  private[this] def matchOtherMethods(): Option[Any] = {
-    val allow = routes.matchingMethodsExcept(request.requestMethod, requestPath(context))
-    if (allow.isEmpty) None else liftAction(() => doMethodNotAllowed(allow))
-  }
-
-  private[this] def handleStatusCode(status: Int): Option[Any] = {
-    for {
-      handler <- routes(status)
-      matchedHandler <- handler(requestPath(context))
-      handlerResult <- invoke(matchedHandler)
-    } yield handlerResult
   }
 
   protected def withRouteMultiParams[S](matchedRoute: Option[MatchedRoute])(thunk: => S): S = {
@@ -431,21 +430,12 @@ trait SkinnyMicroBase
       }
       if (!rendered) renderResponse(e.body)(ctx)
     } catch {
-      case scala.util.control.NonFatal(e) =>
-        runCallbacks(Failure(e))(ctx)
-        renderUncaughtException(e)(skinnyContext)
-        runCallbacks(Failure(e))(ctx)
-      case e: Throwable =>
-        runCallbacks(Failure(e))(ctx)
-        renderUncaughtException(e)(skinnyContext)
-        runCallbacks(Failure(e))(ctx)
+      case scala.util.control.NonFatal(e) => handleException(e, ctx)
+      case e: Throwable => {
+        handleException(e, ctx)
         throw e
+      }
     }
-  }
-
-  protected def extractStatusCode(e: HaltException): Int = e match {
-    case HaltException(Some(status), _, _, _) => status
-    case _ => response.status.code
   }
 
   /**
@@ -462,11 +452,6 @@ trait SkinnyMicroBase
     removeRoute(HttpMethod(method), route)
   }
 
-  private[this] def addStatusRoute(codes: Range, action: => Any): Unit = {
-    val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyContext))
-    routes.addStatusRoute(codes, route)
-  }
-
   /**
    * Sends a redirect response and immediately halts the current action.
    */
@@ -480,20 +465,10 @@ trait SkinnyMicroBase
    */
   def requestPath(implicit ctx: SkinnyContext): String
 
-  private[this] def onAsyncEvent(event: AsyncEvent)(thunk: => Any): Unit = {
-    withRequest(event.getSuppliedRequest.asInstanceOf[HttpServletRequest]) {
-      withResponse(event.getSuppliedResponse.asInstanceOf[HttpServletResponse]) {
-        thunk
-      }
-    }
-  }
-
-  private[this] def withinAsyncContext(context: javax.servlet.AsyncContext)(thunk: => Any): Unit = {
-    withRequest(context.getRequest.asInstanceOf[HttpServletRequest]) {
-      withResponse(context.getResponse.asInstanceOf[HttpServletResponse]) {
-        thunk
-      }
-    }
+  private[this] def handleException(e: Throwable, ctx: SkinnyContext): Unit = {
+    SkinnyMicroBase.runCallbacks(Failure(e))(ctx)
+    renderUncaughtException(e)(ctx)
+    SkinnyMicroBase.runRenderCallbacks(Failure(e))(ctx)
   }
 
   private[this] def handleFuture(f: Future[_], timeout: Duration)(implicit ctx: SkinnyContext): Unit = {
@@ -501,6 +476,20 @@ trait SkinnyMicroBase
     val context: AsyncContext = ctx.request.startAsync(ctx.request, ctx.response)
     if (timeout.isFinite()) context.setTimeout(timeout.toMillis) else context.setTimeout(-1)
 
+    def withinAsyncContext(asyncContext: javax.servlet.AsyncContext)(thunk: => Any): Unit = {
+      withRequest(asyncContext.getRequest.asInstanceOf[HttpServletRequest]) {
+        withResponse(asyncContext.getResponse.asInstanceOf[HttpServletResponse]) {
+          thunk
+        }
+      }
+    }
+    def onAsyncEvent(event: AsyncEvent)(thunk: => Any): Unit = {
+      withRequest(event.getSuppliedRequest.asInstanceOf[HttpServletRequest]) {
+        withResponse(event.getSuppliedResponse.asInstanceOf[HttpServletResponse]) {
+          thunk
+        }
+      }
+    }
     def renderFutureResult(f: Future[_]): Unit = {
       f.onComplete {
         // Loop until we have a non-future result
@@ -510,26 +499,19 @@ trait SkinnyMicroBase
           if (gotResponseAlready.compareAndSet(false, true)) {
             withinAsyncContext(context) {
               try {
-                t map { result =>
-                  renderResponse(result)(ctx)
-                } recover {
-                  case e: HaltException =>
-                    renderHaltException(e)(ctx)
-                  case e =>
-                    try {
-                      renderResponse(currentErrorHandler.apply(e))(ctx)
-                    } catch {
-                      case scala.util.control.NonFatal(e) =>
-                        SkinnyMicroBase.runCallbacks(Failure(e))(ctx)
-                        renderUncaughtException(e)(ctx)
-                        SkinnyMicroBase.runRenderCallbacks(Failure(e))(ctx)
-                      case e: Throwable =>
-                        SkinnyMicroBase.runCallbacks(Failure(e))(ctx)
-                        renderUncaughtException(e)(ctx)
-                        SkinnyMicroBase.runRenderCallbacks(Failure(e))(ctx)
-                        throw e
-                    }
-                }
+                t.map { result => renderResponse(result)(ctx) }
+                  .recover {
+                    case e: HaltException => renderHaltException(e)(ctx)
+                    case e =>
+                      try { renderResponse(currentErrorHandler.apply(e))(ctx) }
+                      catch {
+                        case scala.util.control.NonFatal(e) => handleException(e, ctx)
+                        case e: Throwable => {
+                          handleException(e, ctx)
+                          throw e
+                        }
+                      }
+                  }
               } finally {
                 context.complete()
               }
@@ -555,18 +537,13 @@ trait SkinnyMicroBase
             event.getThrowable match {
               case e: HaltException => renderHaltException(e)(ctx)
               case e =>
-                try {
-                  renderResponse(currentErrorHandler.apply(e))(ctx)
-                } catch {
-                  case scala.util.control.NonFatal(e) =>
-                    SkinnyMicroBase.runCallbacks(Failure(e))(ctx)
-                    renderUncaughtException(e)(ctx)
-                    SkinnyMicroBase.runRenderCallbacks(Failure(e))(ctx)
-                  case e: Throwable =>
-                    SkinnyMicroBase.runCallbacks(Failure(e))(ctx)
-                    renderUncaughtException(e)(ctx)
-                    SkinnyMicroBase.runRenderCallbacks(Failure(e))(ctx)
+                try { renderResponse(currentErrorHandler.apply(e))(ctx) }
+                catch {
+                  case scala.util.control.NonFatal(e) => handleException(e, ctx)
+                  case e: Throwable => {
+                    handleException(e, ctx)
                     throw e
+                  }
                 }
             }
           }
@@ -590,7 +567,7 @@ object SkinnyMicroBase {
    * propagated to SkinnyMicroBase#handle (such as in
    * FileUploadSupport)
    */
-  val PrehandleExceptionKey: String = "skinny.micro.PrehandleException"
+  val CapturedExceptionBeforeHandleMethod: String = "skinny.micro.CapturedExceptionBeforeHandleMethod"
   val HostNameKey: String = "skinny.micro.HostName"
   val PortKey: String = "skinny.micro.Port"
   val ForceHttpsKey: String = "skinny.micro.ForceHttps"

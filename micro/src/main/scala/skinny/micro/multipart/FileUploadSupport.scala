@@ -87,7 +87,7 @@ trait FileUploadSupport
       } else req
     } catch {
       case scala.util.control.NonFatal(e) => {
-        req.setAttribute(SkinnyMicroBase.PrehandleExceptionKey, e)
+        req.setAttribute(SkinnyMicroBase.CapturedExceptionBeforeHandleMethod, e)
         req
       }
     }

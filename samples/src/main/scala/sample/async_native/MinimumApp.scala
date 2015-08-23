@@ -3,6 +3,8 @@ package sample.async_native
 import skinny.micro.AsyncWebApp
 import skinny.micro.response.Ok
 
+import scala.concurrent.Future
+
 class MinimumApp extends AsyncWebApp {
 
   before() { implicit ctx =>
@@ -14,23 +16,31 @@ class MinimumApp extends AsyncWebApp {
   }
 
   get("/hello") { implicit ctx =>
-    "Hello, World!"
+    Future {
+      "Hello, World!"
+    }
   }
 
   post("/hello") { implicit ctx =>
-    s"Hello, ${params.getOrElse("name", "Anonymous")}!"
+    Future {
+      s"Hello, ${params.getOrElse("name", "Anonymous")}!"
+    }
   }
 
   get("/hello-with-cookie-1") { implicit ctx =>
-    cookies += "theme" -> "light"
-    "Hello, World!"
+    Future {
+      cookies += "theme" -> "light"
+      "Hello, World!"
+    }
   }
 
   get("/hello-with-cookie-2") { implicit ctx =>
-    Ok(
-      body = "Hello, World!",
-      headers = Map("Set-Cookie" -> "theme=light")
-    )
+    Future {
+      Ok(
+        body = "Hello, World!",
+        headers = Map("Set-Cookie" -> "theme=light")
+      )
+    }
   }
 
 }
