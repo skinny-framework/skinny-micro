@@ -1,4 +1,4 @@
-# Skinny Micro 
+# Skinny Micro [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro)
 
 Skinny Micro is at once a micro Web framework to build Servlet applications in Scala and the core part of [Skinny Framework](http://skinny-framework.org/) 2.
 
