@@ -8,11 +8,15 @@ import scala.concurrent.Future
 class MinimumApp extends AsyncWebApp {
 
   before() { implicit ctx =>
-    logger.info("before filter")
+    Future {
+      logger.info("before filter")
+    }
   }
 
   after() { implicit ctx =>
-    logger.info("after filter")
+    Future {
+      logger.info("after filter")
+    }
   }
 
   get("/hello") { implicit ctx =>

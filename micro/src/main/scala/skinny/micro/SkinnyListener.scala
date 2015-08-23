@@ -10,60 +10,72 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
 
   import RicherStringImplicits._
 
+  private[this] var servletContext: ServletContext = _
+
   private[this] var cycle: LifeCycle = _
 
-  private[this] var servletContext: ServletContext = _
+  protected def loadCycleClassName: String = {
+    Option(servletContext.getInitParameter(LifeCycleKey))
+      .flatMap(_.blankOption)
+      .getOrElse(DefaultLifeCycle)
+  }
 
   override def contextInitialized(sce: ServletContextEvent): Unit = {
     try {
       configureServletContext(sce)
       configureCycleClass(Thread.currentThread.getContextClassLoader)
     } catch {
-      case e: Throwable =>
+      case scala.util.control.NonFatal(e) =>
         logger.error("Failed to initialize skinny application at " + sce.getServletContext.getContextPath, e)
         throw e
     }
   }
 
-  def contextDestroyed(sce: ServletContextEvent): Unit = {
+  override def contextDestroyed(sce: ServletContextEvent): Unit = {
     if (cycle != null) {
       logger.info("Destroying life cycle class: %s".format(cycle.getClass.getName))
       cycle.destroy(servletContext)
     }
   }
 
-  protected def configureExecutionContext(sce: ServletContextEvent): Unit = {
+  protected def configureServletContext(sce: ServletContextEvent): Unit = {
+    servletContext = sce.getServletContext
   }
 
-  protected def probeForCycleClass(classLoader: ClassLoader): (String, LifeCycle) = {
-    val cycleClassName = {
-      Option(servletContext.getInitParameter(LifeCycleKey))
-        .flatMap(_.blankOption)
-        .getOrElse(DefaultLifeCycle)
-    }
+  protected def configureCycleClass(classLoader: ClassLoader): Unit = {
+    val cycleClassName = loadCycleClassName
     logger.info("The cycle class name from the config: " + (if (cycleClassName == null) "null" else cycleClassName))
 
-    val lifeCycleClass: Class[_] = {
-      try { Class.forName(cycleClassName, true, classLoader) }
-      catch { case _: ClassNotFoundException => null; case t: Throwable => throw t }
-    }
-    lazy val oldLifeCycleClass: Class[_] = {
-      try { Class.forName(OldDefaultLifeCycle, true, classLoader) }
-      catch {
-        case _: ClassNotFoundException => null
-        case t: Throwable => throw t
+    val cycleClass: Class[_] = {
+      val lifeCycleClass: Option[Class[_]] = {
+        try { Some(Class.forName(cycleClassName, true, classLoader)) }
+        catch {
+          case e: ClassNotFoundException =>
+            logger.debug(s"Failed to load cycle class name: ${cycleClassName}")
+            None
+          case t: Throwable => throw t
+        }
+      }
+      lifeCycleClass match {
+        case Some(clazz) => clazz
+        case _ => {
+          try { Class.forName(OldDefaultLifeCycle, true, classLoader) }
+          catch {
+            case _: ClassNotFoundException => null
+            case t: Throwable => throw t
+          }
+        }
       }
     }
-    val cycleClass: Class[_] = {
-      if (lifeCycleClass != null) lifeCycleClass
-      else oldLifeCycleClass
-    }
 
-    assert(cycleClass != null, "No skinny.micro.LifeCycle class found!")
-    assert(classOf[LifeCycle].isAssignableFrom(cycleClass),
-      """No skinny.micro.LifeCycle class found!
+    assert(cycleClass != null,
+      """----------------
         |
-        |echo 'import skinny._
+        | *** No skinny.micro.LifeCycle class found! ****
+        |
+        | To fix this issue:
+        |
+        | echo 'import skinny._
         |import _root_.controller._
         |
         |class Bootstrap extends SkinnyLifeCycle {
@@ -73,25 +85,17 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
         |}
         |' > src/main/scala/Bootstrap.scala
         |
-        |If you're using only skinny.micro, inherit skinny.micro.LifeCycle instead.
+        | NOTE: If you're using only skinny.micro, inherit skinny.micro.LifeCycle instead.
         |
-        |"""".stripMargin
-    )
+        |----------------
+        |""".stripMargin)
     logger.debug(s"Loaded lifecycle class: ${cycleClass}")
 
     if (cycleClass.getName == OldDefaultLifeCycle) {
-      logger.warn(s"${OldDefaultLifeCycle} for a boot class will be removed eventually. Please use ${DefaultLifeCycle} instead as class name.")
+      logger.warn(s"${OldDefaultLifeCycle} for a boot class will be removed eventually. " +
+        s"Please use ${DefaultLifeCycle} instead as class name.")
     }
-    (cycleClass.getSimpleName, cycleClass.newInstance.asInstanceOf[LifeCycle])
-  }
-
-  protected def configureServletContext(sce: ServletContextEvent): Unit = {
-    servletContext = sce.getServletContext
-  }
-
-  protected def configureCycleClass(classLoader: ClassLoader): Unit = {
-    val (cycleClassName, cycleClass) = probeForCycleClass(classLoader)
-    cycle = cycleClass
+    cycle = cycleClass.newInstance.asInstanceOf[LifeCycle]
     logger.info("Initializing life cycle class: %s".format(cycleClassName))
     cycle.init(servletContext)
   }

@@ -3,7 +3,7 @@ package skinny.standalone
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.DefaultServlet
 import org.eclipse.jetty.webapp.WebAppContext
-import skinny.micro.SkinnyListener
+import skinny.micro.SkinnyMicroServerListener
 import skinny.logging.LoggerProvider
 
 /**
@@ -34,7 +34,7 @@ trait JettyServer extends LoggerProvider {
       val location = domain.getCodeSource.getLocation
       location.toExternalForm
     })
-    context.addEventListener(new SkinnyListener)
+    context.addEventListener(new SkinnyMicroServerListener)
     context.addServlet(classOf[DefaultServlet], "/")
     server.setHandler(context)
     server.start
@@ -42,8 +42,12 @@ trait JettyServer extends LoggerProvider {
   }
 
   def stop(): Unit = {
-    server.stop()
+    if (server != null) {
+      server.stop()
+    }
   }
+
+  private[this] var server: Server = _
 
   private[this] var _port: Int = 8080
 
@@ -52,15 +56,22 @@ trait JettyServer extends LoggerProvider {
     port
   }
 
-  private[this] def newServer: Server = new Server(port)
-  private[this] def refreshServer(): Unit = server.synchronized {
-    server = newServer
+  private[this] def newServer(port: Int): Server = new Server(port)
+
+  private[this] def refreshServer(): Unit = {
+    if (server != null) {
+      stop()
+      server.destroy()
+      server.synchronized {
+        server = newServer(port)
+      }
+    } else {
+      server = newServer(port)
+    }
   }
 
-  private[this] var server: Server = newServer
-
   private[this] def getEnvVarOrSysProp(key: String): Option[String] = {
-    sys.env.get(key) orElse sys.props.get(key)
+    sys.env.get(key).orElse(sys.props.get(key))
   }
 
 }
