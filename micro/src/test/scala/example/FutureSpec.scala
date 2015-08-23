@@ -10,6 +10,20 @@ class FutureSpec extends ScalatraFlatSpec {
 
   addServlet(new AsyncSkinnyMicroServlet {
 
+    before() { implicit ctx =>
+      Future {
+        Thread.sleep(100)
+        request.setAttribute("before", "done")
+      }
+    }
+
+    after() { implicit ctx =>
+      Future {
+        Thread.sleep(100)
+        response.setHeader("foo", "bar")
+      }
+    }
+
     get("/") { implicit ctx =>
       params.keys.mkString(",")
     }
@@ -32,6 +46,12 @@ class FutureSpec extends ScalatraFlatSpec {
         }
       }
     }
+
+    get("/before") { implicit ctx =>
+      Future {
+        request.getAttribute("before")
+      }
+    }
   }, "/*")
 
   it should "simply work" in {
@@ -40,6 +60,7 @@ class FutureSpec extends ScalatraFlatSpec {
       body should equal("foo")
     }
   }
+
   it should "fail with simple Future" in {
     get("/no-future-error?foo=bar") {
       status should equal(200)
@@ -55,10 +76,20 @@ class FutureSpec extends ScalatraFlatSpec {
       found should be(false)
     }
   }
+
   it should "work with futureWithContext" in {
     get("/future?foo=bar&baz=zzz") {
       status should equal(200)
       body should equal("baz,foo")
+      header("foo") should equal("bar")
+    }
+  }
+
+  it should "work with async before filters" in {
+    get("/before") {
+      status should equal(200)
+      body should equal("done")
+      header("foo") should equal("bar")
     }
   }
 
