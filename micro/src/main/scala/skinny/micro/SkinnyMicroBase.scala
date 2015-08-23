@@ -4,7 +4,7 @@ import scala.language.implicitConversions
 import scala.language.reflectiveCalls
 
 import scala.annotation.tailrec
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ Await, ExecutionContext, Future }
 import scala.concurrent.duration._
 import scala.util.{ Failure, Success, Try }
 
@@ -64,6 +64,11 @@ trait SkinnyMicroBase
   protected def isAsyncExecutable(result: Any): Boolean = false
 
   /**
+   * Max duration to await async filters
+   */
+  protected def maxDurationToAwaitAsyncFilters: Duration = Duration.Inf
+
+  /**
    * Returns rout base path.
    */
   protected def routeBasePath(implicit ctx: SkinnyContext): String
@@ -77,19 +82,22 @@ trait SkinnyMicroBase
    * Executes routes in the context of the current request and response.
    *
    * $ 1. Executes each before filter with `runFilters`.
-   * $ 2. Executes the routes in the route registry with `runRoutes` for
-   * the request's method.
-   * a. The result of runRoutes becomes the _action result_.
-   * b. If no route matches the requested method, but matches are
-   * found for other methods, then the `doMethodNotAllowed` hook is
-   * run with each matching method.
-   * c. If no route matches any method, then the `doNotFound` hook is
-   * run, and its return value becomes the action result.
-   * $ 3. If an exception is thrown during the before filters or the route
-   * $    actions, then it is passed to the `errorHandler` function, and its
-   * $    result becomes the action result.
+   *
+   * $ 2. Executes the routes in the route registry with `runRoutes` for the request's method.
+   *
+   *   a. The result of runRoutes becomes the _action result_.
+   *   b. If no route matches the requested method, but matches are found for other methods,
+   *      then the `doMethodNotAllowed` hook is run with each matching method.
+   *   c. If no route matches any method, then the `doNotFound` hook is run,
+   *      and its return value becomes the action result.
+   *
+   * $ 3. If an exception is thrown during the before filters or the route actions,
+   *      then it is passed to the `errorHandler` function, and its result becomes the action result.
+   *
    * $ 4. Executes the after filters with `runFilters`.
+   *
    * $ 5. The action result is passed to `renderResponse`.
+   *
    */
   protected def executeRoutes(request: HttpServletRequest, response: HttpServletResponse): Unit = {
 
@@ -97,15 +105,24 @@ trait SkinnyMicroBase
     var rendered = true
 
     /**
-     * Invokes each filters with `invoke`.
-     * The results of the filters are discarded.
+     * Invokes each filters with `invoke`. The results of the filters are discarded.
      */
     def runFilters(filters: Traversable[Route]): Unit = {
-      for {
+      val asyncFilters: Traversable[Future[Any]] = (for {
         route: Route <- filters
         matchedRoute: MatchedRoute <- route(requestPath(context))
-      } invoke(matchedRoute)
+      } yield {
+        withRouteMultiParams(Some(matchedRoute)) {
+          matchedRoute.action.apply() match {
+            case f: Future[Any] => Some(f)
+            case _ => None
+          }
+        }
+      }).flatten
+
+      Await.result(Future.sequence(asyncFilters), maxDurationToAwaitAsyncFilters)
     }
+
     def handleStatusCode(status: Int): Option[Any] = {
       for {
         handler <- routes(status)
@@ -119,7 +136,7 @@ trait SkinnyMicroBase
     }
 
     def runActions(request: HttpServletRequest, response: HttpServletResponse): Any = {
-      request.get(SkinnyMicroBase.CapturedExceptionBeforeHandleMethod) match {
+      request.get(SkinnyMicroBase.CapturedExceptionBeforeRunActions) match {
         case Some(exception) => throw exception.asInstanceOf[Exception]
         case _ =>
           SkinnyMicroBase.onCompleted { _ =>
@@ -229,9 +246,9 @@ trait SkinnyMicroBase
   }
 
   /**
-   * Invokes a route or filter.  The multiParams gathered from the route
-   * matchers are merged into the existing route params, and then the action
-   * is run.
+   * Invokes a route or filter.
+   * The multiParams gathered from the route matchers are merged into the existing route params,
+   * and then the action is run.
    *
    * @param matchedRoute the matched route to execute
    *
@@ -253,8 +270,8 @@ trait SkinnyMicroBase
   }
 
   /**
-   * Called if no route matches the current request for any method.  The
-   * default implementation varies between servlet and filter.
+   * Called if no route matches the current request for any method.
+   * The default implementation varies between servlet and filter.
    */
   protected var doNotFound: Action
 
@@ -265,10 +282,8 @@ trait SkinnyMicroBase
   }
 
   /**
-   * Called if no route matches the current request method, but routes
-   * match for other methods.  By default, sends an HTTP status of 405
-   * and an `Allow` header containing a comma-delimited list of the allowed
-   * methods.
+   * Called if no route matches the current request method, but routes match for other methods.
+   * By default, sends an HTTP status of 405 and an `Allow` header containing a comma-delimited list of the allowed methods.
    */
   private[this] var doMethodNotAllowed: (Set[HttpMethod] => Any) = {
     allow =>
@@ -301,6 +316,7 @@ trait SkinnyMicroBase
 
   /**
    * Renders the action result to the response.
+   *
    * $ - If the content type is still null, call the contentTypeInferrer.
    * $ - Call the render pipeline on the result.
    */
@@ -366,9 +382,9 @@ trait SkinnyMicroBase
   }
 
   /**
-   * The render pipeline is a partial function of Any => Any.  It is
-   * called recursively until it returns ().  () indicates that the
-   * response has been rendered.
+   * The render pipeline is a partial function of Any => Any.
+   * It is called recursively until it returns ().
+   * () indicates that the response has been rendered.
    */
   protected def renderPipeline(implicit ctx: SkinnyContext): RenderPipeline = {
     case 404 =>
@@ -460,8 +476,8 @@ trait SkinnyMicroBase
   }
 
   /**
-   * The effective path against which routes are matched.  The definition
-   * varies between servlets and filters.
+   * The effective path against which routes are matched.
+   * The definition varies between servlets and filters.
    */
   def requestPath(implicit ctx: SkinnyContext): String
 
@@ -562,12 +578,10 @@ object SkinnyMicroBase {
   import scala.collection.JavaConverters._
 
   /**
-   * A key for request attribute that contains any exception
-   * that might have occured before the handling has been
-   * propagated to SkinnyMicroBase#handle (such as in
-   * FileUploadSupport)
+   * A key for request attribute that contains any exception that might have occured
+   * before the handling has been propagated to SkinnyMicroBase#handle (such as in FileUploadSupport)
    */
-  val CapturedExceptionBeforeHandleMethod: String = "skinny.micro.CapturedExceptionBeforeHandleMethod"
+  val CapturedExceptionBeforeRunActions: String = "skinny.micro.CapturedExceptionBeforeRunActions"
   val HostNameKey: String = "skinny.micro.HostName"
   val PortKey: String = "skinny.micro.Port"
   val ForceHttpsKey: String = "skinny.micro.ForceHttps"
@@ -600,7 +614,7 @@ object SkinnyMicroBase {
   }
 
   def runCallbacks(data: Try[Any])(implicit ctx: SkinnyContext): Unit = {
-    callbacks.reverse foreach (_(data))
+    callbacks.reverse.foreach(_(data))
   }
 
   def renderCallbacks(implicit ctx: SkinnyContext): List[(Try[Any]) => Unit] = {
@@ -612,7 +626,7 @@ object SkinnyMicroBase {
   }
 
   def runRenderCallbacks(data: Try[Any])(implicit ctx: SkinnyContext): Unit = {
-    renderCallbacks.reverse foreach (_(data))
+    renderCallbacks.reverse.foreach(_(data))
   }
 
   def getServletRegistration(app: SkinnyMicroBase): Option[ServletRegistration] = {
