@@ -6,13 +6,10 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.1"
+  lazy val currentVersion = "0.9.2"
 
   lazy val json4SVersion = "3.3.0.RC3"
-  lazy val scalikeJDBCVersion = "2.2.8"
-  lazy val compatibleScalatraVersion = "2.3.1"
-  lazy val h2Version = "1.4.188"
-  lazy val kuromojiVersion = "5.2.1"
+  lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.13.v20150730"
@@ -86,9 +83,9 @@ object SkinnyMicroBuild extends Build {
       libraryDependencies <++= (scalaVersion) { (sv) =>
         servletApiDependencies ++ slf4jApiDependencies ++ Seq(
           "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
-          "org.scalatra"      %% "scalatra-specs2"    % compatibleScalatraVersion % Test,
-          "org.scalatra"      %% "scalatra-scalatest" % compatibleScalatraVersion % Test,
-          "com.typesafe.akka" %% "akka-actor"         % "2.3.12"                  % Test
+          "org.scalatra"      %% "scalatra-specs2"          % scalatraTestVersion % Test,
+          "org.scalatra"      %% "scalatra-scalatest"       % scalatraTestVersion % Test,
+          "com.typesafe.akka" %% "akka-actor"               % "2.3.12"            % Test
         ) ++ (sv match {
           case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
           case _ => Nil
@@ -101,11 +98,11 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-json",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.8.2"                   % Compile,
-        "org.joda"          %  "joda-convert"       % "1.7"                     % Compile,
-        "org.scalatra"      %% "scalatra-specs2"    % compatibleScalatraVersion % Test,
-        "org.scalatra"      %% "scalatra-scalatest" % compatibleScalatraVersion % Test,
-        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"                  % Test
+        "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
+        "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
+        "org.scalatra"      %% "scalatra-specs2"    % scalatraTestVersion % Test,
+        "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
+        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test
       ) ++ testDependencies
     )
   ).dependsOn(micro)
@@ -114,10 +111,10 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-scalate",
       libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-        "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"                   % Compile excludeAll(fullExclusionRules: _*),
-        "org.scalatra"          %% "scalatra-specs2"    % compatibleScalatraVersion % Test,
-        "org.scalatra"          %% "scalatra-scalatest" % compatibleScalatraVersion % Test,
-        "com.typesafe.akka"     %% "akka-actor"         % "2.3.12"                  % Test
+        "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
+        "org.scalatra"          %% "scalatra-specs2"    % scalatraTestVersion % Test,
+        "org.scalatra"          %% "scalatra-scalatest" % scalatraTestVersion % Test,
+        "com.typesafe.akka"     %% "akka-actor"         % "2.3.12"            % Test
       ) ++ testDependencies
     )
   ).dependsOn(micro)
