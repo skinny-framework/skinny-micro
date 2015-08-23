@@ -55,10 +55,9 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
   }
 
   override protected def routeBasePath(implicit ctx: SkinnyContext): String = {
-    if (ctx.servletContext == null) {
-      throw new IllegalStateException("routeBasePath requires an initialized servlet context to determine the context path")
-    }
-    ctx.servletContext.getContextPath
+    // servletContext can be null when test environment
+    if (ctx.servletContext != null) ctx.servletContext.getContextPath
+    else "/"
   }
 
   protected var doNotFound: Action = () => filterChain.doFilter(request, response)
