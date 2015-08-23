@@ -13,8 +13,6 @@ class ScalateFuturesSupportSpec extends MutableScalatraSpec {
     "render a simple template" in e3
     "render a simple template with params" in e4
     "looks for layouts in /WEB-INF/layouts" in e5
-    "generate a url from a template" in e6
-    "generate a url with params from a template" in e7
     "render a simple template via jade method" in e8
     "render a simple template with params via jade method" in e9
     "render a simple template via scaml method" in e10
@@ -72,16 +70,6 @@ class ScalateFuturesSupportSpec extends MutableScalatraSpec {
       "/WEB-INF/scalate/layouts/default.scaml",
       "/WEB-INF/scalate/layouts/default.jade"
     ) mkString ";")
-  }
-
-  def e6 = get("/url-generation") {
-    body must_== "/url-generation\n"
-  }
-
-  def e7 = {
-    get("/url-generation-with-params/jedi/vs/sith") {
-      body must_== "/url-generation-with-params/jedi/vs/sith\n"
-    }
   }
 
   def e8 = get("/jade-template") {

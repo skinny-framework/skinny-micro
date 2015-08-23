@@ -4,7 +4,7 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.scalatra.test.specs2.ScalatraSpec
 import skinny.micro.SkinnyMicroServlet
 import skinny.micro.base.FlashMapSupport
-import skinny.micro.scalate.{ ScalateSupport, ScalateUrlGeneratorSupport }
+import skinny.micro.scalate.ScalateSupport
 
 class ScalateSupportSpec extends ScalatraSpec {
   def is =
@@ -14,8 +14,6 @@ class ScalateSupportSpec extends ScalatraSpec {
       "render a simple template" ! e3 ^ br ^
       "render a simple template with params" ! e4 ^ br ^
       "looks for layouts in /WEB-INF/layouts" ! e5 ^ br ^
-      "generate a url from a template" ! e6 ^ br ^
-      "generate a url with params from a template" ! e7 ^ br ^
       "render a simple template via jade method" ! e8 ^ br ^
       "render a simple template with params via jade method" ! e9 ^ br ^
       "render a simple template via scaml method" ! e10 ^ br ^
@@ -35,7 +33,7 @@ class ScalateSupportSpec extends ScalatraSpec {
       "set status to 500 when rendering 500.scaml" ! e24 ^ br ^
       end
 
-  addServlet(new SkinnyMicroServlet with ScalateSupport with ScalateUrlGeneratorSupport with FlashMapSupport {
+  addServlet(new SkinnyMicroServlet with ScalateSupport with FlashMapSupport {
 
     get("/barf") {
       throw new RuntimeException
@@ -87,14 +85,6 @@ class ScalateSupportSpec extends ScalatraSpec {
 
     get("/layout-strategy") {
       templateEngine.layoutStrategy.asInstanceOf[DefaultLayoutStrategy].defaultLayouts mkString ";"
-    }
-
-    val urlGeneration = get("/url-generation") {
-      layoutTemplate("/urlGeneration.jade")
-    }
-
-    val urlGenerationWithParams = get("/url-generation-with-params/:a/vs/:b") {
-      layoutTemplate("/urlGenerationWithParams.jade", ("a" -> params("a")), ("b" -> params("b")))
     }
 
     get("/legacy-view-path") {
@@ -162,14 +152,6 @@ class ScalateSupportSpec extends ScalatraSpec {
       "/WEB-INF/scalate/layouts/default.scaml",
       "/WEB-INF/scalate/layouts/default.jade"
     ) mkString ";")
-  }
-
-  def e6 = get("/url-generation") {
-    body must_== "/url-generation\n"
-  }
-
-  def e7 = get("/url-generation-with-params/jedi/vs/sith") {
-    body must_== "/url-generation-with-params/jedi/vs/sith\n"
   }
 
   def e8 = get("/jade-template") {
