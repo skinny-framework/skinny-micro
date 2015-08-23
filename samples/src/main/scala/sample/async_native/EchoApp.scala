@@ -10,7 +10,9 @@ import scala.concurrent.Future
 class EchoApp extends AsyncWebApp with DefaultJSONStringOps with ScalateSupport {
 
   before() { implicit ctx =>
-    contentType = "text/html"
+    Future {
+      contentType = "text/html"
+    }
   }
 
   get("/echo.json") { implicit ctx =>

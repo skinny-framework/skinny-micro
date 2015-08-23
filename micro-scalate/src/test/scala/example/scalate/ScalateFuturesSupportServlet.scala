@@ -6,14 +6,13 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import skinny.micro._
 import skinny.micro.async.AsyncResult
 import skinny.micro.base.FlashMapSupport
-import skinny.micro.scalate.{ ScalateSupport, ScalateUrlGeneratorSupport }
+import skinny.micro.scalate.ScalateSupport
 
 import scala.concurrent.{ ExecutionContext, Future }
 
 class ScalateFuturesSupportServlet(exec: ExecutorService)
     extends SkinnyMicroServlet
     with ScalateSupport
-    with ScalateUrlGeneratorSupport
     with FlashMapSupport {
 
   protected override implicit val executionContext = ExecutionContext.fromExecutorService(exec)
@@ -72,18 +71,6 @@ class ScalateFuturesSupportServlet(exec: ExecutorService)
     new AsyncResult {
       val is = Future {
         templateEngine.layoutStrategy.asInstanceOf[DefaultLayoutStrategy].defaultLayouts mkString ";"
-      }
-    }
-  }
-
-  val urlGeneration = get("/url-generation") {
-    new AsyncResult { val is = Future { layoutTemplate("/urlGeneration.jade") } }
-  }
-
-  val urlGenerationWithParams = get("/url-generation-with-params/:a/vs/:b") {
-    new AsyncResult {
-      val is = Future {
-        layoutTemplate("/urlGenerationWithParams.jade", ("a" -> params("a")), ("b" -> params("b")))
       }
     }
   }
