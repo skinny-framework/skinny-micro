@@ -6,6 +6,7 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import skinny.micro._
 import skinny.micro.async.AsyncResult
 import skinny.micro.base.FlashMapSupport
+import skinny.micro.routing.Route
 import skinny.micro.scalate.{ ScalateSupport, ScalateUrlGeneratorSupport }
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -76,11 +77,11 @@ class ScalateFuturesSupportServlet(exec: ExecutorService)
     }
   }
 
-  val urlGeneration = get("/url-generation") {
+  val urlGeneration: Route = get("/url-generation") {
     new AsyncResult { val is = Future { layoutTemplate("/urlGeneration.jade") } }
   }
 
-  val urlGenerationWithParams = get("/url-generation-with-params/:a/vs/:b") {
+  val urlGenerationWithParams: Route = get("/url-generation-with-params/:a/vs/:b") {
     new AsyncResult {
       val is = Future {
         layoutTemplate("/urlGenerationWithParams.jade", ("a" -> params("a")), ("b" -> params("b")))
