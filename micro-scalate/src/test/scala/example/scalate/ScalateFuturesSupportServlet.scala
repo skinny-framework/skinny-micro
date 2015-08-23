@@ -81,7 +81,6 @@ class ScalateFuturesSupportServlet(exec: ExecutorService)
   }
 
   val urlGenerationWithParams = get("/url-generation-with-params/:a/vs/:b") {
-
     new AsyncResult {
       val is = Future {
         layoutTemplate("/urlGenerationWithParams.jade", ("a" -> params("a")), ("b" -> params("b")))
@@ -134,3 +133,6 @@ class ScalateFuturesSupportServlet(exec: ExecutorService)
     }
   }
 }
+
+object ScalateFuturesSupportServlet
+  extends ScalateFuturesSupportServlet(DaemonThreadFactory.newPool())

@@ -25,6 +25,43 @@ libraryDependencies ++= Seq(
 
 ## Minimum Example
 
+#### Simple Application
+
+##### src/main/scala/app.scala
+
+```scala
+import javax.servlet._
+import skinny.micro._
+
+object Hello extends WebApp {
+  get("/say-hello") {
+    s"Hello, ${params.getOrElse("name", "Anonymous")}!\n"
+  }
+}
+
+class Bootstrap extends LifeCycle {
+  override def init(ctx: ServletContext) {
+    Hello.mount(ctx)
+  }
+}
+```
+
+##### src/main/webapp/WEB-INF/web.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+    <listener>
+        <listener-class>skinny.micro.SkinnyListener</listener-class>
+    </listener>
+</web-app>
+```
+
+#### Scalas Example
+
 ```scala
 #!/usr/bin/env scalas
 // or ./scalas app.scala

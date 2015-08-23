@@ -32,6 +32,11 @@ trait ServletContextAccessor
     def getInitParameterNames(): java.util.Enumeration[String]
 
   }
+  private trait NullConfig {
+    def getServletContext(): ServletContext = null
+    def getInitParameter(name: String): String = null
+    def getInitParameterNames(): java.util.Enumeration[String] = null
+  }
 
   protected implicit def configWrapper(config: ConfigT) = new Config {
 
@@ -52,7 +57,7 @@ trait ServletContextAccessor
   /**
    * The configuration, typically a ServletConfig or FilterConfig.
    */
-  var config: ConfigT = _
+  var config: ConfigT = (new NullConfig {}).asInstanceOf[ConfigT]
 
   /**
    * Initializes the kernel.  Used to provide context that is unavailable

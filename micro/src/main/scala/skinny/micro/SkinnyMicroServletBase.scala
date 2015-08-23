@@ -37,7 +37,12 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
     require(config != null, "routeBasePath requires the servlet to be initialized")
     require(ctx.request != null, "routeBasePath requires an active request to determine the servlet path")
 
-    servletContext.getContextPath + ctx.request.getServletPath
+    if (ctx.servletContext != null) {
+      ctx.servletContext.getContextPath + ctx.request.getServletPath
+    } else {
+      // servletContext can be null when test environment
+      ctx.request.getServletPath
+    }
   }
 
   /**
