@@ -9,7 +9,7 @@ Basically, Skinny Micro's DSLs are source compatible with Scalatra 2.3's ones. B
 ## Getting Started
 
 ```scala
-lazy val skinnyMicroVersion = "0.9.2"
+lazy val skinnyMicroVersion = "0.9.4"
 
 libraryDependencies ++= Seq(
   // micro Web framework
@@ -23,11 +23,23 @@ libraryDependencies ++= Seq(
 )
 ```
 
-## Minimum Example
+## Minimum Examples
 
-#### Simple Application
+We'd love to show you some simple but working examples briefly.
 
-##### src/main/scala/app.scala
+Please also see more examples under [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) and [scalas-samples](https://github.com/skinny-framework/skinny-micro/tree/master/scalas-samples).
+
+### Simple Application
+
+The following is a minimum simple Servlet example. `skinny.micro.SkinnyListener` initializes Skinny Micro's environment.
+
+As same as Scalatra, `_root_.Bootstrap` class (instead of `ScalatraBootstrap` for Scalatra) is detected by default. Of course, you can change the name of the Bootstrap class by configuring with an init parameter.
+
+Also take a look at [sbt-servlet-plugin](https://github.com/skinny-framework/sbt-servlet-plugin). The plugin will help you much when building Skinny applications.
+
+See [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) too for details.
+
+#### src/main/scala/app.scala
 
 ```scala
 import javax.servlet._
@@ -46,7 +58,7 @@ class Bootstrap extends LifeCycle {
 }
 ```
 
-##### src/main/webapp/WEB-INF/web.xml
+#### src/main/webapp/WEB-INF/web.xml
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -60,7 +72,35 @@ class Bootstrap extends LifeCycle {
 </web-app>
 ```
 
-#### Scalas Example
+### Async Native Application
+
+Skinny Micro newly privides original base traits that named as `AsyncWebApp (AsyncSkinnyMicorFilter)` and `AsyncSingleWebApp (AsyncSkinnyMicroServlet)`.
+
+They are natively suitable for building Future-wired async operations. You will no longer unwantedly feel stressed when working with Future-wired operations.
+
+```scala
+case class Message(id: Long, text: String)
+
+object Messages {
+  def search(keyword: Option[String])(implicit ctx: ExecutionContext): Future[Seq[Message]]
+}
+
+object AsyncMessagesApp extends AsyncWebApp with DefaultJSONStringOps {
+
+  post("/messages/search") { implicit ctx =>
+    // You don't need to explicitly wrap results with AsyncResult
+    // Of course, doing so is also fine
+    Messages.search(params.get("keyword"))
+      .map(ms => Ok(toJSONString(ms))) // returns Future[ActionResult]
+  }
+}
+```
+
+### Scalas Example
+
+By using scalas, script runnner from sbt, you can easily run small Scala applications.
+
+http://www.scala-sbt.org/0.13/docs/Scripts.html
 
 ```scala
 #!/usr/bin/env scalas
@@ -83,9 +123,11 @@ println("Try: curl -v 'localhost:4567/say-hello?name=Martin'")
 println
 ```
 
-See the examples under [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples).
+### Other Examples
 
-## Under The MIT License
+More working examples are available under [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) and [scalas-samples](https://github.com/skinny-framework/skinny-micro/tree/master/scalas-samples).
+
+## License
 
 (The MIT License)
 

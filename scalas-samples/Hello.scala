@@ -1,5 +1,5 @@
 #!/usr/bin/env scalas
-// or ./scalas app.scala
+// or ./scalas Hello.scala
 /***
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
