@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.2"
+  lazy val currentVersion = "0.9.3"
 
   lazy val json4SVersion = "3.3.0.RC3"
   lazy val scalatraTestVersion = "2.3.1"
@@ -173,7 +173,8 @@ object SkinnyMicroBuild extends Build {
     "org.json4s"    %% "json4s-ext"         % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*)
   )
   lazy val jettyDependencies = Seq(
-    "javax.servlet"     %  "javax.servlet-api" % "3.0.1"       % Compile,
+    // NOTICE: Jetty 9.2 support 3.1 or higher
+    "javax.servlet"     %  "javax.servlet-api" % "3.1.0"       % Compile,
     "org.eclipse.jetty" %  "jetty-webapp"      % jettyVersion  % Compile,
     "org.eclipse.jetty" %  "jetty-servlet"     % jettyVersion  % Compile,
     "org.eclipse.jetty" %  "jetty-server"      % jettyVersion  % Compile

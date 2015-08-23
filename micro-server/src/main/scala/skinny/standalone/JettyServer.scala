@@ -1,9 +1,10 @@
 package skinny.standalone
 
+import javax.servlet.ServletContextListener
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.DefaultServlet
 import org.eclipse.jetty.webapp.WebAppContext
-import skinny.micro.SkinnyMicroServerListener
+import skinny.micro.SkinnyListener
 import skinny.logging.LoggerProvider
 
 /**
@@ -12,6 +13,11 @@ import skinny.logging.LoggerProvider
  * see: http://scalatra.org/guides/deployment/standalone.html
  */
 trait JettyServer extends LoggerProvider {
+
+  def listener(listener: ServletContextListener): JettyServer = {
+    this.listener = listener
+    this
+  }
 
   def port(port: Int): JettyServer = {
     _port = port
@@ -34,7 +40,7 @@ trait JettyServer extends LoggerProvider {
       val location = domain.getCodeSource.getLocation
       location.toExternalForm
     })
-    context.addEventListener(new SkinnyMicroServerListener)
+    context.addEventListener(listener)
     context.addServlet(classOf[DefaultServlet], "/")
     server.setHandler(context)
     server.start
@@ -49,7 +55,12 @@ trait JettyServer extends LoggerProvider {
 
   private[this] var server: Server = _
 
-  private[this] var _port: Int = 8080
+  private[this] var listener: ServletContextListener = new SkinnyListener
+
+  private[this] var _port: Int = {
+    // PORT: Heroku default env varaible
+    Option(System.getenv("PORT")).map(_.toInt).getOrElse(8080)
+  }
 
   private[this] def port: Int = {
     val port = sys.env.get("SKINNY_PORT").orElse(getEnvVarOrSysProp("skinny.port")).map(_.toInt).getOrElse(_port)

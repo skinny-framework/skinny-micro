@@ -22,6 +22,7 @@ trait WebServer extends JettyServer {
 
   override def start(): Unit = {
     WebServer.singleton = this
+    listener(new SkinnyMicroServerListener)
     super.start()
   }
 
