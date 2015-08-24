@@ -147,7 +147,11 @@ object SkinnyMicroBuild extends Build {
 
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
-      libraryDependencies ++= testDependencies
+      libraryDependencies ++= Seq(
+        "com.typesafe.slick" %% "slick"     % "3.0.2",
+        "org.slf4j"          %  "slf4j-nop" % "1.6.4",
+        "com.h2database"     %  "h2"        % "1.4.188"
+      ) ++ testDependencies
     )
   ).dependsOn(micro, microJson, microScalate, microServer, microTest % Test)
 
