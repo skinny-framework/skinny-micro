@@ -7,8 +7,8 @@ import skinny.micro.response.Ok
 
 import scala.concurrent._
 import scala.concurrent.duration._
-import _root_.slick.backend.DatabasePublisher
-import _root_.slick.driver.H2Driver.api._
+
+import slick.driver.H2Driver.api._
 
 class ReactiveSlickApp extends AsyncWebApp with DefaultJSONStringOps {
 
