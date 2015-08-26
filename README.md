@@ -85,7 +85,7 @@ object Messages {
   def search(keyword: Option[String])(implicit ctx: ExecutionContext): Future[Seq[Message]]
 }
 
-object AsyncMessagesApp extends AsyncWebApp with DefaultJSONStringOps {
+object AsyncMessagesApp extends AsyncWebApp with JSONSupport {
 
   post("/messages/search") { implicit ctx =>
     // You don't need to explicitly wrap results with AsyncResult

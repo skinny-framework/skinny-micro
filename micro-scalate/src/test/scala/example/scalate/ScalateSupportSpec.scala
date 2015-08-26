@@ -2,9 +2,8 @@ package example.scalate
 
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.scalatra.test.specs2.ScalatraSpec
-import skinny.micro.SkinnyMicroServlet
+import skinny.micro.{ ScalateSupport, SkinnyMicroServlet }
 import skinny.micro.base.FlashMapSupport
-import skinny.micro.scalate.ScalateSupport
 
 class ScalateSupportSpec extends ScalatraSpec {
   def is =

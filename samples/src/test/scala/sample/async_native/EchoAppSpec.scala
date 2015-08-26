@@ -1,9 +1,9 @@
 package sample.async_native
 
+import skinny.json.JSONStringOps
 import skinny.test.SkinnyFunSpec
-import skinny.json.DefaultJSONStringOps
 
-class EchoAppSpec extends SkinnyFunSpec with DefaultJSONStringOps {
+class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
   addFilter(classOf[EchoApp], "/*")
 
   describe("Async native EchoApp") {

@@ -2,10 +2,8 @@ package sample.scalatra_compatible
 
 import skinny.micro._
 import skinny.micro.response._
-import skinny.json.DefaultJSONStringOps
-import skinny.micro.scalate.ScalateSupport
 
-class EchoApp extends WebApp with DefaultJSONStringOps with ScalateSupport {
+class EchoApp extends WebApp with JSONSupport with ScalateSupport {
 
   before() {
     contentType = "text/html"

@@ -1,9 +1,9 @@
 package sample.async_native
 
 import skinny.test.SkinnyFunSpec
-import skinny.json.DefaultJSONStringOps
+import skinny.json.JSONStringOps
 
-class ReactiveSlickAppSpec extends SkinnyFunSpec with DefaultJSONStringOps {
+class ReactiveSlickAppSpec extends SkinnyFunSpec with JSONStringOps {
   addFilter(classOf[ReactiveSlickApp], "/*")
 
   describe("Reactive Slick Demo") {

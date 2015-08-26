@@ -1,8 +1,7 @@
 package sample.standalone_app
 
-import skinny.micro.{ AsyncWebApp, WebServer }
+import skinny.micro._
 import skinny.micro.response._
-import skinny.json.DefaultJSONStringOps
 
 /**
  * Simple JSON formatter application.
@@ -14,7 +13,7 @@ import skinny.json.DefaultJSONStringOps
 object OnlineJSONFormatter extends App {
 
   WebServer.mount(
-    new AsyncWebApp with DefaultJSONStringOps {
+    new AsyncWebApp with JSONSupport {
       post("/prettify") { implicit ctx =>
         contentType = "application/json"
         fromJSONStringToJValue(request.body, asIs = true) match {

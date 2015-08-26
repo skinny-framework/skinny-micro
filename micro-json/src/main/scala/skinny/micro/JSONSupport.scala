@@ -1,13 +1,12 @@
-package skinny.micro.json
+package skinny.micro
 
-import skinny.micro.{ Format, SkinnyMicroBase }
-import skinny.micro.context.SkinnyContext
 import skinny.json._
+import skinny.micro.context.SkinnyContext
 
 /**
  * JSON response support.
  */
-trait SkinnyMicroJSONStringOps extends JSONStringOps with JSONStringOpsConfig { self: SkinnyMicroBase =>
+trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
 
   /**
    * Returns JSON response.
