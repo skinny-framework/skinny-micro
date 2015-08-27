@@ -1,7 +1,6 @@
 package sample.async_native
 
-import skinny.micro.AsyncWebApp
-import skinny.micro.response.Ok
+import skinny.micro._
 
 import scala.concurrent.Future
 

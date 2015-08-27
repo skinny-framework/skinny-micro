@@ -1,7 +1,6 @@
 package sample.scalatra_compatible
 
-import skinny.micro.WebApp
-import skinny.micro.response.Ok
+import skinny.micro._
 
 class MinimumApp extends WebApp {
 

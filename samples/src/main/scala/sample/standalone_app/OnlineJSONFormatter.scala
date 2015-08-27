@@ -1,7 +1,6 @@
 package sample.standalone_app
 
 import skinny.micro._
-import skinny.micro.response._
 
 /**
  * Simple JSON formatter application.

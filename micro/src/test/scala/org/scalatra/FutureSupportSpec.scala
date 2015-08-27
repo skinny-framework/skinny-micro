@@ -7,9 +7,7 @@ import java.util.concurrent.Executors
 
 import org.scalatra.test.HttpComponentsClient
 
-import skinny.micro.{ ContentTypeInferrer, SkinnyMicroServlet }
-import skinny.micro.async.AsyncResult
-import skinny.micro.response._
+import skinny.micro._
 
 import org.eclipse.jetty.server.{ Connector, ServerConnector, Server }
 import org.eclipse.jetty.util.thread.QueuedThreadPool
