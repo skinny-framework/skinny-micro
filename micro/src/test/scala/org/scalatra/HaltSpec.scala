@@ -1,8 +1,7 @@
 package org.scalatra
 
 import org.scalatra.test.specs2.ScalatraSpec
-import skinny.micro.SkinnyMicroServlet
-import skinny.micro.response.{ ActionResult, ResponseStatus }
+import skinny.micro._
 
 class HaltTestServlet extends SkinnyMicroServlet {
   before() {

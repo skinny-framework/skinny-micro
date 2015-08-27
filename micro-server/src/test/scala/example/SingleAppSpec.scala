@@ -2,7 +2,6 @@ package example
 
 import org.scalatest._
 import skinny.micro._
-import skinny.micro.response.InternalServerError
 import skinny.http.HTTP
 
 import scala.concurrent._

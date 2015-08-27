@@ -5,8 +5,7 @@ import java.io.ByteArrayOutputStream
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.base.MainThreadLocalEverywhere
 import skinny.micro.routing.RoutingDsl
-import skinny.micro.{ SkinnyMicroBase, SkinnyMicroServlet }
-import skinny.micro.response._
+import skinny.micro._
 
 class ActionResultServlet extends SkinnyMicroServlet with ActionResultTestBase
 

@@ -13,14 +13,13 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.servlet.http.{ HttpServletResponse, HttpServlet, HttpServletRequest }
 import javax.servlet._
 
-import skinny.micro.async.{ AsyncSupported, AsyncResult }
+import skinny.micro.async.AsyncSupported
 import skinny.micro.base._
 import skinny.micro.constant._
 import skinny.micro.context.SkinnyContext
 import skinny.micro.control.{ HaltPassControl, PassException, HaltException }
 import skinny.micro.implicits._
 import skinny.micro.multipart.FileCharset
-import skinny.micro.response.{ ResponseStatus, ActionResult, Found }
 import skinny.micro.routing._
 import skinny.micro.util.UriDecoder
 import skinny.util.LoanPattern._
