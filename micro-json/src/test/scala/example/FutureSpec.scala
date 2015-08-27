@@ -1,15 +1,14 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.micro.json.SkinnyMicroJSONStringOps
-import skinny.micro.{ AsyncSkinnyMicroServlet, ServletConcurrencyException }
+import skinny.micro.{ JSONSupport, AsyncSkinnyMicroServlet, ServletConcurrencyException }
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
 class FutureSpec extends ScalatraFlatSpec {
 
-  addServlet(new AsyncSkinnyMicroServlet with SkinnyMicroJSONStringOps {
+  addServlet(new AsyncSkinnyMicroServlet with JSONSupport {
 
     get("/") { implicit ctx =>
       responseAsJSON(params)

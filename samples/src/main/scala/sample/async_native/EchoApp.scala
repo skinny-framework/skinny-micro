@@ -2,12 +2,10 @@ package sample.async_native
 
 import skinny.micro._
 import skinny.micro.response._
-import skinny.json.DefaultJSONStringOps
-import skinny.micro.scalate.ScalateSupport
 
 import scala.concurrent.Future
 
-class EchoApp extends AsyncWebApp with DefaultJSONStringOps with ScalateSupport {
+class EchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
 
   before() { implicit ctx =>
     Future {

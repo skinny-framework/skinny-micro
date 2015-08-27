@@ -3,11 +3,10 @@ package example
 import org.scalatra.test.scalatest.ScalatraFlatSpec
 import skinny.micro._
 import skinny.micro.async.AsyncResult
-import skinny.micro.json.SkinnyMicroJSONStringOps
 
 import scala.concurrent.Future
 
-object Hello extends WebApp with SkinnyMicroJSONStringOps {
+object Hello extends WebApp with JSONSupport {
 
   def message(implicit ctx: Context) = {
     s"Hello, ${params(ctx).getOrElse("name", "Anonymous")}"

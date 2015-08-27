@@ -3,6 +3,7 @@ package skinny
 import skinny.micro.control.HaltPassControl
 import skinny.micro.data.{ MapWithIndifferentAccess, MultiMapHeadView, MultiMap }
 import skinny.micro.routing.Route
+import skinny.util.LoanPattern.Closable
 
 import scala.language.implicitConversions
 
@@ -51,5 +52,9 @@ package object micro
   type AsyncSingleApp = skinny.micro.AsyncSkinnyMicroServlet
 
   type AsyncWebApp = skinny.micro.AsyncSkinnyMicroFilter
+
+  def using[R <: Closable, A](resource: R)(f: R => A): A = {
+    skinny.util.LoanPattern.using[R, A](resource)(f)
+  }
 
 }

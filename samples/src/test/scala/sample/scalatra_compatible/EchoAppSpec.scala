@@ -1,9 +1,9 @@
 package sample.scalatra_compatible
 
 import skinny.test.SkinnyFunSpec
-import skinny.json.DefaultJSONStringOps
+import skinny.json.JSONStringOps
 
-class EchoAppSpec extends SkinnyFunSpec with DefaultJSONStringOps {
+class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
   addFilter(classOf[EchoApp], "/*")
 
   describe("Scalatra compatible EchoApp") {

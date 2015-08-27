@@ -1,4 +1,4 @@
-package skinny.micro.scalate
+package skinny.micro
 
 import java.io.PrintWriter
 import javax.servlet.http.HttpSession
@@ -7,9 +7,8 @@ import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.servlet.ServletRenderContext
 import skinny.micro.base.FlashMapSupport
 import skinny.micro.context.SkinnyContext
-import skinny.micro.csrf.{ XsrfTokenSupport, CsrfTokenSupport }
-import skinny.micro.{ ApiFormats, MultiParams, Params, SkinnyMicroBase }
-import skinny.micro.multipart.{ FileMultiParams, FileItem, FileUploadSupport }
+import skinny.micro.csrf.{ CsrfTokenSupport, XsrfTokenSupport }
+import skinny.micro.multipart.{ FileItem, FileMultiParams, FileUploadSupport }
 import skinny.micro.routing.Route
 import skinny.micro.util.UrlGenerator
 

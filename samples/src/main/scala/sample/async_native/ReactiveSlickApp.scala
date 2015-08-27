@@ -1,8 +1,6 @@
 package sample.async_native
 
-import skinny.util.LoanPattern.using
-import skinny.json.DefaultJSONStringOps
-import skinny.micro.AsyncWebApp
+import skinny.micro._
 import skinny.micro.response.Ok
 
 import scala.concurrent._
@@ -10,7 +8,7 @@ import scala.concurrent.duration._
 
 import slick.driver.H2Driver.api._
 
-class ReactiveSlickApp extends AsyncWebApp with DefaultJSONStringOps {
+class ReactiveSlickApp extends AsyncWebApp with JSONSupport {
 
   lazy val db = Database.forConfig("h2mem1")
   lazy val suppliers = TableQuery[Suppliers]

@@ -6,7 +6,6 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import skinny.micro._
 import skinny.micro.async.AsyncResult
 import skinny.micro.base.FlashMapSupport
-import skinny.micro.scalate.ScalateSupport
 
 import scala.concurrent.{ ExecutionContext, Future }
 
