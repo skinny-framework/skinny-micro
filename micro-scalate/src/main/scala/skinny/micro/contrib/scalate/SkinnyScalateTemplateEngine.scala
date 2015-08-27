@@ -1,4 +1,4 @@
-package skinny.micro
+package skinny.micro.contrib.scalate
 
 import java.io.File
 

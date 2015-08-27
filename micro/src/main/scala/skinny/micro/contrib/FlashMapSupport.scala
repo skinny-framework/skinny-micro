@@ -1,11 +1,12 @@
-package skinny.micro.base
+package skinny.micro.contrib
 
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 
-import skinny.micro.{ UnstableAccessValidation, Handler, SkinnyMicroBase }
+import skinny.micro.base.{ ServletContextAccessor, SkinnyContextInitializer, UnstableAccessValidationConfig }
 import skinny.micro.context.SkinnyContext
-import skinny.micro.flash.FlashMap
+import skinny.micro.contrib.flash.FlashMap
 import skinny.micro.implicits.{ ServletApiImplicits, SessionImplicits }
+import skinny.micro.{ Handler, SkinnyMicroBase, UnstableAccessValidation }
 
 /**
  * Allows an action to set key-value pairs in a transient state that is accessible only to the next action and is expired immediately after that.
@@ -26,7 +27,7 @@ import skinny.micro.implicits.{ ServletApiImplicits, SessionImplicits }
 trait FlashMapSupport
     extends Handler
     with ServletContextAccessor
-    with SkinnyMicroContextInitializer
+    with SkinnyContextInitializer
     with UnstableAccessValidationConfig
     with ServletApiImplicits
     with SessionImplicits {

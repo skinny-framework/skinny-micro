@@ -22,7 +22,6 @@ import skinny.micro.implicits._
 import skinny.micro.multipart.FileCharset
 import skinny.micro.routing._
 import skinny.micro.util.UriDecoder
-import skinny.util.LoanPattern._
 
 /**
  * The base implementation of the SkinnyMicro DSL.
@@ -32,11 +31,14 @@ trait SkinnyMicroBase
     extends CoreHandler
     with AsyncSupported // can mix async and thread-based model
     with UnstableAccessValidationConfig
+    with RedirectionDsl
     with RouteRegistryAccessor
     with ErrorHandlerAccessor
     with ServletContextAccessor
-    with EnvironmentAccessor
+    with EnvAccessor
     with ParamsAccessor
+    with QueryParamsAccessor
+    with FormParamsAccessor
     with RequestFormatAccessor
     with ResponseContentTypeAccessor
     with ResponseStatusAccessor
@@ -219,7 +221,7 @@ trait SkinnyMicroBase
 
   protected def renderUncaughtException(e: Throwable)(implicit ctx: SkinnyContext): Unit = {
     (status = 500)(ctx)
-    if (isDevelopmentMode) {
+    if (isDevelopment()) {
       (contentType = "text/plain")(ctx)
       e.printStackTrace(ctx.response.getWriter)
     }
@@ -465,13 +467,6 @@ trait SkinnyMicroBase
 
   protected def removeRoute(method: String, route: Route): Unit = {
     removeRoute(HttpMethod(method), route)
-  }
-
-  /**
-   * Sends a redirect response and immediately halts the current action.
-   */
-  def redirect(uri: String)(implicit ctx: SkinnyContext): Nothing = {
-    halt(Found(fullUrl(uri, includeServletPath = false)(ctx)))
   }
 
   /**

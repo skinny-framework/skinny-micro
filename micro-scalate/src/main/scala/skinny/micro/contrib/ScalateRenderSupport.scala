@@ -1,5 +1,6 @@
-package skinny.micro
+package skinny.micro.contrib
 
+import skinny.micro.SkinnyMicroBase
 import skinny.micro.context.SkinnyContext
 
 trait ScalateRenderSupport { self: SkinnyMicroBase with ScalateSupport =>

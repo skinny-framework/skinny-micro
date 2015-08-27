@@ -3,7 +3,7 @@ package org.scalatra
 import java.util.MissingResourceException
 
 import org.scalatest.{ Matchers, WordSpec }
-import skinny.micro.i18n.Messages
+import skinny.micro.contrib.i18n.Messages
 
 class MessagesSpec extends WordSpec with Matchers {
   val messages = Messages()

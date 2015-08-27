@@ -5,7 +5,7 @@ import java.util.concurrent._
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import skinny.micro._
 import skinny.micro.async.AsyncResult
-import skinny.micro.base.FlashMapSupport
+import skinny.micro.contrib.{ ScalateSupport, FlashMapSupport }
 
 import scala.concurrent.{ ExecutionContext, Future }
 

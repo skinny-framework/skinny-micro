@@ -1,9 +1,10 @@
-package skinny.micro.i18n
+package skinny.micro.contrib
 
 import java.util.Locale
 
 import skinny.micro.base.BeforeAfterDsl
 import skinny.micro.context.SkinnyContext
+import skinny.micro.contrib.i18n.Messages
 import skinny.micro.{ SkinnyMicroBase, SkinnyMicroException }
 
 /**

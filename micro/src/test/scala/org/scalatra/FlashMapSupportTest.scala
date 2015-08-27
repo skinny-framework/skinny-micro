@@ -3,7 +3,7 @@ package org.scalatra
 import javax.servlet.http.HttpServletRequest
 
 import org.scalatra.test.scalatest.ScalatraFunSuite
-import skinny.micro.base.FlashMapSupport
+import skinny.micro.contrib.FlashMapSupport
 import skinny.micro.{ SkinnyMicroFilter, SkinnyMicroServlet }
 
 class FlashMapSupportTestServlet extends SkinnyMicroServlet with FlashMapSupport {

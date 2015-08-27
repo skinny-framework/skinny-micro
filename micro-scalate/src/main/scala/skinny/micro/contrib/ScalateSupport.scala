@@ -1,6 +1,4 @@
-package skinny.micro
-
-import scala.language.{ implicitConversions, reflectiveCalls }
+package skinny.micro.contrib
 
 import java.io.{ PrintWriter, StringWriter }
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
@@ -10,11 +8,13 @@ import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.{ Binding, TemplateEngine }
+import skinny.micro._
 import skinny.micro.context.SkinnyContext
-import skinny.util.LoanPattern.using
+import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
 import scala.collection.concurrent.{ Map => CMap, TrieMap }
 import scala.collection.mutable
+import scala.language.{ implicitConversions, reflectiveCalls }
 
 /**
  * ScalateSupport creates and configures a template engine and provides
@@ -82,7 +82,7 @@ trait ScalateSupport extends SkinnyMicroBase {
     /**
      * Delegates to the ServletBase's isDevelopmentMode flag.
      */
-    override def isDevelopmentMode: Boolean = ScalateSupport.this.isDevelopmentMode
+    override def isDevelopmentMode: Boolean = ScalateSupport.this.isDevelopment() || ScalateSupport.this.isTest()
 
     ScalateSupport.setLayoutStrategy(self)
 

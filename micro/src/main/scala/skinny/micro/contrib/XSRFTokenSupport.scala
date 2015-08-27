@@ -1,7 +1,8 @@
-package skinny.micro.csrf
+package skinny.micro.contrib
 
 import skinny.micro.base.BeforeAfterDsl
 import skinny.micro.context.SkinnyContext
+import skinny.micro.contrib.csrf.CSRFTokenGenerator
 import skinny.micro.{ RouteTransformer, SkinnyMicroBase }
 
 /**
@@ -10,9 +11,9 @@ import skinny.micro.{ RouteTransformer, SkinnyMicroBase }
  * If a request is determined to be forged, the `handleForgery()` hook is invoked.
  * Otherwise, a token for the next request is prepared with `prepareCsrfToken`.
  */
-trait XsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
+trait XSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
 
-  import XsrfTokenSupport._
+  import XSRFTokenSupport._
 
   /**
    * The key used to store the token on the session, as well as the parameter
@@ -58,7 +59,7 @@ trait XsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    * and stores it on the session.
    */
   protected def prepareXsrfToken(): Unit = {
-    session(context).getOrElseUpdate(xsrfKey, CsrfTokenGenerator.apply())
+    session(context).getOrElseUpdate(xsrfKey, CSRFTokenGenerator.apply())
     val cookieOpt = cookies(context).get(CookieKey)
     if (cookieOpt.isEmpty || cookieOpt != session(context).get(xsrfKey)) {
       cookies(context) += CookieKey -> xsrfToken(context)
@@ -66,7 +67,7 @@ trait XsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
   }
 }
 
-object XsrfTokenSupport {
+object XSRFTokenSupport {
 
   val DefaultKey = "skinny.micro.XsrfTokenSupport.key"
 

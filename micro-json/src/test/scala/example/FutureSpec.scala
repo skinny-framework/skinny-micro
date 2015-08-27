@@ -1,7 +1,8 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.micro.{ JSONSupport, AsyncSkinnyMicroServlet, ServletConcurrencyException }
+import skinny.micro.contrib.JSONSupport
+import skinny.micro.{ AsyncSkinnyMicroServlet, ServletConcurrencyException }
 
 import scala.concurrent.Future
 import scala.concurrent.duration._

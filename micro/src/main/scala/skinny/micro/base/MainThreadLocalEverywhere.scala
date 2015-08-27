@@ -8,7 +8,7 @@ import skinny.micro.context.SkinnyContext
  * When this trait is activated, thread-local request/response needed by SkinnyMicroContext are always accessible.
  */
 trait MainThreadLocalEverywhere
-    extends SkinnyMicroContextInitializer {
+    extends SkinnyContextInitializer {
 
   self: ServletContextAccessor with UnstableAccessValidationConfig =>
 

@@ -1,7 +1,8 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.micro.{ JSONSupport, SkinnyMicroServlet }
+import skinny.micro.SkinnyMicroServlet
+import skinny.micro.contrib.JSONSupport
 
 class JSONOperationSpec extends ScalatraFlatSpec {
 

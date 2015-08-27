@@ -4,8 +4,8 @@ import java.io.File
 
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.multipart.FileUploadSupport
 import skinny.logging.{ LoggerProvider, Logging }
+import skinny.micro.contrib.FileUploadSupport
 
 import scala.collection.JavaConversions._
 

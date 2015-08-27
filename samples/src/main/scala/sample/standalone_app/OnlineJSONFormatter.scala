@@ -1,6 +1,7 @@
 package sample.standalone_app
 
 import skinny.micro._
+import skinny.micro.contrib.JSONSupport
 
 /**
  * Simple JSON formatter application.

@@ -73,7 +73,7 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
   protected def resourceNotFound()(
     implicit ctx: SkinnyContext): Any = {
     ctx.response.setStatus(404)
-    if (isDevelopmentMode) {
+    if (isDevelopment()) {
       val error = "Requesting \"%s %s\" on servlet \"%s\" but only have: %s"
       ctx.response.getWriter println error.format(
         ctx.request.getMethod,

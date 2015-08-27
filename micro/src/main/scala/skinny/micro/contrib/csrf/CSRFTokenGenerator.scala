@@ -1,11 +1,11 @@
-package skinny.micro.csrf
+package skinny.micro.contrib.csrf
 
 import java.security.SecureRandom
 
 /**
  * CSRF token value generator.
  */
-object CsrfTokenGenerator {
+object CSRFTokenGenerator {
 
   def apply(): String = generateCsrfToken()
 
