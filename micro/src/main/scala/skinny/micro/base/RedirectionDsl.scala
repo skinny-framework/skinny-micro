@@ -6,6 +6,9 @@ import skinny.micro.context.SkinnyContext
 
 trait RedirectionDsl { self: UrlGenerator with SkinnyContextInitializer =>
 
+  /**
+   * The default value is false to keep backward compatibility.
+   */
   protected def skipHaltingWhenRedirection: Boolean = false
 
   /**
