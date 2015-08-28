@@ -9,7 +9,7 @@ Basically, Skinny Micro's DSLs are source compatible with Scalatra 2.3's ones. B
 ## Getting Started
 
 ```scala
-lazy val skinnyMicroVersion = "0.9.5"
+lazy val skinnyMicroVersion = "0.9.6"
 
 libraryDependencies ++= Seq(
   // micro Web framework
@@ -108,7 +108,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 /***
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.5"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.6"
 */
 import skinny.micro._
 object HelloApp extends WebApp {

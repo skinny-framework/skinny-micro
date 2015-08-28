@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.6-SNAPSHOT"
+  lazy val currentVersion = "0.9.6"
 
   lazy val json4SVersion = "3.3.0.RC3"
   lazy val scalatraTestVersion = "2.3.1"
