@@ -51,7 +51,7 @@ trait AsyncRoutingDsl
    * }}}
    *
    * SkinnyMicroKernel provides implicit transformation from boolean blocks,
-   * strings and regular expressions to [[skinny.micro.RouteMatcher]], so
+   * strings and regular expressions to [[skinny.micro.routing.RouteMatcher]], so
    * you can write code naturally.
    * {{{
    *   get("/", request.getRemoteHost == "127.0.0.1") { "Hello localhost!" }
