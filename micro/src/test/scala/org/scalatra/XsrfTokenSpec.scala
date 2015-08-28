@@ -4,11 +4,11 @@ import java.net.HttpCookie
 
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.csrf.XsrfTokenSupport
+import skinny.micro.contrib.XSRFTokenSupport
 
 import scala.collection.JavaConverters._
 
-class XsrfTokenServlet extends SkinnyMicroServlet with XsrfTokenSupport {
+class XsrfTokenServlet extends SkinnyMicroServlet with XSRFTokenSupport {
 
   xsrfGuard()
 
@@ -46,7 +46,7 @@ object XsrfTokenSpec extends MutableScalatraSpec {
         token = tokenFromCookie
         body must beMatching("GO")
       }
-      post("/renderForm", headers = Map(XsrfTokenSupport.HeaderNames.head -> token)) {
+      post("/renderForm", headers = Map(XSRFTokenSupport.HeaderNames.head -> token)) {
         body must be_==("SUCCESS")
       }
     }
@@ -57,7 +57,7 @@ object XsrfTokenSpec extends MutableScalatraSpec {
       get("/renderForm") {
         body must beMatching("GO")
       }
-      post("/renderForm", headers = Map(XsrfTokenSupport.HeaderNames.head -> "Hey I'm different")) {
+      post("/renderForm", headers = Map(XSRFTokenSupport.HeaderNames.head -> "Hey I'm different")) {
         status must be_==(403)
         body must not be_== ("SUCCESS")
       }
@@ -74,10 +74,10 @@ object XsrfTokenSpec extends MutableScalatraSpec {
       get("/renderForm") {
         body must beMatching("GO")
       }
-      post("/renderForm", headers = Map(XsrfTokenSupport.HeaderNames.head -> token)) {
+      post("/renderForm", headers = Map(XSRFTokenSupport.HeaderNames.head -> token)) {
         body must be_==("SUCCESS")
       }
-      post("/renderForm", headers = Map(XsrfTokenSupport.HeaderNames.head -> token)) {
+      post("/renderForm", headers = Map(XSRFTokenSupport.HeaderNames.head -> token)) {
         body must be_==("SUCCESS")
       }
     }

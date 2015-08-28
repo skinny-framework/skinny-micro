@@ -2,6 +2,7 @@ package example.scalate
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
 import skinny.micro._
+import skinny.micro.contrib.ScalateSupport
 
 object HelloServlet extends SingleApp with ScalateSupport {
   error {

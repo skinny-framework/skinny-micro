@@ -5,7 +5,7 @@ import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 
 import skinny.SkinnyEnv
 import skinny.micro.async.AsyncSupported
-import skinny.micro.base.{ UnstableAccessValidationConfig, ServletContextAccessor, RouteRegistryAccessor, SkinnyMicroContextInitializer }
+import skinny.micro.base.{ UnstableAccessValidationConfig, ServletContextAccessor, RouteRegistryAccessor, SkinnyContextInitializer }
 import skinny.logging.LoggerProvider
 
 /**
@@ -13,7 +13,7 @@ import skinny.logging.LoggerProvider
  */
 trait Handler
     extends Initializable
-    with SkinnyMicroContextInitializer
+    with SkinnyContextInitializer
     with UnstableAccessValidationConfig
     with RouteRegistryAccessor
     with ServletContextAccessor

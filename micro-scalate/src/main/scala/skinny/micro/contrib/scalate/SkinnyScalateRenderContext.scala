@@ -1,14 +1,14 @@
-package skinny.micro
+package skinny.micro.contrib.scalate
 
 import java.io.PrintWriter
 import javax.servlet.http.HttpSession
 
 import org.fusesource.scalate.TemplateEngine
 import org.fusesource.scalate.servlet.ServletRenderContext
-import skinny.micro.base.FlashMapSupport
+import skinny.micro._
 import skinny.micro.context.SkinnyContext
-import skinny.micro.csrf.{ CsrfTokenSupport, XsrfTokenSupport }
-import skinny.micro.multipart.{ FileItem, FileMultiParams, FileUploadSupport }
+import skinny.micro.contrib.{ FlashMapSupport, XSRFTokenSupport, CSRFTokenSupport, FileUploadSupport }
+import skinny.micro.multipart.{ FileItem, FileMultiParams }
 import skinny.micro.routing.Route
 import skinny.micro.util.UrlGenerator
 
@@ -56,21 +56,21 @@ class SkinnyScalateRenderContext(
   }
 
   def csrfKey = base match {
-    case csrfTokenSupport: CsrfTokenSupport => csrfTokenSupport.csrfKey
+    case csrfTokenSupport: CSRFTokenSupport => csrfTokenSupport.csrfKey
     case _ => ""
   }
 
   def csrfToken = base match {
-    case csrfTokenSupport: CsrfTokenSupport => csrfTokenSupport.csrfToken(context)
+    case csrfTokenSupport: CSRFTokenSupport => csrfTokenSupport.csrfToken(context)
     case _ => ""
   }
   def xsrfKey = base match {
-    case csrfTokenSupport: XsrfTokenSupport => csrfTokenSupport.xsrfKey
+    case csrfTokenSupport: XSRFTokenSupport => csrfTokenSupport.xsrfKey
     case _ => ""
   }
 
   def xsrfToken = base match {
-    case csrfTokenSupport: XsrfTokenSupport => csrfTokenSupport.xsrfToken(context)
+    case csrfTokenSupport: XSRFTokenSupport => csrfTokenSupport.xsrfToken(context)
     case _ => ""
   }
 

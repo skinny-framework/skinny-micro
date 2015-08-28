@@ -1,4 +1,4 @@
-package skinny.micro.i18n
+package skinny.micro.contrib.i18n
 
 import java.util.{ Locale, MissingResourceException, ResourceBundle }
 

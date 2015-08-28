@@ -2,7 +2,7 @@ package org.scalatra
 
 import org.scalatra.test.scalatest.ScalatraWordSpec
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.i18n.I18nSupport
+import skinny.micro.contrib.I18nSupport
 
 class I18nSupportServlet extends SkinnyMicroServlet with I18nSupport {
   get("/:key") {

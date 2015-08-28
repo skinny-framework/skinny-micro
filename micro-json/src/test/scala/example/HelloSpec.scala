@@ -3,6 +3,7 @@ package example
 import org.scalatra.test.scalatest.ScalatraFlatSpec
 import skinny.micro._
 import skinny.micro.async.AsyncResult
+import skinny.micro.contrib.JSONSupport
 
 import scala.concurrent.Future
 

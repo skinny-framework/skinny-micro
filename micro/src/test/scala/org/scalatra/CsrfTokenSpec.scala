@@ -2,9 +2,9 @@ package org.scalatra
 
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.csrf.CsrfTokenSupport
+import skinny.micro.contrib.CSRFTokenSupport
 
-class CsrfTokenServlet extends SkinnyMicroServlet with CsrfTokenSupport {
+class CsrfTokenServlet extends SkinnyMicroServlet with CSRFTokenSupport {
   get("/renderForm") {
     <html>
       <body>
@@ -34,7 +34,7 @@ object CsrfTokenSpec extends MutableScalatraSpec {
       get("/renderForm") {
         token = ("value=\"(\\w+)\"".r findFirstMatchIn body).get.subgroups.head
       }
-      post("/renderForm", CsrfTokenSupport.DefaultKey -> token) {
+      post("/renderForm", CSRFTokenSupport.DefaultKey -> token) {
         body must be_==("SUCCESS")
       }
     }
@@ -44,7 +44,7 @@ object CsrfTokenSpec extends MutableScalatraSpec {
     session {
       get("/renderForm") {
       }
-      post("/renderForm", CsrfTokenSupport.DefaultKey -> "Hey I'm different") {
+      post("/renderForm", CSRFTokenSupport.DefaultKey -> "Hey I'm different") {
         status must be_==(403)
         body must not be_== ("SUCCESS")
       }
@@ -61,7 +61,7 @@ object CsrfTokenSpec extends MutableScalatraSpec {
         val token2 = ("value=\"(\\w+)\"".r findFirstMatchIn body).get.subgroups.head
         token must be_==(token2)
       }
-      post("/renderForm", CsrfTokenSupport.DefaultKey -> token) {
+      post("/renderForm", CSRFTokenSupport.DefaultKey -> token) {
         body must be_==("SUCCESS")
       }
     }

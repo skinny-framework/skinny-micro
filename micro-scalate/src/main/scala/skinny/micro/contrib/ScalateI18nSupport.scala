@@ -1,11 +1,12 @@
-package skinny.micro
+package skinny.micro.contrib
 
 import java.io.PrintWriter
 
 import org.fusesource.scalate.Binding
 import skinny.micro.base.BeforeAfterDsl
 import skinny.micro.context.SkinnyContext
-import skinny.micro.i18n.{ I18nSupport, Messages }
+import skinny.micro.contrib.i18n.Messages
+import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
 trait ScalateI18nSupport
     extends ScalateSupport

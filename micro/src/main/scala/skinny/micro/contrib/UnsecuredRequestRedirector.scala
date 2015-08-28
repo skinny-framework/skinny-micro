@@ -1,4 +1,4 @@
-package skinny.micro.base
+package skinny.micro.contrib
 
 import java.net.URI
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }

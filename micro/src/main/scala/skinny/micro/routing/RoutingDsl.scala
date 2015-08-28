@@ -3,7 +3,7 @@ package skinny.micro.routing
 import javax.servlet.http.HttpServletRequest
 
 import skinny.micro._
-import skinny.micro.base.{ UnstableAccessValidationConfig, SkinnyMicroContextInitializer, ServletContextAccessor, RouteRegistryAccessor }
+import skinny.micro.base.{ UnstableAccessValidationConfig, SkinnyContextInitializer, ServletContextAccessor, RouteRegistryAccessor }
 import skinny.micro.constant._
 import skinny.micro.context.SkinnyContext
 import skinny.micro.control.HaltPassControl
@@ -15,7 +15,7 @@ import skinny.micro.implicits.ServletApiImplicits
 trait RoutingDsl
     extends HaltPassControl
     with RouteRegistryAccessor
-    with SkinnyMicroContextInitializer
+    with SkinnyContextInitializer
     with UnstableAccessValidationConfig
     with ServletContextAccessor
     with ServletApiImplicits {

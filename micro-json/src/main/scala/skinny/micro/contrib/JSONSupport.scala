@@ -1,7 +1,8 @@
-package skinny.micro
+package skinny.micro.contrib
 
 import skinny.json._
 import skinny.micro.context.SkinnyContext
+import skinny.micro.{ Format, SkinnyMicroBase }
 
 /**
  * JSON response support.
@@ -30,5 +31,11 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
     if (prettify) toPrettyJSONString(entity)
     else toJSONString(entity, underscoreKeys)
   }
+
+}
+
+object JSONSupport {
+
+  val ParsedBodyKey = "skinny.micro.json.ParsedBody"
 
 }

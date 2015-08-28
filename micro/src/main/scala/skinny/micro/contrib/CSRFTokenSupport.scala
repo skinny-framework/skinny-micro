@@ -1,8 +1,9 @@
-package skinny.micro.csrf
+package skinny.micro.contrib
 
 import skinny.micro.SkinnyMicroBase
 import skinny.micro.base.BeforeAfterDsl
 import skinny.micro.context.SkinnyContext
+import skinny.micro.contrib.csrf.CSRFTokenGenerator
 
 /**
  * Provides cross-site request forgery protection.
@@ -10,7 +11,7 @@ import skinny.micro.context.SkinnyContext
  * If a request is determined to be forged, the `handleForgery()` hook is invoked.
  * Otherwise, a token for the next request is prepared with `prepareCsrfToken`.
  */
-trait CsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
+trait CSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
 
   before(isForged) { handleForgery() }
   before() { prepareCsrfToken() }
@@ -26,7 +27,7 @@ trait CsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
   protected def isForged: Boolean =
     !request.requestMethod.isSafe &&
       session(context).get(csrfKey) != params(context).get(csrfKey) &&
-      !CsrfTokenSupport.HeaderNames.map(request.headers.get).contains(session(context).get(csrfKey))
+      !CSRFTokenSupport.HeaderNames.map(request.headers.get).contains(session(context).get(csrfKey))
 
   /**
    * Take an action when a forgery is detected. The default action
@@ -42,14 +43,14 @@ trait CsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    */
   // NOTE: keep return type as Any for backward compatibility
   protected def prepareCsrfToken(): Any = {
-    session(context).getOrElseUpdate(csrfKey, CsrfTokenGenerator.apply()).toString
+    session(context).getOrElseUpdate(csrfKey, CSRFTokenGenerator.apply()).toString
   }
 
   /**
    * The key used to store the token on the session, as well as the parameter
    * of the request.
    */
-  def csrfKey: String = CsrfTokenSupport.DefaultKey
+  def csrfKey: String = CSRFTokenSupport.DefaultKey
 
   /**
    * Returns the token from the session.
@@ -59,7 +60,7 @@ trait CsrfTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
 
 }
 
-object CsrfTokenSupport {
+object CSRFTokenSupport {
 
   val DefaultKey = "skinny.micro.CsrfTokenSupport.key"
 

@@ -1,13 +1,13 @@
 package skinny.micro.async
 
 import skinny.micro.{ Context, RouteTransformer }
-import skinny.micro.base.{ SkinnyMicroContextInitializer, RouteRegistryAccessor }
+import skinny.micro.base.{ SkinnyContextInitializer, RouteRegistryAccessor }
 import skinny.micro.routing.Route
 
 /**
  * Before/After DSL for Async web apps.
  */
-trait AsyncBeforeAfterDsl { self: RouteRegistryAccessor with SkinnyMicroContextInitializer =>
+trait AsyncBeforeAfterDsl { self: RouteRegistryAccessor with SkinnyContextInitializer =>
 
   /**
    * Adds a filter to run before the route.  The filter only runs if each

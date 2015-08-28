@@ -4,7 +4,8 @@ import java.io.File
 
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.multipart.{ FileUploadSupport, MultipartConfig, SizeConstraintExceededException }
+import skinny.micro.contrib.FileUploadSupport
+import skinny.micro.multipart.{ MultipartConfig, SizeConstraintExceededException }
 import skinny.logging.LoggerProvider
 
 import scala.collection.JavaConversions._

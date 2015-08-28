@@ -1,19 +1,20 @@
-package skinny.micro.multipart
+package skinny.micro.contrib
 
 import java.util.{ HashMap => JHashMap, Map => JMap }
 import javax.servlet.http._
 
 import skinny.micro.context.SkinnyContext
 import skinny.micro.data.MultiMapHeadView
-import skinny.micro.SkinnyMicroBase
+import skinny.micro.multipart.{ FileItem, FileMultiParams, HasMultipartConfig, SizeConstraintExceededException }
+import skinny.micro.{ SkinnyMicroBase, SkinnyMicroServletBase }
 
 import scala.collection.JavaConverters._
 
 /**
- * FileUploadSupport can be mixed into a [[skinny.micro.SkinnyMicroFilter]]
- * or [[skinny.micro.SkinnyMicroServlet]] to provide easy access to data
- * submitted as part of a multipart HTTP request.  Commonly this is used for
- * retrieving uploaded files.
+ * FileUploadSupport can be mixed into a [[skinny.micro.SkinnyMicroServlet]]
+ * to provide easy access to data submitted as part of a multipart HTTP request.
+ *
+ * Commonly this is used for retrieving uploaded files.
  *
  * Once the trait has been mixed into your handler, you need to enable multipart
  * configuration in your ''web.xml'' or by using `@MultipartConfig` annotation. To
@@ -60,7 +61,7 @@ import scala.collection.JavaConverters._
  */
 trait FileUploadSupport
     extends SkinnyMicroBase
-    with HasMultipartConfig {
+    with HasMultipartConfig { self: SkinnyMicroServletBase =>
 
   import FileUploadSupport._
 

@@ -16,7 +16,7 @@ import scala.util.DynamicVariable
  * post about Step, out of which SkinnyMicro grew:
  * http://www.riffraff.info/2009/4/11/step-a-scala-web-picoframework
  */
-trait SkinnyMicroContextInitializer {
+trait SkinnyContextInitializer {
 
   self: ServletContextAccessor with UnstableAccessValidationConfig =>
 

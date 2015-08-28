@@ -1,6 +1,6 @@
 package org.scalatra
 
-import skinny.micro.SkinnyScalateRenderContext
+import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
 package object scalate {
 
