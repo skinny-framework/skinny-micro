@@ -26,7 +26,7 @@ trait TimeLogging extends LoggerProvider {
 
   protected def stackTraceDepthForTimeLogging: Int = 5
 
-  protected def infoLoggingEnabled: Boolean = !SkinnyEnv.isProduction()
+  protected def infoTimeLoggingEnabled: Boolean = !SkinnyEnv.isProduction()
 
   def warnElapsedTime[A](millis: Long, additionalLines: => Seq[String] = Nil)(action: => A) = {
     def where: String = {
@@ -44,7 +44,7 @@ trait TimeLogging extends LoggerProvider {
     if (elapsedMillis >= millis) {
       logger.warn(s"[SLOW EXECUTION DETECTED] Elapsed time: ${elapsedMillis} millis${additionalInfo}\n${where}")
     } else {
-      if (infoLoggingEnabled) {
+      if (infoTimeLoggingEnabled) {
         logger.info(s"Elapsed time: ${elapsedMillis} millis${additionalInfo}\n${where}")
       }
     }
