@@ -12,7 +12,7 @@ trait XXSSProtectionHeaderSupport { self: SkinnyMicroBase with BeforeAfterDsl =>
 
   // NOTE: for all HTML responses defined as Skinny routes
   before() {
-    response.setHeader("X-XSS-Protection", "1; mode=block")
+    response(context).setHeader("X-XSS-Protection", "1; mode=block")
   }
 
 }

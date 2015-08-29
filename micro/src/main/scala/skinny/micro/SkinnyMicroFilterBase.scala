@@ -60,9 +60,15 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
     else "/"
   }
 
-  protected var doNotFound: Action = () => filterChain.doFilter(request, response)
+  protected var doNotFound: Action = () => {
+    implicit val ctx = context
+    filterChain.doFilter(request, response)
+  }
 
-  methodNotAllowed { _ => filterChain.doFilter(request, response) }
+  methodNotAllowed { _ =>
+    implicit val ctx = context
+    filterChain.doFilter(request, response)
+  }
 
   type ConfigT = FilterConfig
 

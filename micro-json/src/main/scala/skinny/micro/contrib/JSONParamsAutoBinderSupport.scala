@@ -128,7 +128,8 @@ trait JSONParamsAutoBinderSupport
 
   override protected def invoke(matchedRoute: MatchedRoute) = {
     withRouteMultiParams(Some(matchedRoute)) {
-      val mt = request.contentType.fold("application/x-www-form-urlencoded")(_.split(";").head)
+      implicit val ctx = context
+      val mt = request(context).contentType.fold("application/x-www-form-urlencoded")(_.split(";").head)
       val fmt = mimeTypes get mt getOrElse "html"
       if (shouldParseBody(fmt)(context)) {
         request(JSONSupport.ParsedBodyKey) = parseRequestBody(fmt)(context).asInstanceOf[AnyRef]

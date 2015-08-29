@@ -288,6 +288,7 @@ trait SkinnyMicroBase
    */
   private[this] var doMethodNotAllowed: (Set[HttpMethod] => Any) = {
     allow =>
+      implicit val ctx = context
       status = 405
       response.headers("Allow") = allow.mkString(", ")
   }

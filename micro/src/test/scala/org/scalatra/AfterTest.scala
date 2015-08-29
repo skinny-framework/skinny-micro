@@ -3,12 +3,10 @@ package org.scalatra
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.base.BeforeAfterDsl
 import skinny.micro.routing.RoutingDsl
-import skinny.micro.{ Action, SkinnyMicroServlet, SkinnyMicroBase }
+import skinny.micro.SkinnyMicroServlet
 
-class AfterTestServlet extends SkinnyMicroServlet with AfterTestAppBase
-
-trait AfterTestAppBase
-    extends SkinnyMicroBase
+class AfterTestServlet
+    extends SkinnyMicroServlet
     with RoutingDsl
     with BeforeAfterDsl {
 

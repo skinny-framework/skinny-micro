@@ -41,10 +41,12 @@ trait XSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    * CONNECT, PATCH) and the request parameter at `xsrfKey` does not match
    * the session key of the same name.
    */
-  protected def isForged: Boolean =
+  protected def isForged: Boolean = {
+    implicit val ctx = context
     !request.requestMethod.isSafe &&
-      session(context).get(xsrfKey) != params(context).get(xsrfKey) &&
-      !HeaderNames.map(request.headers.get).contains(session(context).get(xsrfKey))
+      session.get(xsrfKey) != params.get(xsrfKey) &&
+      !HeaderNames.map(request.headers.get).contains(session.get(xsrfKey))
+  }
 
   /**
    * Take an action when a forgery is detected. The default action
@@ -59,17 +61,18 @@ trait XSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    * and stores it on the session.
    */
   protected def prepareXsrfToken(): Unit = {
-    session(context).getOrElseUpdate(xsrfKey, CSRFTokenGenerator.apply())
-    val cookieOpt = cookies(context).get(CookieKey)
-    if (cookieOpt.isEmpty || cookieOpt != session(context).get(xsrfKey)) {
-      cookies(context) += CookieKey -> xsrfToken(context)
+    implicit val ctx = context
+    session.getOrElseUpdate(xsrfKey, CSRFTokenGenerator.apply())
+    val cookieOpt = cookies.get(CookieKey)
+    if (cookieOpt.isEmpty || cookieOpt != session.get(xsrfKey)) {
+      cookies += CookieKey -> xsrfToken
     }
   }
 }
 
 object XSRFTokenSupport {
 
-  val DefaultKey = "skinny.micro.XsrfTokenSupport.key"
+  val DefaultKey = "skinny.micro.XSRFTokenSupport.key"
 
   val HeaderNames = Vector("X-XSRF-TOKEN")
 

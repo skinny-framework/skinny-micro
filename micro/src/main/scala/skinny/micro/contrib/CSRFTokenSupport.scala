@@ -24,10 +24,12 @@ trait CSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    * CONNECT, PATCH) and the request parameter at `csrfKey` does not match
    * the session key of the same name.
    */
-  protected def isForged: Boolean =
+  protected def isForged: Boolean = {
+    implicit val ctx = context
     !request.requestMethod.isSafe &&
-      session(context).get(csrfKey) != params(context).get(csrfKey) &&
-      !CSRFTokenSupport.HeaderNames.map(request.headers.get).contains(session(context).get(csrfKey))
+      session.get(csrfKey) != params.get(csrfKey) &&
+      !CSRFTokenSupport.HeaderNames.map(request.headers.get).contains(session.get(csrfKey))
+  }
 
   /**
    * Take an action when a forgery is detected. The default action
@@ -62,7 +64,7 @@ trait CSRFTokenSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
 
 object CSRFTokenSupport {
 
-  val DefaultKey = "skinny.micro.CsrfTokenSupport.key"
+  val DefaultKey = "skinny.micro.CSRFTokenSupport.key"
 
   val HeaderNames = Vector("X-CSRF-TOKEN")
 
