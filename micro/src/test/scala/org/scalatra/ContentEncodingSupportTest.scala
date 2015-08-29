@@ -13,14 +13,10 @@ import scala.concurrent.{ ExecutionContext, Future }
 /**
  * Test servlet using ContentEncodingSupport.
  */
-class ContentEncodingSupportTestServlet extends SkinnyMicroServlet with ContentEncodingSupportAppBase {
-  override implicit protected def executionContext: ExecutionContext = ExecutionContext.global
-}
-
-trait ContentEncodingSupportAppBase
-    extends SkinnyMicroBase
+class ContentEncodingSupportTestServlet extends SkinnyMicroServlet
     with RoutingDsl
     with ContentEncodingSupport {
+  override implicit protected def executionContext: ExecutionContext = ExecutionContext.global
 
   get("/") {
     Helper.body

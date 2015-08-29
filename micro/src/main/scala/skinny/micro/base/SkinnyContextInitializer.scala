@@ -67,9 +67,9 @@ trait SkinnyContextInitializer {
 
   def context: SkinnyContext = skinnyContext(servletContext)
 
-  def request(implicit ctx: SkinnyContext = context): HttpServletRequest = ctx.request
+  def request(implicit ctx: SkinnyContext): HttpServletRequest = ctx.request
 
-  def response(implicit ctx: SkinnyContext = context): HttpServletResponse = ctx.response
+  def response(implicit ctx: SkinnyContext): HttpServletResponse = ctx.response
 
   protected def withRequestResponse[A](request: HttpServletRequest, response: HttpServletResponse)(f: => A) = {
     withRequest(request) {
