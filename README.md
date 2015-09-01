@@ -131,6 +131,7 @@ More working examples are available under [samples](https://github.com/skinny-fr
 
 (The MIT License)
 
-Copyright (c) Alan Dipert < alan.dipert@gmail.com >
+Copyright (c) Alan Dipert
+
 Copyright (c) skinny-framework.org
 
