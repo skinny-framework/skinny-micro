@@ -68,6 +68,8 @@ trait JSONStringOps extends {
     else json
   }
 
+  def toJSONStringAsIs(value: Any, prettify: Boolean = false): String = toJSONString(value, false, prettify)
+
   /**
    * Converts a value to prettified JSON string.
    *
@@ -78,6 +80,8 @@ trait JSONStringOps extends {
   def toPrettyJSONString(v: Any, underscoreKeys: Boolean = useUnderscoreKeysForJSON): String = {
     toJSONString(v, underscoreKeys, true)
   }
+
+  def toPrettyJSONStringAsIs(value: Any): String = toPrettyJSONString(value, false)
 
   /**
    * Extracts a value from JSON string.
