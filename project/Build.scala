@@ -8,7 +8,7 @@ object SkinnyMicroBuild extends Build {
 
   lazy val currentVersion = "0.9.6"
 
-  lazy val json4SVersion = "3.3.0.RC3"
+  lazy val json4SVersion = "3.3.0.RC4"
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
@@ -85,7 +85,7 @@ object SkinnyMicroBuild extends Build {
           "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
           "org.scalatra"      %% "scalatra-specs2"          % scalatraTestVersion % Test,
           "org.scalatra"      %% "scalatra-scalatest"       % scalatraTestVersion % Test,
-          "com.typesafe.akka" %% "akka-actor"               % "2.3.12"            % Test
+          "com.typesafe.akka" %% "akka-actor"               % "2.3.13"            % Test
         ) ++ (sv match {
           case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
           case _ => Nil
@@ -149,7 +149,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
         "com.typesafe.slick" %% "slick"     % "3.0.2",
-        "org.slf4j"          %  "slf4j-nop" % "1.6.4",
+        "org.slf4j"          %  "slf4j-nop" % "1.7.12",
         "com.h2database"     %  "h2"        % "1.4.188"
       ) ++ testDependencies
     )
