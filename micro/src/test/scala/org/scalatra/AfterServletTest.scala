@@ -1,14 +1,9 @@
 package org.scalatra
 
 import org.scalatra.test.scalatest.ScalatraFunSuite
-import skinny.micro.base.BeforeAfterDsl
-import skinny.micro.routing.RoutingDsl
 import skinny.micro.SkinnyMicroServlet
 
-class AfterTestServlet
-    extends SkinnyMicroServlet
-    with RoutingDsl
-    with BeforeAfterDsl {
+class AfterTestServlet extends SkinnyMicroServlet {
 
   after() {
     response.setStatus(204)
@@ -29,25 +24,34 @@ class AfterTestServlet
   get("/third/path") {}
 
 }
-
-class AfterServletTest extends AfterTest {
-  mount(classOf[AfterTestServlet], "/*")
+class YetAnotherServlet extends SkinnyMicroServlet {
+  get("/path") {
+    response.setStatus(200)
+  }
 }
 
-abstract class AfterTest extends ScalatraFunSuite {
+class AfterServletTest extends ScalatraFunSuite {
+  mount(classOf[AfterTestServlet], "/filtered/*")
+  mount(classOf[YetAnotherServlet], "/yet-another/*")
 
   test("afterAll is applied to all paths") {
-    get("/third/path") {
+    get("/filtered/third/path") {
       status should equal(204)
     }
   }
 
   test("after only applies to a given path") {
-    get("/some/path") {
+    get("/filtered/some/path") {
       status should equal(202)
     }
-    get("/other/path") {
+    get("/filtered/other/path") {
       status should equal(206)
+    }
+  }
+
+  test("after won't be applied to another servlets") {
+    get("/yet-another/path") {
+      status should equal(200)
     }
   }
 

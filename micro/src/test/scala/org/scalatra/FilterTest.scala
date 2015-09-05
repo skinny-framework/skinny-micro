@@ -4,8 +4,9 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.{ SkinnyMicroFilter, SkinnyMicroServlet }
 
-class ScalatraExpectedFilterException extends RuntimeException
-class FilterTestServlet extends SkinnyMicroServlet {
+private class ExpectedFilterException extends RuntimeException
+
+private class FilterTestServlet extends SkinnyMicroServlet {
   var beforeCount = 0
   var afterCount = 0
 
@@ -37,7 +38,7 @@ class FilterTestServlet extends SkinnyMicroServlet {
   }
 
   get("/demons-be-here") {
-    throw new ScalatraExpectedFilterException
+    throw new ExpectedFilterException
   }
 
   post("/reset-counters") {
@@ -48,7 +49,7 @@ class FilterTestServlet extends SkinnyMicroServlet {
 
 // Ugh... what should we call this?  Sinatra calls before/after "filter", which is not related to a
 // javax.servlet.Filter.
-class FilterTestFilter extends SkinnyMicroFilter {
+private class FilterTestFilter extends SkinnyMicroFilter {
   var beforeCount = 0
 
   before() {
@@ -56,14 +57,22 @@ class FilterTestFilter extends SkinnyMicroFilter {
     response.setHeader("filterBeforeCount", beforeCount.toString)
   }
 
+  get("/match-filter") {
+    "ok"
+  }
+
   post("/reset-counters") {
     beforeCount = 0
     pass
   }
 
+  post("/increment-counters") {
+    beforeCount += 1
+  }
+
 }
 
-class MultipleFilterTestServlet extends SkinnyMicroServlet {
+private class MultipleFilterTestServlet extends SkinnyMicroServlet {
   before() {
     response.writer.print("one\n")
   }
@@ -87,6 +96,7 @@ class MultipleFilterTestServlet extends SkinnyMicroServlet {
 }
 
 class FilterTest extends ScalatraFunSuite with BeforeAndAfterEach {
+
   addServlet(classOf[FilterTestServlet], "/*")
   addServlet(classOf[MultipleFilterTestServlet], "/multiple-filters/*")
   addFilter(classOf[FilterTestFilter], "/*")
@@ -101,17 +111,22 @@ class FilterTest extends ScalatraFunSuite with BeforeAndAfterEach {
   }
 
   test("before is called exactly once per request to a filter") {
-    get("/before-counter") { header("filterBeforeCount") should equal("1") }
-    get("/before-counter") { header("filterBeforeCount") should equal("2") }
+    // Scalatra runs filters even when no routes in the filter
+    // get("/before-counter") { header("filterBeforeCount") should equal("1") }
+    // get("/before-counter") { header("filterBeforeCount") should equal("2") }
+    get("/match-filter") { header("filterBeforeCount") should equal("1") }
+    get("/match-filter") { header("filterBeforeCount") should equal("2") }
   }
 
   test("before is called when route is not found") {
     get("/this-route-does-not-exist") {
-      // Should be 1, but we can't see it yet
+      // Scalatra: Should be 1, but we can't see it yet
+      // skinny-micro: should be 0 because Filter in skinny-micro is a mountable web app
     }
     get("/before-counter") {
-      // Should now be 2.  1 for the last request, and one for this
-      body should equal("2")
+      // Scalatra: Should now be 2.  1 for the last request, and one for this
+      // body should equal("2")
+      body should equal("1")
     }
   }
 
@@ -134,11 +149,13 @@ class FilterTest extends ScalatraFunSuite with BeforeAndAfterEach {
 
   test("after is called when route is not found") {
     get("/this-route-does-not-exist") {
-      // Should be 1, but we can't see it yet
+      // Scalatra: Should be 1, but we can't see it yet
+      // skinny-micro: should be 0 because Filter in skinny-micro is a mountable web app
     }
     get("/after-counter") {
-      // Should now be 2.  1 for the last request, and one for this
-      body should equal("2")
+      // Scalatra: Should now be 2.  1 for the last request, and one for this
+      // body should equal("2")
+      body should equal("1")
     }
   }
 

@@ -137,32 +137,38 @@ trait SkinnyMicroBase
     }
 
     def runActions(request: HttpServletRequest, response: HttpServletResponse): Any = {
+      def handleActionResult(actionResult: Option[Any]) = {
+        val res: Any = handleStatusCode(status) getOrElse {
+          actionResult.orElse {
+            val allow = routes.matchingMethodsExcept(request.requestMethod, requestPath(context))
+            if (allow.isEmpty) None else liftAction(() => doMethodNotAllowed(allow))
+          }.getOrElse(doNotFound())
+        }
+        rendered = false
+        res
+      }
       request.get(SkinnyMicroBase.CapturedExceptionBeforeRunActions) match {
         case Some(exception) => throw exception.asInstanceOf[Exception]
         case _ =>
-          SkinnyMicroBase.onCompleted { _ =>
-            val className = this.getClass.toString
-            this match {
-              case f: Filter if !request.contains(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") =>
-                request(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") = new {}
-                runFilters(routes.afterFilters)
-              case f: HttpServlet if !request.contains("skinny.micro.SkinnyMicroServlet.afterFilters.Run") =>
-                request("skinny.micro.SkinnyMicroServlet.afterFilters.Run") = new {}
-                runFilters(routes.afterFilters)
-              case _ =>
-            }
-          }(context)
-          runFilters(routes.beforeFilters)
-          val actionResult = runRoutes(routes(request.requestMethod)).headOption
-          // Give the status code handler a chance to override the actionResult
-          val r = handleStatusCode(status) getOrElse {
-            actionResult.orElse {
-              val allow = routes.matchingMethodsExcept(request.requestMethod, requestPath(context))
-              if (allow.isEmpty) None else liftAction(() => doMethodNotAllowed(allow))
-            }.getOrElse(doNotFound())
+          findMatchedRoutesAsStream(routes(request.requestMethod)) match {
+            case matchedRoutes if matchedRoutes.isEmpty =>
+              handleActionResult(None)
+            case matchedRoutes =>
+              SkinnyMicroBase.onCompleted { _ =>
+                val className = this.getClass.toString
+                this match {
+                  case f: Filter if !request.contains(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") =>
+                    request(s"skinny.micro.SkinnyMicroFilter.afterFilters.Run (${className})") = new {}
+                    runFilters(routes.afterFilters)
+                  case f: HttpServlet if !request.contains("skinny.micro.SkinnyMicroServlet.afterFilters.Run") =>
+                    request("skinny.micro.SkinnyMicroServlet.afterFilters.Run") = new {}
+                    runFilters(routes.afterFilters)
+                  case _ =>
+                }
+              }(context)
+              runFilters(routes.beforeFilters)
+              handleActionResult(matchedRoutes.flatMap(invoke).headOption)
           }
-          rendered = false
-          r
       }
     }
 
@@ -227,23 +233,14 @@ trait SkinnyMicroBase
     }
   }
 
-  /**
-   * Lazily invokes routes with `invoke`.
-   * The results of the routes are returned as a stream.
-   */
-  protected def runRoutes(routes: Traversable[Route]): Stream[Any] = {
+  private[this] def findMatchedRoutesAsStream(routes: Traversable[Route]): Stream[MatchedRoute] = {
     def saveMatchedRoute(matchedRoute: MatchedRoute): MatchedRoute = {
       request(context)("skinny.micro.MatchedRoute") = matchedRoute
       setMultiparams(Some(matchedRoute), multiParams(context))(context)
       matchedRoute
     }
-
-    for {
-      route <- routes.toStream // toStream makes it lazy so we stop after match
-      matchedRoute <- route.apply(requestPath(context))
-      saved = saveMatchedRoute(matchedRoute)
-      actionResult <- invoke(saved)
-    } yield actionResult
+    // toStream makes it lazy so we stop after match
+    routes.toStream.flatMap(_.apply(requestPath(context))).map(saveMatchedRoute)
   }
 
   /**
@@ -262,7 +259,7 @@ trait SkinnyMicroBase
     }
   }
 
-  private[this] def liftAction(action: Action): Option[Any] = {
+  private[skinny] def liftAction(action: Action): Option[Any] = {
     try {
       Some(action())
     } catch {
@@ -286,7 +283,7 @@ trait SkinnyMicroBase
    * Called if no route matches the current request method, but routes match for other methods.
    * By default, sends an HTTP status of 405 and an `Allow` header containing a comma-delimited list of the allowed methods.
    */
-  private[this] var doMethodNotAllowed: (Set[HttpMethod] => Any) = {
+  private[skinny] var doMethodNotAllowed: (Set[HttpMethod] => Any) = {
     allow =>
       implicit val ctx = context
       status = 405
@@ -388,7 +385,7 @@ trait SkinnyMicroBase
    * It is called recursively until it returns ().
    * () indicates that the response has been rendered.
    */
-  protected def renderPipeline(implicit ctx: SkinnyContext): RenderPipeline = {
+  private[skinny] def renderPipeline(implicit ctx: SkinnyContext): RenderPipeline = {
     case 404 =>
       doNotFound()
     case ActionResult(status, x: Int, resultHeaders) =>
@@ -429,7 +426,7 @@ trait SkinnyMicroBase
       ctx.response.writer.print(x.toString)
   }
 
-  protected def renderHaltException(e: HaltException)(implicit ctx: SkinnyContext): Unit = {
+  private[skinny] def renderHaltException(e: HaltException)(implicit ctx: SkinnyContext): Unit = {
     try {
       var rendered = false
       e match {
@@ -459,8 +456,6 @@ trait SkinnyMicroBase
   /**
    * Removes _all_ the actions of a given route for a given HTTP method.
    * If addRoute is overridden then this should probably be overriden too.
-   *
-   * @see skinny.micro.SkinnyMicroKernel#addRoute
    */
   protected def removeRoute(method: HttpMethod, route: Route): Unit = {
     routes.removeRoute(method, route)
