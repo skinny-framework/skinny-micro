@@ -1,6 +1,6 @@
-package skinny.micro.contrib
+package skinny.micro.contrib.json4s
 
-import skinny.json.JSONStringOps
+import skinny.json4s._
 import skinny.micro.context.SkinnyContext
 import skinny.micro.{ Format, SkinnyMicroBase }
 
@@ -28,8 +28,8 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
       (contentType = Format.JSON.contentType + charset.map(c => s"; charset=${c}").getOrElse(""))(ctx)
     }
 
-    if (prettify) toPrettyJSONString(entity, underscoreKeys = underscoreKeys)
-    else toJSONString(value = entity, underscoreKeys = underscoreKeys)
+    if (prettify) toPrettyJSONString(entity)
+    else toJSONString(entity, underscoreKeys)
   }
 
 }

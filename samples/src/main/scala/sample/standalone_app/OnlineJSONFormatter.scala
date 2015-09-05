@@ -16,9 +16,14 @@ object OnlineJSONFormatter extends App {
     new AsyncWebApp with JSONSupport {
       post("/prettify") { implicit ctx =>
         contentType = "application/json"
-        fromJSONStringToJValue(request.body, asIs = true) match {
-          case Some(json) => Ok(toPrettyJSONStringAsIs(json))
-          case _ => BadRequest(toJSONString(Map("error" -> "JSON parse error")))
+        try {
+          fromJSONString[Map[String, Any]](request.body) match {
+            case Some(value) => Ok(toPrettyJSONString(value))
+            case _ => BadRequest(toJSONString(Map("error" -> "Failed to parse JSON string")))
+          }
+        } catch {
+          case e: Exception =>
+            BadRequest(toJSONString(Map("error" -> e.getMessage)))
         }
       }
     }
