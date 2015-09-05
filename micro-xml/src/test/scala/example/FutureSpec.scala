@@ -1,7 +1,7 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.micro.contrib.JSONSupport
+import skinny.micro.contrib.XMLSupport
 import skinny.micro.{ AsyncSkinnyMicroServlet, ServletConcurrencyException }
 
 import scala.concurrent.Future
@@ -9,22 +9,22 @@ import scala.concurrent.duration._
 
 class FutureSpec extends ScalatraFlatSpec {
 
-  addServlet(new AsyncSkinnyMicroServlet with JSONSupport {
+  addServlet(new AsyncSkinnyMicroServlet with XMLSupport {
 
     get("/") { implicit ctx =>
-      responseAsJSON(params)
+      responseAsXML(params)
     }
 
     get("/future") { implicit ctx =>
       Future {
-        responseAsJSON(params)
+        responseAsXML(params)
       }
     }
 
     get("/no-future-error") { implicit ctx =>
       Future {
         try {
-          responseAsJSON(params)
+          responseAsXML(params)
         } catch {
           case e: ServletConcurrencyException =>
             Map("message" -> e.getMessage)
@@ -36,7 +36,8 @@ class FutureSpec extends ScalatraFlatSpec {
   it should "simply work" in {
     get("/?foo=bar") {
       status should equal(200)
-      body should equal("""{"foo":"bar"}""")
+      body should equal(
+        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>""")
     }
   }
   it should "fail with simple Future" in {
@@ -57,7 +58,8 @@ class FutureSpec extends ScalatraFlatSpec {
   it should "work with futureWithContext" in {
     get("/future?foo=bar") {
       status should equal(200)
-      body should equal("""{"foo":"bar"}""")
+      body should equal(
+        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>""")
     }
   }
 

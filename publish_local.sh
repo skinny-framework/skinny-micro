@@ -5,6 +5,7 @@ sbt ++2.11.7 \
   microCommon/publishLocal \
   micro/publishLocal \
   microJson/publishLocal \
+  microXml/publishLocal \
   microJson4s/publishLocal \
   microScalate/publishLocal \
   microServer/publishLocal \
@@ -14,6 +15,7 @@ sbt ++2.11.7 \
   microCommon/publishLocal \
   micro/publishLocal \
   microJson/publishLocal \
+  microXml/publishLocal \
   microJson4s/publishLocal \
   microScalate/publishLocal \
   microServer/publishLocal \
