@@ -1,9 +1,9 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.json.JSONStringOps
+import skinny.json4s.JSONStringOps
 import skinny.micro.WebApp
-import skinny.micro.contrib.JSONParamsAutoBinderSupport
+import skinny.micro.contrib.json4s.JSONParamsAutoBinderSupport
 
 class JSONParamsAutoBinderSupportSpec extends ScalatraFlatSpec {
 

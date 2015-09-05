@@ -1,15 +1,15 @@
-package skinny.micro.contrib
+package skinny.micro.contrib.json4s
 
-import java.io.{ InputStreamReader, InputStream }
+import java.io.{ InputStream, InputStreamReader }
 
 import org.json4s.Xml._
 import org.json4s._
 import org.slf4j.LoggerFactory
-import skinny.micro.context.SkinnyContext
-import skinny.json.JSONStringOps
-import skinny.micro.{ SkinnyMicroBase, SkinnyMicroParams, Params, ApiFormats }
-import skinny.micro.routing.MatchedRoute
+import skinny.json4s.JSONStringOps
 import skinny.logging.LoggerProvider
+import skinny.micro.context.SkinnyContext
+import skinny.micro.routing.MatchedRoute
+import skinny.micro.{ ApiFormats, Params, SkinnyMicroBase, SkinnyMicroParams }
 
 /**
  * Merging JSON request body into Scalatra params.
