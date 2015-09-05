@@ -1,9 +1,15 @@
 package skinny.json
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.fasterxml.jackson.databind.`type`.CollectionType
 import com.fasterxml.jackson.databind.{ PropertyNamingStrategy, ObjectMapper }
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+
+import scala.reflect._
+import scala.reflect.runtime.{ universe => ru }
+import ru._
+import scala.collection.JavaConverters._
 
 /**
  * Easy-to-use JSON String Operation.
@@ -93,19 +99,51 @@ trait JSONStringOps {
    * @tparam A return type
    * @return value
    */
-  def fromJSONString[A](json: String, underscoreKeys: Boolean = false)(implicit mf: Manifest[A]): Option[A] = {
+  def fromJSONString[A: TypeTag](json: String, underscoreKeys: Boolean = useUnderscoreKeysForJSON)(
+    implicit tag: ClassTag[A]): Option[A] = {
+
     val pureJson = if (useJSONVulnerabilityProtection &&
       json.startsWith(prefixForJSONVulnerabilityProtection)) {
       json.replace(prefixForJSONVulnerabilityProtection, "")
     } else {
       json
     }
-    val clazz = mf.runtimeClass.asInstanceOf[Class[A]]
+
     Option {
-      if (underscoreKeys) snakeCasedKeyJSONObjectMapper.readValue[A](pureJson, clazz)
-      else plainJSONObjectMapper.readValue[A](pureJson, clazz)
+      if (collectionClassTags.exists(_ == classTag[A])) {
+        val mirror = ru.runtimeMirror(Thread.currentThread.getContextClassLoader)
+        // NOTE: Scala 2.10 doesn't have typeArgs
+        // val typeArgClass = mirror.runtimeClass(typeOf[A].typeArgs.head)
+        val typeArgClass = mirror.runtimeClass(typeOf[A].asInstanceOf[TypeRefApi].args.head)
+        val colType: CollectionType = plainJSONObjectMapper.getTypeFactory.constructCollectionType(
+          classOf[java.util.List[_]], typeArgClass)
+
+        val arrayValue = {
+          if (underscoreKeys) snakeCasedKeyJSONObjectMapper.readValue[A](pureJson, colType)
+          else plainJSONObjectMapper.readValue[A](pureJson, colType)
+        }
+        arrayValue.asInstanceOf[java.util.List[_]].asScala.asInstanceOf[A]
+
+      } else {
+        val clazz = classTag[A].runtimeClass.asInstanceOf[Class[A]]
+        if (underscoreKeys) snakeCasedKeyJSONObjectMapper.readValue[A](pureJson, clazz)
+        else plainJSONObjectMapper.readValue[A](pureJson, clazz)
+      }
     }
   }
+
+  private[this] lazy val collectionClassTags = Seq(
+    ClassTag(classOf[TraversableOnce[_]]),
+    ClassTag(classOf[Traversable[_]]),
+    ClassTag(classOf[Iterable[_]]),
+    ClassTag(classOf[Seq[_]]),
+    ClassTag(classOf[IndexedSeq[_]]),
+    ClassTag(classOf[Iterator[_]]),
+    ClassTag(classOf[BufferedIterator[_]]),
+    ClassTag(classOf[List[_]]),
+    ClassTag(classOf[Stream[_]]),
+    ClassTag(classOf[Vector[_]])
+  )
 
 }
 

@@ -1,7 +1,7 @@
 package skinny.xml
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.databind.{ JsonMappingException, PropertyNamingStrategy, ObjectMapper }
+import com.fasterxml.jackson.databind.{ JsonMappingException, PropertyNamingStrategy }
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.dataformat.xml.util.DefaultXmlPrettyPrinter
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -67,8 +67,10 @@ trait XMLStringOps {
         ""
     }
     val entityXml = {
-      xml.replaceFirst("""<Map1>""", "").replaceFirst("</Map1>", "")
-        .replaceFirst("""<Maps>""", "").replaceFirst("</Maps>", "")
+      // a bit ugly way to remove noisy elements
+      xml
+        .replaceAll("<Map\\d+>", "").replaceAll("</Map\\d+>", "")
+        .replaceAll("<Maps>", "").replaceAll("</Maps>", "")
     }
     s"""<?xml version="1.0" encoding="${charset}"?><${xmlRootName}>${entityXml}</${xmlRootName}>"""
   }

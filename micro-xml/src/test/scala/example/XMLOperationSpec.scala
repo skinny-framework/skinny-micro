@@ -57,6 +57,15 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     }
   }
 
+  it should "fetch hello message for tag value" in {
+    get("/hello?name=%3CMap1%3Efoo%3C/Map1%3E") {
+      status should equal(200)
+      header("Content-Type") should equal("application/xml; charset=utf-8")
+      body should equal(
+        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, &lt;Map1>foo&lt;/Map1></message></response>""")
+    }
+  }
+
   it should "fetch persons" in {
     get("/persons") {
       status should equal(200)
