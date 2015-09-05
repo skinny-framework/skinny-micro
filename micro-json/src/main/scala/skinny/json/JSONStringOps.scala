@@ -46,9 +46,9 @@ trait JSONStringOps {
     m
   }
 
-  def plainObjectMapper: ObjectMapper = _defaultMapper
+  def plainJSONObjectMapper: ObjectMapper = _defaultMapper
 
-  def snakeCasedKeyObjectMapper: ObjectMapper = _snakeCaseMapper
+  def snakeCasedKeyJSONObjectMapper: ObjectMapper = _snakeCaseMapper
 
   /**
    * Converts a value to JSON string.
@@ -59,11 +59,11 @@ trait JSONStringOps {
    */
   def toJSONString(value: Any, underscoreKeys: Boolean = useUnderscoreKeysForJSON, prettify: Boolean = false): String = {
     val json = if (underscoreKeys) {
-      if (prettify) snakeCasedKeyObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(value)
-      else snakeCasedKeyObjectMapper.writeValueAsString(value)
+      if (prettify) snakeCasedKeyJSONObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(value)
+      else snakeCasedKeyJSONObjectMapper.writeValueAsString(value)
     } else {
-      if (prettify) plainObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(value)
-      else plainObjectMapper.writeValueAsString(value)
+      if (prettify) plainJSONObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(value)
+      else plainJSONObjectMapper.writeValueAsString(value)
     }
     if (useJSONVulnerabilityProtection) prefixForJSONVulnerabilityProtection + json
     else json
@@ -102,8 +102,8 @@ trait JSONStringOps {
     }
     val clazz = mf.runtimeClass.asInstanceOf[Class[A]]
     Option {
-      if (underscoreKeys) snakeCasedKeyObjectMapper.readValue[A](pureJson, clazz)
-      else plainObjectMapper.readValue[A](pureJson, clazz)
+      if (underscoreKeys) snakeCasedKeyJSONObjectMapper.readValue[A](pureJson, clazz)
+      else plainJSONObjectMapper.readValue[A](pureJson, clazz)
     }
   }
 

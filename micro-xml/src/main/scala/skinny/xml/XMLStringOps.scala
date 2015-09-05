@@ -39,9 +39,9 @@ trait XMLStringOps {
     m
   }
 
-  def plainObjectMapper: XmlMapper = _defaultMapper
+  def plainXMLObjectMapper: XmlMapper = _defaultMapper
 
-  def snakeCasedKeyObjectMapper: XmlMapper = _snakeCaseMapper
+  def snakeCasedKeyXMLObjectMapper: XmlMapper = _snakeCaseMapper
 
   /**
    * Converts a value to XML string.
@@ -61,8 +61,8 @@ trait XMLStringOps {
     }
     val xml = mapValueOpt match {
       case Some(mapValue) =>
-        if (prettify) plainObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(mapValue)
-        else plainObjectMapper.writeValueAsString(mapValue)
+        if (prettify) plainXMLObjectMapper.writerWithDefaultPrettyPrinter.writeValueAsString(mapValue)
+        else plainXMLObjectMapper.writeValueAsString(mapValue)
       case _ =>
         ""
     }
@@ -96,8 +96,8 @@ trait XMLStringOps {
   def fromXMLString[A](xml: String, underscoreKeys: Boolean = false)(implicit mf: Manifest[A]): Option[A] = {
     val clazz = mf.runtimeClass.asInstanceOf[Class[A]]
     Option {
-      if (underscoreKeys) snakeCasedKeyObjectMapper.readValue[A](xml, clazz)
-      else plainObjectMapper.readValue[A](xml, clazz)
+      if (underscoreKeys) snakeCasedKeyXMLObjectMapper.readValue[A](xml, clazz)
+      else plainXMLObjectMapper.readValue[A](xml, clazz)
     }
   }
 
