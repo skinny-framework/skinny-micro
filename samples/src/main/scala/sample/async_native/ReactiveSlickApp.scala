@@ -17,6 +17,11 @@ class ReactiveSlickApp extends AsyncWebApp with JSONSupport {
   before() { implicit ctx =>
     contentType = "application/json"
   }
+  error {
+    case e =>
+      e.printStackTrace
+      throw e
+  }
 
   get("/slick-demo/suppliers") { implicit ctx =>
     db.run(suppliers.result).map { ss =>
