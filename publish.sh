@@ -5,6 +5,7 @@ sbt ++2.11.7 \
   microCommon/publishSigned \
   micro/publishSigned \
   microJson/publishSigned \
+  microXml/publishSigned \
   microJson4s/publishSigned \
   microScalate/publishSigned \
   microServer/publishSigned \
@@ -14,6 +15,7 @@ sbt ++2.11.7 \
   microCommon/publishSigned \
   micro/publishSigned \
   microJson/publishSigned \
+  microXml/publishSigned \
   microJson4s/publishSigned \
   microScalate/publishSigned \
   microServer/publishSigned \

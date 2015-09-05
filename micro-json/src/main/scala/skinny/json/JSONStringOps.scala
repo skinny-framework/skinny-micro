@@ -3,11 +3,12 @@ package skinny.json
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.{ PropertyNamingStrategy, ObjectMapper }
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
 /**
  * Easy-to-use JSON String Operation.
  */
-trait JSONStringOps extends {
+trait JSONStringOps {
 
   /**
    * Use the prefix for JSON Vulnerability Protection.
@@ -31,14 +32,14 @@ trait JSONStringOps extends {
   // -------------------------------
 
   private[this] lazy val _defaultMapper = {
-    val m = new ObjectMapper()
+    val m = new ObjectMapper with ScalaObjectMapper
     m.registerModule(DefaultScalaModule)
     m.setDefaultPrettyPrinter(new DefaultPrettyPrinter)
     m
   }
 
   private[this] lazy val _snakeCaseMapper = {
-    val m = new ObjectMapper()
+    val m = new ObjectMapper with ScalaObjectMapper
     m.registerModule(DefaultScalaModule)
     m.setDefaultPrettyPrinter(new DefaultPrettyPrinter)
     m.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
@@ -73,12 +74,12 @@ trait JSONStringOps extends {
   /**
    * Converts a value to prettified JSON string.
    *
-   * @param v value
+   * @param value value
    * @param underscoreKeys apply #underscoreKeys keys if true
    * @return json string
    */
-  def toPrettyJSONString(v: Any, underscoreKeys: Boolean = useUnderscoreKeysForJSON): String = {
-    toJSONString(v, underscoreKeys, true)
+  def toPrettyJSONString(value: Any, underscoreKeys: Boolean = useUnderscoreKeysForJSON): String = {
+    toJSONString(value, underscoreKeys, true)
   }
 
   def toPrettyJSONStringAsIs(value: Any): String = toPrettyJSONString(value, false)

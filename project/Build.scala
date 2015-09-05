@@ -15,6 +15,7 @@ object SkinnyMicroBuild extends Build {
   lazy val jettyVersion = "9.2.13.v20150730"
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.12"
+  lazy val jacksonVersion = "2.6.1"
   lazy val scalaTestVersion = "2.2.5"
 
   lazy val baseSettings = Seq(
@@ -98,14 +99,23 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-json",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
-        "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
-        "org.scalatra"      %% "scalatra-specs2"    % scalatraTestVersion % Test,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test
       ) ++ testDependencies
     )
   ).dependsOn(micro)
+
+  lazy val microXml = Project(id = "microXml", base = file("micro-xml"),
+    settings = baseSettings ++ Seq(
+      name := "skinny-micro-xml",
+      libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
+        "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
+        "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
+        "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
+        "com.typesafe.akka"                %% "akka-actor"             % "2.3.12"            % Test
+      ) ++ testDependencies
+    )
+  ).dependsOn(micro, microJson)
 
   lazy val microJson4s = Project(id = "microJson4s", base = file("micro-json4s"),
     settings = baseSettings ++ Seq(
@@ -113,7 +123,6 @@ object SkinnyMicroBuild extends Build {
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
         "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
-        "org.scalatra"      %% "scalatra-specs2"    % scalatraTestVersion % Test,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test
       ) ++ testDependencies
@@ -185,7 +194,7 @@ object SkinnyMicroBuild extends Build {
     "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
   )
   lazy val jacksonDependencies   = Seq(
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.1" % Compile excludeAll(fullExclusionRules: _*)
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion % Compile
   )
   lazy val json4sDependencies = Seq(
     "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
