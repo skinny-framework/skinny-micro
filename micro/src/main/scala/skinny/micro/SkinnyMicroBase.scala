@@ -12,6 +12,7 @@ import java.io.{ File, FileInputStream }
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.servlet.http.{ HttpServletResponse, HttpServlet, HttpServletRequest }
 import javax.servlet._
+import java.util.concurrent.Executors
 
 import skinny.micro.async.AsyncSupported
 import skinny.micro.base._
@@ -57,7 +58,7 @@ trait SkinnyMicroBase
   /**
    * ExecutionContext implicit value for this web controller.
    */
-  implicit protected def executionContext: ExecutionContext = ExecutionContext.global
+  implicit protected def executionContext: ExecutionContext = SkinnyMicroBase.defaultExecutionContext
 
   /**
    * true if async supported
@@ -67,7 +68,7 @@ trait SkinnyMicroBase
   /**
    * Max duration to await async filters
    */
-  protected def maxDurationToAwaitAsyncFilters: Duration = Duration.Inf
+  protected def maxDurationToAwaitAsyncFilters: Duration = 30.seconds
 
   /**
    * Returns rout base path.
@@ -478,9 +479,10 @@ trait SkinnyMicroBase
   }
 
   private[this] def handleFuture(f: Future[_], timeout: Duration)(implicit ctx: SkinnyContext): Unit = {
-    val gotResponseAlready = new AtomicBoolean(false)
-    val context: AsyncContext = ctx.request.startAsync(ctx.request, ctx.response)
-    if (timeout.isFinite()) context.setTimeout(timeout.toMillis) else context.setTimeout(-1)
+
+    val asyncContext: AsyncContext = ctx.request.startAsync(ctx.request, ctx.response)
+    if (timeout.isFinite()) asyncContext.setTimeout(timeout.toMillis)
+    else asyncContext.setTimeout(-1)
 
     def withinAsyncContext(asyncContext: javax.servlet.AsyncContext)(thunk: => Any): Unit = {
       withRequest(asyncContext.getRequest.asInstanceOf[HttpServletRequest]) {
@@ -496,6 +498,9 @@ trait SkinnyMicroBase
         }
       }
     }
+
+    val gotResponseAlready = new AtomicBoolean(false)
+
     def renderFutureResult(f: Future[_]): Unit = {
       f.onComplete {
         // Loop until we have a non-future result
@@ -503,7 +508,7 @@ trait SkinnyMicroBase
         case Success(r: AsyncResult) => renderFutureResult(r.is)
         case t => {
           if (gotResponseAlready.compareAndSet(false, true)) {
-            withinAsyncContext(context) {
+            withinAsyncContext(asyncContext) {
               try {
                 t.map { result => renderResponse(result)(ctx) }
                   .recover {
@@ -519,7 +524,7 @@ trait SkinnyMicroBase
                       }
                   }
               } finally {
-                context.complete()
+                asyncContext.complete()
               }
             }
           }
@@ -527,7 +532,7 @@ trait SkinnyMicroBase
       }
     }
 
-    context.addListener(new AsyncListener {
+    asyncContext.addListener(new AsyncListener {
       def onTimeout(event: AsyncEvent): Unit = {
         onAsyncEvent(event) {
           if (gotResponseAlready.compareAndSet(false, true)) {
@@ -566,6 +571,8 @@ object SkinnyMicroBase {
 
   import ServletApiImplicits._
   import scala.collection.JavaConverters._
+
+  val defaultExecutionContext: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(200))
 
   /**
    * A key for request attribute that contains any exception that might have occured
