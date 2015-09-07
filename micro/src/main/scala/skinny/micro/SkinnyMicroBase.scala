@@ -115,14 +115,20 @@ trait SkinnyMicroBase
         matchedRoute: MatchedRoute <- route(requestPath(context))
       } yield {
         withRouteMultiParams(Some(matchedRoute)) {
+          // invoke before/after filters here
           matchedRoute.action.apply() match {
+            // if the filter returns Future, we should await their completion at the end of this method
             case f: Future[Any] => Some(f)
+            // sync filter execution has been done
             case _ => None
           }
         }
       }).flatten
 
-      Await.result(Future.sequence(asyncFilters), maxDurationToAwaitAsyncFilters)
+      // avoid consuming another thread for each request when unnecessary
+      if (asyncFilters.size > 0) {
+        Await.result(Future.sequence(asyncFilters), maxDurationToAwaitAsyncFilters)
+      }
     }
 
     def handleStatusCode(status: Int): Option[Any] = {
@@ -572,7 +578,9 @@ object SkinnyMicroBase {
   import ServletApiImplicits._
   import scala.collection.JavaConverters._
 
-  val defaultExecutionContext: ExecutionContext = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(200))
+  lazy val defaultExecutionContext: ExecutionContext = {
+    ExecutionContext.fromExecutor(Executors.newFixedThreadPool(300))
+  }
 
   /**
    * A key for request attribute that contains any exception that might have occured
