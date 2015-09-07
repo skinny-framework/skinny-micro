@@ -74,7 +74,11 @@ object SkinnyMicroBuild extends Build {
   lazy val microCommon = Project(id = "microCommon", base = file("micro-common"),
     settings = baseSettings ++ Seq(
       name := "skinny-micro-common",
-      libraryDependencies ++= slf4jApiDependencies ++ testDependencies
+      libraryDependencies ++= slf4jApiDependencies ++ Seq(
+        "org.scalatest"  %% "scalatest"       % scalaTestVersion % Test,
+        "org.mockito"    %  "mockito-core"    % mockitoVersion   % Test,
+        "ch.qos.logback" %  "logback-classic" % logbackVersion   % Test
+      )
     )
   )
 
@@ -86,7 +90,8 @@ object SkinnyMicroBuild extends Build {
           "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
           "org.scalatra"      %% "scalatra-specs2"          % scalatraTestVersion % Test,
           "org.scalatra"      %% "scalatra-scalatest"       % scalatraTestVersion % Test,
-          "com.typesafe.akka" %% "akka-actor"               % "2.3.13"            % Test
+          "com.typesafe.akka" %% "akka-actor"               % "2.3.13"            % Test,
+          "ch.qos.logback"    %  "logback-classic"          % logbackVersion      % Test
         ) ++ (sv match {
           case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
           case _ => Nil
@@ -100,8 +105,9 @@ object SkinnyMicroBuild extends Build {
       name := "skinny-micro-json",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test
-      ) ++ testDependencies
+        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test,
+        "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
+      )
     )
   ).dependsOn(micro)
 
@@ -112,8 +118,9 @@ object SkinnyMicroBuild extends Build {
         "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
         "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
         "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
-        "com.typesafe.akka"                %% "akka-actor"             % "2.3.12"            % Test
-      ) ++ testDependencies
+        "com.typesafe.akka"                %% "akka-actor"             % "2.3.12"            % Test,
+        "ch.qos.logback"                   %  "logback-classic"        % logbackVersion      % Test
+      )
     )
   ).dependsOn(micro, microJson)
 
@@ -124,8 +131,9 @@ object SkinnyMicroBuild extends Build {
         "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test
-      ) ++ testDependencies
+        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test,
+        "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
+      )
     )
   ).dependsOn(micro)
 
@@ -136,16 +144,20 @@ object SkinnyMicroBuild extends Build {
         "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
         "org.scalatra"          %% "scalatra-specs2"    % scalatraTestVersion % Test,
         "org.scalatra"          %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka"     %% "akka-actor"         % "2.3.12"            % Test
-      ) ++ testDependencies
+        "com.typesafe.akka"     %% "akka-actor"         % "2.3.12"            % Test,
+        "ch.qos.logback"        %  "logback-classic"    % logbackVersion      % Test
+      )
     )
   ).dependsOn(micro)
 
   lazy val microServer = Project(id = "microServer", base = file("micro-server"),
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
-      libraryDependencies ++= jettyDependencies ++ testDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.M4" % Test
+      libraryDependencies ++= jettyDependencies ++ Seq(
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.M4"       % Test,
+        "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
+        "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
+        "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
       )
     )
   ).dependsOn(
@@ -162,7 +174,8 @@ object SkinnyMicroBuild extends Build {
         "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
         "org.apache.httpcomponents" % "httpclient" % "4.5"            % Compile,
         "org.apache.httpcomponents" % "httpmime"   % "4.5"            % Compile,
-        "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile
+        "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
+        "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
       )
     )
   ).dependsOn(micro)
@@ -170,10 +183,11 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"     % "3.0.2",
-        "org.slf4j"          %  "slf4j-nop" % "1.7.12",
-        "com.h2database"     %  "h2"        % "1.4.188"
-      ) ++ testDependencies
+        "com.typesafe.slick" %% "slick"            % "3.0.2",
+        "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
+        "com.h2database"     %  "h2"               % "1.4.188",
+        "ch.qos.logback"     %  "logback-classic"  % logbackVersion
+      )
     )
   ).dependsOn(micro, microJson, microScalate, microServer, microTest % Test)
 
@@ -208,10 +222,4 @@ object SkinnyMicroBuild extends Build {
     "org.eclipse.jetty" %  "jetty-servlet"     % jettyVersion  % Compile,
     "org.eclipse.jetty" %  "jetty-server"      % jettyVersion  % Compile
   )
-  lazy val testDependencies = Seq(
-    "org.scalatest"           %% "scalatest"       % scalaTestVersion % Test,
-    "org.mockito"             %  "mockito-core"    % mockitoVersion   % Test,
-    "ch.qos.logback"          %  "logback-classic" % logbackVersion   % Test
-  )
-
 }
