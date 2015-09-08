@@ -7,12 +7,6 @@ import scala.concurrent.Future
 
 class EchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
 
-  before() { implicit ctx =>
-    Future {
-      contentType = "text/html"
-    }
-  }
-
   get("/echo.json") { implicit ctx =>
     contentType = "application/json"
     Future {
@@ -21,8 +15,8 @@ class EchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
   }
 
   post("/hello/:name") { implicit ctx =>
+    contentType = "text/plain"
     Future {
-      contentType = "text/plain"
       (for {
         name <- params.get("name")
       } yield {
@@ -37,6 +31,7 @@ class EchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
 
   get("/html") { implicit ctx =>
     Future {
+      contentType = "text/html"
       ssp("/html.ssp", "name" -> "Martin")
     }
   }

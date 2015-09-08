@@ -2,6 +2,7 @@ package sample.standalone_app
 
 import skinny.micro._
 import skinny.micro.contrib.JSONSupport
+import scala.util._
 
 /**
  * Simple JSON formatter application.
@@ -16,14 +17,9 @@ object OnlineJSONFormatter extends App {
     new AsyncWebApp with JSONSupport {
       post("/prettify") { implicit ctx =>
         contentType = "application/json"
-        try {
-          fromJSONString[Map[String, Any]](request.body) match {
-            case Some(value) => Ok(toPrettyJSONString(value))
-            case _ => BadRequest(toJSONString(Map("error" -> "Failed to parse JSON string")))
-          }
-        } catch {
-          case e: Exception =>
-            BadRequest(toJSONString(Map("error" -> e.getMessage)))
+        fromJSONString[Map[String, Any]](request.body) match {
+          case Success(value) => Ok(toPrettyJSONString(value))
+          case _ => BadRequest(toJSONString(Map("error" -> "Failed to parse JSON string")))
         }
       }
     }

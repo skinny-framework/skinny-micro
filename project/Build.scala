@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.7"
+  lazy val currentVersion = "0.9.8"
 
   lazy val json4SVersion = "3.3.0.RC4"
   lazy val scalatraTestVersion = "2.3.1"
@@ -190,7 +190,7 @@ object SkinnyMicroBuild extends Build {
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
     )
-  ).dependsOn(micro, microJson, microScalate, microServer, microTest % Test)
+  ).dependsOn(micro, microJson, microXml, microJson4s, microScalate, microServer, microTest % Test)
 
   // -----------------------------
   // common dependencies

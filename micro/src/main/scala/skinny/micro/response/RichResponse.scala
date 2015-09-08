@@ -3,6 +3,7 @@ package skinny.micro.response
 import java.io.{ OutputStream, PrintWriter }
 import javax.servlet.http.{ Cookie => ServletCookie, HttpServletResponse }
 
+import skinny.micro.ServletConcurrencyException
 import skinny.micro.cookie.Cookie
 import skinny.micro.implicits.RicherStringImplicits
 
@@ -76,7 +77,7 @@ case class RichResponse(res: HttpServletResponse) {
   def contentType: Option[String] = Option(res.getContentType)
 
   def contentType_=(contentType: Option[String]): Unit = {
-    res.setContentType(contentType getOrElse null)
+    res.setContentType(contentType.orNull[String])
   }
 
   def redirect(uri: String): Unit = {

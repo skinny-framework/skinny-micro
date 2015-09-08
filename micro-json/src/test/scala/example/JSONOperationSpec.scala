@@ -5,6 +5,8 @@ import skinny.json.JSONStringOps
 import skinny.micro.SkinnyMicroFilter
 import skinny.micro.contrib.JSONSupport
 
+import scala.util.Success
+
 case class Person(firstName: String, lastName: Option[String])
 
 class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
@@ -96,7 +98,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
           |  "lastName" : null
           |} ]""".stripMargin)
       val responsePersons = fromJSONString[Seq[Person]](body, false)
-      responsePersons should equal(Some(persons))
+      responsePersons should equal(Success(persons))
     }
   }
 
@@ -116,7 +118,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
           |  "last_name" : null
           |} ]""".stripMargin)
       val responsePersons = fromJSONString[Seq[Person]](body, true)
-      responsePersons should equal(Some(persons))
+      responsePersons should equal(Success(persons))
     }
   }
 

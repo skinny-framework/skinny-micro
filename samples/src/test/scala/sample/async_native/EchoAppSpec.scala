@@ -2,6 +2,7 @@ package sample.async_native
 
 import skinny.json.JSONStringOps
 import skinny.test.SkinnyFunSpec
+import scala.util._
 
 class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
   addFilter(classOf[EchoApp], "/*")
@@ -11,7 +12,7 @@ class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
     it("shows params as JSON") {
       get("/echo.json", "name" -> "Alice", "age" -> "18") {
         status should equal(200)
-        fromJSONString[Map[String, String]](body) should equal(Some(Map("name" -> "Alice", "age" -> "18")))
+        fromJSONString[Map[String, String]](body) should equal(Success(Map("name" -> "Alice", "age" -> "18")))
         header("Content-Type") should equal("application/json; charset=UTF-8")
       }
     }

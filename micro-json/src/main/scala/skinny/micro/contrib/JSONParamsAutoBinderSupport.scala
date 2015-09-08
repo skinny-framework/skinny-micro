@@ -70,7 +70,7 @@ trait JSONParamsAutoBinderSupport
   private[this] def parsedBody(implicit ctx: SkinnyContext): Map[String, String] = {
     ctx.request
       .getAs[Map[String, String]](JSONSupport.ParsedBodyKey)
-      .orElse(fromJSONString[Map[String, String]](request.body))
+      .orElse(fromJSONString[Map[String, String]](request.body).toOption)
       .getOrElse(Map.empty)
   }
 

@@ -24,14 +24,15 @@ class JSONOperation2Spec extends FlatSpec with JSONStringOps with Matchers {
 
   def toJSONString7 = toJSONString(dennis)
 
-  def fromJSON1: Option[Sample] = fromJSONString[Sample]("""{"id":1,"first_name":"Alice"}""")
-  def fromJSON2: Option[Samples] = fromJSONString[Samples]("""{"samples":[{"id":1,"first_name":"Alice"},{"id":2,"first_name":"Bob"}]}""")
+  def fromJSON1: Option[Sample] = fromJSONString[Sample]("""{"id":1,"first_name":"Alice"}""").toOption
+  def fromJSON2: Option[Samples] = fromJSONString[Samples]("""{"samples":[{"id":1,"first_name":"Alice"},{"id":2,"first_name":"Bob"}]}""").toOption
 
-  def fromJSON3: Option[Sample] = fromJSONString[Sample]("""{"id":1,"firstName":"Alice"}""", false)
-  def fromJSON4: Option[Seq[Sample]] = fromJSONString[Seq[Sample]]("""[{"id":1,"firstName":"Alice"},{"id":2,"firstName":"Bob"}]""", false)
+  def fromJSON3: Option[Sample] = fromJSONString[Sample]("""{"id":1,"firstName":"Alice"}""", false).toOption
+  def fromJSON4: Option[Seq[Sample]] = fromJSONString[Seq[Sample]]("""[{"id":1,"firstName":"Alice"},{"id":2,"firstName":"Bob"}]""", false).toOption
 
   def fromJSON5: Option[SamplePerson] = fromJSONString[SamplePerson](
-    """{"name":"Dennis","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]},{"name":"Chris","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]}]}]}""")
+    """{"name":"Dennis","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]},{"name":"Chris","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]}]}]}"""
+  ).toOption
 
   it should "have toJSONString 1" in {
     toJSONString1 should equal("""{"id":1,"first_name":"Alice"}""")

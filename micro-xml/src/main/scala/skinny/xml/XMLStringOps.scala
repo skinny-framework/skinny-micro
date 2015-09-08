@@ -1,12 +1,13 @@
 package skinny.xml
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.databind.{ JsonMappingException, PropertyNamingStrategy }
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.dataformat.xml.util.DefaultXmlPrettyPrinter
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import skinny.json.JSONStringOps._
+import scala.util.{ Failure, Success, Try }
 
 /**
  * Easy-to-use XML String Operation.
@@ -52,11 +53,11 @@ trait XMLStringOps {
    */
   def toXMLString(value: Any, charset: String = "UTF-8", underscoreKeys: Boolean = useUnderscoreKeysForXML, prettify: Boolean = false): String = {
     val mapValueOpt: Option[Any] = {
-      try { fromJSONString[Map[String, Any]](toJSONString(value, underscoreKeys, prettify)) }
-      catch {
-        case e: JsonMappingException =>
+      fromJSONString[Map[String, Any]](toJSONString(value, underscoreKeys, prettify)) match {
+        case Success(mapValue) => Some(mapValue)
+        case Failure(e) =>
           // try to extract top level array value
-          fromJSONString[Array[Map[String, Any]]](toJSONString(value, underscoreKeys, prettify))
+          fromJSONString[Array[Map[String, Any]]](toJSONString(value, underscoreKeys, prettify)).toOption
       }
     }
     val xml = mapValueOpt match {
@@ -95,9 +96,9 @@ trait XMLStringOps {
    * @tparam A return type
    * @return value
    */
-  def fromXMLString[A](xml: String, underscoreKeys: Boolean = false)(implicit mf: Manifest[A]): Option[A] = {
+  def fromXMLString[A](xml: String, underscoreKeys: Boolean = false)(implicit mf: Manifest[A]): Try[A] = {
     val clazz = mf.runtimeClass.asInstanceOf[Class[A]]
-    Option {
+    Try {
       if (underscoreKeys) snakeCasedKeyXMLObjectMapper.readValue[A](xml, clazz)
       else plainXMLObjectMapper.readValue[A](xml, clazz)
     }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.{ PropertyNamingStrategy, ObjectMapper }
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
+import scala.util.Try
 import scala.reflect._
 import scala.reflect.runtime.{ universe => ru }
 import ru._
@@ -100,7 +101,7 @@ trait JSONStringOps {
    * @return value
    */
   def fromJSONString[A: TypeTag](json: String, underscoreKeys: Boolean = useUnderscoreKeysForJSON)(
-    implicit tag: ClassTag[A]): Option[A] = {
+    implicit tag: ClassTag[A]): Try[A] = {
 
     val pureJson = if (useJSONVulnerabilityProtection &&
       json.startsWith(prefixForJSONVulnerabilityProtection)) {
@@ -109,7 +110,7 @@ trait JSONStringOps {
       json
     }
 
-    Option {
+    Try {
       if (collectionClassTags.exists(_ == classTag[A])) {
         val mirror = ru.runtimeMirror(Thread.currentThread.getContextClassLoader)
         // NOTE: Scala 2.10 doesn't have typeArgs
