@@ -4,12 +4,12 @@
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
 libraryDependencies ++= Seq(
-  "org.skinny-framework" %% "skinny-micro-server" % "0.9.6",
-  "org.skinny-framework" %% "skinny-micro-json"   % "0.9.6"
+  "org.skinny-framework" %% "skinny-micro-server" % "0.9.7",
+  "org.skinny-framework" %% "skinny-micro-json"   % "0.9.7"
 ) 
 */
 import skinny.micro._
-import skinny.json._
+import skinny.micro.contrib._
 import scala.concurrent._
 
 case class Message(id: Long, text: String)
@@ -30,7 +30,7 @@ object Messages {
     }
   }
 }
-object AsyncMessagesApp extends AsyncWebApp with DefaultJSONStringOps {
+object AsyncMessagesApp extends AsyncWebApp with JSONSupport {
   post("/messages/search") { implicit ctx =>
     Messages.search(params.get("keyword"))
       .map(messages => toJSONString(messages))

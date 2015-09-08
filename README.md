@@ -9,14 +9,17 @@ Basically, Skinny Micro's DSLs are source compatible with Scalatra 2.3's ones. B
 ## Getting Started
 
 ```scala
-lazy val skinnyMicroVersion = "0.9.6"
+lazy val skinnyMicroVersion = "0.9.7"
 
 libraryDependencies ++= Seq(
   // micro Web framework
   "org.skinny-framework" %% "skinny-micro"         % skinnyMicroVersion,
-  // json4s integration for skinny-micro
+  // jackson integration
   "org.skinny-framework" %% "skinny-micro-json"    % skinnyMicroVersion,
-  // Scalate integration for skinny-micro
+  "org.skinny-framework" %% "skinny-micro-xml"     % skinnyMicroVersion,
+  // json4s integration
+  "org.skinny-framework" %% "skinny-micro-json4s"  % skinnyMicroVersion,
+  // Scalate integration
   "org.skinny-framework" %% "skinny-micro-scalate" % skinnyMicroVersion,
   // Standalone Web server (Jetty 9.2 / Servlet 3.1)
   "org.skinny-framework" %% "skinny-micro-server"  % skinnyMicroVersion
@@ -108,7 +111,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 /***
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.6"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.7"
 */
 import skinny.micro._
 object HelloApp extends WebApp {

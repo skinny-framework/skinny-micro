@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.7-SNAPSHOT"
+  lazy val currentVersion = "0.9.7"
 
   lazy val json4SVersion = "3.3.0.RC4"
   lazy val scalatraTestVersion = "2.3.1"
@@ -16,6 +16,7 @@ object SkinnyMicroBuild extends Build {
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.12"
   lazy val jacksonVersion = "2.6.1"
+  lazy val akkaVersion = "2.3.13"
   lazy val scalaTestVersion = "2.2.5"
 
   lazy val baseSettings = Seq(
@@ -90,7 +91,7 @@ object SkinnyMicroBuild extends Build {
           "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
           "org.scalatra"      %% "scalatra-specs2"          % scalatraTestVersion % Test,
           "org.scalatra"      %% "scalatra-scalatest"       % scalatraTestVersion % Test,
-          "com.typesafe.akka" %% "akka-actor"               % "2.3.13"            % Test,
+          "com.typesafe.akka" %% "akka-actor"               % akkaVersion         % Test,
           "ch.qos.logback"    %  "logback-classic"          % logbackVersion      % Test
         ) ++ (sv match {
           case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
@@ -105,7 +106,7 @@ object SkinnyMicroBuild extends Build {
       name := "skinny-micro-json",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test,
+        "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
         "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
       )
     )
