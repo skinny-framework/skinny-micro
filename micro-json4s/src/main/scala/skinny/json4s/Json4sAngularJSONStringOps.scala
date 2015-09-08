@@ -6,7 +6,7 @@ package skinny.json4s
  * - camelCase keys
  * - JSON vulnerability protection enabled by default
  */
-trait AngularJSONStringOps extends JSONStringOps {
+trait Json4sAngularJSONStringOps extends Json4sJSONStringOps {
 
   // JSON vulnerability protection enabled by default
   override protected def useJSONVulnerabilityProtection: Boolean = true
@@ -16,4 +16,4 @@ trait AngularJSONStringOps extends JSONStringOps {
 
 }
 
-object AngularJSONStringOps extends AngularJSONStringOps
+object Json4sAngularJSONStringOps extends Json4sAngularJSONStringOps

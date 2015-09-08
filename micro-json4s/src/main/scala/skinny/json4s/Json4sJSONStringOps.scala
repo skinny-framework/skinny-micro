@@ -9,7 +9,7 @@ import scala.util.control.Exception._
 /**
  * Easy-to-use JSON String Operation.
  */
-trait JSONStringOps extends {
+trait Json4sJSONStringOps {
 
   /**
    * Use the prefix for JSON Vulnerability Protection.
@@ -186,5 +186,5 @@ trait JSONStringOps extends {
 
 }
 
-object JSONStringOps
-  extends JSONStringOps
+object Json4sJSONStringOps
+  extends Json4sJSONStringOps

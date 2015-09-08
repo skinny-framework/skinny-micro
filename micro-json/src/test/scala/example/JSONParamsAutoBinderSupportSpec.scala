@@ -1,15 +1,15 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.json4s.Json4sJSONStringOps
+import skinny.json.JSONStringOps
 import skinny.micro.WebApp
-import skinny.micro.contrib.Json4sJSONParamsAutoBinderSupport
+import skinny.micro.contrib.JSONParamsAutoBinderSupport
 
 class JSONParamsAutoBinderSupportSpec extends ScalatraFlatSpec {
 
   behavior of "JSONParamsAutoBinderFeature"
 
-  object Controller extends WebApp with Json4sJSONParamsAutoBinderSupport {
+  object Controller extends WebApp with JSONParamsAutoBinderSupport {
     post("/") {
       params.getAs[String]("name") should equal(Some("Alice"))
     }
@@ -17,7 +17,7 @@ class JSONParamsAutoBinderSupportSpec extends ScalatraFlatSpec {
   addFilter(Controller, "/*")
 
   it should "accepts json body as params" in {
-    val body = Json4sJSONStringOps.toJSONString(Map("name" -> "Alice"))
+    val body = JSONStringOps.toJSONString(Map("name" -> "Alice"))
     val headers = Map("Content-Type" -> "application/json")
     post("/", body, headers) {
       status should equal(200)

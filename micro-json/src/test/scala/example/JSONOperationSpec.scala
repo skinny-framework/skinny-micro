@@ -1,12 +1,13 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
+import skinny.json.JSONStringOps
 import skinny.micro.SkinnyMicroFilter
 import skinny.micro.contrib.JSONSupport
 
-class JSONOperationSpec extends ScalatraFlatSpec {
+case class Person(firstName: String, lastName: Option[String])
 
-  case class Person(firstName: String, lastName: Option[String])
+class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
 
   val persons = Seq(
     Person("Alice", Some("Cooper")),
@@ -94,6 +95,8 @@ class JSONOperationSpec extends ScalatraFlatSpec {
           |  "firstName" : "Chris",
           |  "lastName" : null
           |} ]""".stripMargin)
+      val responsePersons = fromJSONString[Seq[Person]](body, false)
+      responsePersons should equal(Some(persons))
     }
   }
 
@@ -112,6 +115,8 @@ class JSONOperationSpec extends ScalatraFlatSpec {
           |  "first_name" : "Chris",
           |  "last_name" : null
           |} ]""".stripMargin)
+      val responsePersons = fromJSONString[Seq[Person]](body, true)
+      responsePersons should equal(Some(persons))
     }
   }
 

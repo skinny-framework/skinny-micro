@@ -1,4 +1,4 @@
-package skinny.micro.contrib.json4s
+package skinny.micro.contrib
 
 import skinny.json4s._
 import skinny.micro.context.SkinnyContext
@@ -7,7 +7,7 @@ import skinny.micro.{ Format, SkinnyMicroBase }
 /**
  * JSON response support.
  */
-trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
+trait Json4sSupport extends Json4sJSONStringOps { self: SkinnyMicroBase =>
 
   /**
    * Returns JSON response.
@@ -34,8 +34,8 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
 
 }
 
-object JSONSupport {
+object Json4sSupport {
 
-  val ParsedBodyKey = "skinny.micro.json.ParsedBody"
+  val ParsedBodyKey = "skinny.micro.json4s.ParsedBody"
 
 }

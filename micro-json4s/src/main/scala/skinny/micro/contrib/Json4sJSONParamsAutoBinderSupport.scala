@@ -1,24 +1,26 @@
-package skinny.micro.contrib.json4s
+package skinny.micro.contrib
 
 import java.io.{ InputStream, InputStreamReader }
 
 import org.json4s.Xml._
 import org.json4s._
 import org.slf4j.LoggerFactory
-import skinny.json4s.JSONStringOps
+import skinny.json4s.Json4sJSONStringOps
 import skinny.logging.LoggerProvider
 import skinny.micro.context.SkinnyContext
 import skinny.micro.routing.MatchedRoute
 import skinny.micro.{ ApiFormats, Params, SkinnyMicroBase, SkinnyMicroParams }
 
 /**
- * Merging JSON request body into Scalatra params.
+ * Merging JSON request body into skinny-micro params.
  *
  * When you'd like to avoid merging JSON request body into params in some actions, please separate controllers.
+ *
+ * NOTICE: Avoid extending JacksonJsonSupport due to render method conflict
  */
-trait JSONParamsAutoBinderSupport
+trait Json4sJSONParamsAutoBinderSupport
     extends SkinnyMicroBase
-    with JSONStringOps
+    with Json4sJSONStringOps
     with ApiFormats
     with LoggerProvider {
 
@@ -26,7 +28,7 @@ trait JSONParamsAutoBinderSupport
    * Merge parsedBody (JValue) into params if possible.
    */
   override def params(implicit ctx: SkinnyContext): Params = {
-    if (request(ctx).get(JSONSupport.ParsedBodyKey).isDefined) {
+    if (request(ctx).get(Json4sSupport.ParsedBodyKey).isDefined) {
       try {
         val jsonParams: Map[String, Seq[String]] = parsedBody(ctx).extract[Map[String, String]].mapValues(v => Seq(v))
         val mergedParams: Map[String, Seq[String]] = getMergedMultiParams(multiParams(ctx), jsonParams)
@@ -41,21 +43,27 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  protected def getMergedMultiParams(
-    params1: Map[String, Seq[String]], params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
-    (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
-  }
+  protected def cacheRequestBodyAsString: Boolean = _defaultCacheRequestBody
 
-  // --------------------------
-  // Avoid extending JacksonJsonSupport due to render method conflict
+  protected def transformRequestBody(body: JValue) = body
+
+  override protected def invoke(matchedRoute: MatchedRoute) = {
+    withRouteMultiParams(Some(matchedRoute)) {
+      implicit val ctx = context
+      val mt = request(context).contentType.fold("application/x-www-form-urlencoded")(_.split(";").head)
+      val fmt = mimeTypes get mt getOrElse "html"
+      if (shouldParseBody(fmt)(context)) {
+        request(ctx)(Json4sSupport.ParsedBodyKey) = parseRequestBody(fmt)(ctx).asInstanceOf[AnyRef]
+      }
+      super.invoke(matchedRoute)
+    }
+  }
 
   private[this] val logger = LoggerFactory.getLogger(getClass)
 
   private[this] val _defaultCacheRequestBody = true
 
-  protected def cacheRequestBodyAsString: Boolean = _defaultCacheRequestBody
-
-  protected def parseRequestBody(format: String)(implicit ctx: SkinnyContext) = try {
+  private[this] def parseRequestBody(format: String)(implicit ctx: SkinnyContext): JValue = try {
     val ct = ctx.request.contentType getOrElse ""
     if (format == "json") {
       val bd = {
@@ -91,7 +99,13 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  protected def readJsonFromStreamWithCharset(stream: InputStream, charset: String): JValue = {
+  private[this] def getMergedMultiParams(
+    params1: Map[String, Seq[String]],
+    params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
+    (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
+  }
+
+  private[this] def readJsonFromStreamWithCharset(stream: InputStream, charset: String): JValue = {
     val rdr = new InputStreamReader(stream, charset)
     if (rdr.ready()) defaultObjectMapper.readValue(rdr, classOf[JValue])
     else {
@@ -100,23 +114,19 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  protected def readJsonFromBody(bd: String): JValue = {
+  private[this] def readJsonFromBody(bd: String): JValue = {
     if (Option(bd).exists(_.trim.length > 0)) defaultObjectMapper.readValue(bd, classOf[JValue])
     else JNothing
   }
 
-  protected def readJsonFromStream(stream: InputStream): JValue = {
-    readJsonFromStreamWithCharset(stream, defaultCharacterEncoding)
-  }
-
-  protected def readXmlFromBody(bd: String): JValue = {
+  private[this] def readXmlFromBody(bd: String): JValue = {
     if (Option(bd).exists(_.trim.length > 0)) {
       val JObject(JField(_, jv) :: Nil) = toJson(scala.xml.XML.loadString(bd))
       jv
     } else JNothing
   }
 
-  protected def readXmlFromStream(stream: InputStream): JValue = {
+  private[this] def readXmlFromStream(stream: InputStream): JValue = {
     val rdr = new InputStreamReader(stream)
     if (rdr.ready()) {
       val JObject(JField(_, jv) :: Nil) = toJson(scala.xml.XML.load(rdr))
@@ -124,36 +134,20 @@ trait JSONParamsAutoBinderSupport
     } else JNothing
   }
 
-  protected def transformRequestBody(body: JValue) = body
-
-  override protected def invoke(matchedRoute: MatchedRoute) = {
-    withRouteMultiParams(Some(matchedRoute)) {
-      implicit val ctx = context
-      val mt = request(context).contentType.fold("application/x-www-form-urlencoded")(_.split(";").head)
-      val fmt = mimeTypes get mt getOrElse "html"
-      if (shouldParseBody(fmt)(context)) {
-        request(JSONSupport.ParsedBodyKey) = parseRequestBody(fmt)(context).asInstanceOf[AnyRef]
-      }
-      super.invoke(matchedRoute)
-    }
-  }
-
-  protected def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
+  private[this] def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
     (fmt == "json" || fmt == "xml") && !ctx.request.requestMethod.isSafe && parsedBody(ctx) == JNothing
   }
 
-  def parsedBody(implicit ctx: SkinnyContext): JValue = {
-    ctx.request.get(JSONSupport.ParsedBodyKey).fold({
+  private[this] def parsedBody(implicit ctx: SkinnyContext): JValue = {
+    ctx.request.get(Json4sSupport.ParsedBodyKey).fold({
       val fmt = requestFormat(ctx)
       var bd: JValue = JNothing
       if (fmt == "json" || fmt == "xml") {
         bd = parseRequestBody(fmt)(ctx)
-        ctx.request(JSONSupport.ParsedBodyKey) = bd.asInstanceOf[AnyRef]
+        ctx.request(Json4sSupport.ParsedBodyKey) = bd.asInstanceOf[AnyRef]
       }
       bd
     })(_.asInstanceOf[JValue])
   }
-
-  // --------------------------
 
 }
