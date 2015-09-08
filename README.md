@@ -8,6 +8,12 @@ Basically, Skinny Micro's DSLs are source compatible with Scalatra 2.3's ones. B
 
 ## Getting Started
 
+Taking a look at [skinny-micro-heroku-example](https://github.com/skinny-framework/skinny-micro-heroku-example) first would be helpful to understand what you need to do. [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) and [scalas-samples](https://github.com/skinny-framework/skinny-micro/tree/master/scalas-samples) in this repository are also worth looking at.
+
+### Library Dependencies
+
+When you start new sbt project, add the following dependencies like this:
+
 ```scala
 lazy val skinnyMicroVersion = "0.9.8"
 
