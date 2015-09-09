@@ -2,7 +2,7 @@ package skinny.json
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.`type`.CollectionType
-import com.fasterxml.jackson.databind.{ PropertyNamingStrategy, ObjectMapper }
+import com.fasterxml.jackson.databind.{ DeserializationFeature, PropertyNamingStrategy, ObjectMapper }
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
@@ -38,17 +38,21 @@ trait JSONStringOps {
   // Avoid extending org.json4s.jackson.JsonMethods due to #render method conflict
   // -------------------------------
 
-  private[this] lazy val _defaultMapper = {
-    val m = new ObjectMapper with ScalaObjectMapper
+  private[this] def withBasicConfiguration(m: ObjectMapper): ObjectMapper = {
     m.registerModule(DefaultScalaModule)
     m.setDefaultPrettyPrinter(new DefaultPrettyPrinter)
+    // To avoid deserializing absent fields with null
+    // https://github.com/FasterXML/jackson-module-scala/issues/87
+    m.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true)
     m
   }
 
+  private[this] lazy val _defaultMapper = {
+    withBasicConfiguration(new ObjectMapper with ScalaObjectMapper)
+  }
+
   private[this] lazy val _snakeCaseMapper = {
-    val m = new ObjectMapper with ScalaObjectMapper
-    m.registerModule(DefaultScalaModule)
-    m.setDefaultPrettyPrinter(new DefaultPrettyPrinter)
+    val m = withBasicConfiguration(new ObjectMapper with ScalaObjectMapper)
     m.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
     m
   }
