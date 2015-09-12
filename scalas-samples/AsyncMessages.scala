@@ -10,6 +10,7 @@ libraryDependencies ++= Seq(
 */
 import skinny.micro._
 import skinny.micro.contrib._
+import skinny.micro.contrib.jackson.JSONSupport
 import scala.concurrent._
 
 case class Message(id: Long, text: String)

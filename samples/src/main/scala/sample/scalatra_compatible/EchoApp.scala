@@ -1,7 +1,8 @@
 package sample.scalatra_compatible
 
 import skinny.micro._
-import skinny.micro.contrib.{ ScalateSupport, JSONSupport }
+import skinny.micro.contrib.ScalateSupport
+import skinny.micro.contrib.jackson.JSONSupport
 
 class EchoApp extends WebApp with JSONSupport with ScalateSupport {
 

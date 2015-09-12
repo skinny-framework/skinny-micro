@@ -1,7 +1,7 @@
 package sample.async_native
 
 import skinny.micro._
-import skinny.micro.contrib.JSONSupport
+import skinny.micro.contrib.jackson.JSONSupport
 
 import scala.concurrent._
 import scala.concurrent.duration._

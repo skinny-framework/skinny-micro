@@ -1,7 +1,8 @@
 package sample.async_native
 
 import skinny.micro._
-import skinny.micro.contrib.{ ScalateSupport, JSONSupport }
+import skinny.micro.contrib.ScalateSupport
+import skinny.micro.contrib.jackson.JSONSupport
 
 import scala.concurrent.Future
 

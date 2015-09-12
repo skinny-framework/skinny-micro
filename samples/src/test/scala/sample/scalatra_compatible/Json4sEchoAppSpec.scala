@@ -1,6 +1,6 @@
 package sample.scalatra_compatible
 
-import skinny.json.JSONStringOps
+import skinny.json4s.JSONStringOps
 import skinny.test.SkinnyFunSpec
 
 import scala.util._

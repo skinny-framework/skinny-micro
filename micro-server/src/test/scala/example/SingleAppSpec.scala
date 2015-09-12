@@ -3,7 +3,7 @@ package example
 import org.scalatest._
 import skinny.micro._
 import skinny.http.HTTP
-import skinny.micro.contrib.JSONSupport
+import skinny.micro.contrib.jackson.JSONSupport
 
 import scala.concurrent._
 import scala.util.control.NonFatal

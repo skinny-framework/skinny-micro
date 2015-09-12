@@ -4,9 +4,9 @@ sbt ++2.11.7 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \
-  microJson/publishLocal \
-  microXml/publishLocal \
   microJson4s/publishLocal \
+  microJackson/publishLocal \
+  microJacksonXml/publishLocal \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal \
@@ -14,9 +14,9 @@ sbt ++2.11.7 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \
-  microJson/publishLocal \
-  microXml/publishLocal \
   microJson4s/publishLocal \
+  microJackson/publishLocal \
+  microJacksonXml/publishLocal \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal

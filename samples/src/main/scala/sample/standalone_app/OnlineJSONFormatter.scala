@@ -1,7 +1,7 @@
 package sample.standalone_app
 
 import skinny.micro._
-import skinny.micro.contrib.JSONSupport
+import skinny.micro.contrib.jackson.JSONSupport
 import scala.util._
 
 /**

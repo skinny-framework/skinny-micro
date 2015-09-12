@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.9"
+  lazy val currentVersion = "0.9.10-SNAPSHOT"
 
   lazy val json4SVersion = "3.3.0.RC4"
   lazy val scalatraTestVersion = "2.3.1"
@@ -101,9 +101,9 @@ object SkinnyMicroBuild extends Build {
     )
   ).dependsOn(microCommon)
 
-  lazy val microJson = Project(id = "microJson", base = file("micro-json"),
+  lazy val microJackson = Project(id = "microJackson", base = file("micro-jackson"),
     settings = baseSettings ++ Seq(
-      name := "skinny-micro-json",
+      name := "skinny-micro-jackson",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
@@ -112,9 +112,9 @@ object SkinnyMicroBuild extends Build {
     )
   ).dependsOn(micro)
 
-  lazy val microXml = Project(id = "microXml", base = file("micro-xml"),
+  lazy val microJacksonXml = Project(id = "microJacksonXml", base = file("micro-jackson-xml"),
     settings = baseSettings ++ Seq(
-      name := "skinny-micro-xml",
+      name := "skinny-micro-jackson-xml",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
         "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
@@ -123,7 +123,7 @@ object SkinnyMicroBuild extends Build {
         "ch.qos.logback"                   %  "logback-classic"        % logbackVersion      % Test
       )
     )
-  ).dependsOn(micro, microJson)
+  ).dependsOn(micro, microJackson)
 
   lazy val microJson4s = Project(id = "microJson4s", base = file("micro-json4s"),
     settings = baseSettings ++ Seq(
@@ -163,7 +163,7 @@ object SkinnyMicroBuild extends Build {
     )
   ).dependsOn(
     micro,
-    microJson % Test
+    microJackson % Test
   )
 
   lazy val microTest = Project(id = "microTest", base = file("micro-test"),
@@ -190,7 +190,7 @@ object SkinnyMicroBuild extends Build {
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
     )
-  ).dependsOn(micro, microJson, microXml, microJson4s, microScalate, microServer, microTest % Test)
+  ).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
 
   // -----------------------------
   // common dependencies
