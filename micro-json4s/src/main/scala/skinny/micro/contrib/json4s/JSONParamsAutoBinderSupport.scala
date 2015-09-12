@@ -63,7 +63,7 @@ trait JSONParamsAutoBinderSupport
 
   private[this] val _defaultCacheRequestBody = true
 
-  private[this] def parseRequestBody(format: String)(implicit ctx: SkinnyContext): JValue = try {
+  protected def parseRequestBody(format: String)(implicit ctx: SkinnyContext): JValue = try {
     val ct = ctx.request.contentType getOrElse ""
     if (format == "json") {
       val bd = {
@@ -99,13 +99,13 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  private[this] def getMergedMultiParams(
+  protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
     params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
   }
 
-  private[this] def readJsonFromStreamWithCharset(stream: InputStream, charset: String): JValue = {
+  protected def readJsonFromStreamWithCharset(stream: InputStream, charset: String): JValue = {
     val rdr = new InputStreamReader(stream, charset)
     if (rdr.ready()) defaultObjectMapper.readValue(rdr, classOf[JValue])
     else {
@@ -114,19 +114,19 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  private[this] def readJsonFromBody(bd: String): JValue = {
+  protected def readJsonFromBody(bd: String): JValue = {
     if (Option(bd).exists(_.trim.length > 0)) defaultObjectMapper.readValue(bd, classOf[JValue])
     else JNothing
   }
 
-  private[this] def readXmlFromBody(bd: String): JValue = {
+  protected def readXmlFromBody(bd: String): JValue = {
     if (Option(bd).exists(_.trim.length > 0)) {
       val JObject(JField(_, jv) :: Nil) = toJson(scala.xml.XML.loadString(bd))
       jv
     } else JNothing
   }
 
-  private[this] def readXmlFromStream(stream: InputStream): JValue = {
+  protected def readXmlFromStream(stream: InputStream): JValue = {
     val rdr = new InputStreamReader(stream)
     if (rdr.ready()) {
       val JObject(JField(_, jv) :: Nil) = toJson(scala.xml.XML.load(rdr))
@@ -134,11 +134,11 @@ trait JSONParamsAutoBinderSupport
     } else JNothing
   }
 
-  private[this] def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
+  protected def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
     (fmt == "json" || fmt == "xml") && !ctx.request.requestMethod.isSafe && parsedBody(ctx) == JNothing
   }
 
-  private[this] def parsedBody(implicit ctx: SkinnyContext): JValue = {
+  protected def parsedBody(implicit ctx: SkinnyContext): JValue = {
     ctx.request.get(JSONSupport.ParsedBodyKey).fold({
       val fmt = requestFormat(ctx)
       var bd: JValue = JNothing

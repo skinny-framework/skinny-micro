@@ -17,7 +17,7 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
    * @param prettify prettify if true
    * @return body
    */
-  def responseAsJSON(
+  protected def responseAsJSON(
     entity: Any,
     charset: Option[String] = Some("utf-8"),
     prettify: Boolean = false,

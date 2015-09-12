@@ -17,7 +17,7 @@ trait XMLSupport extends XMLStringOps { self: SkinnyMicroBase =>
    * @param prettify prettify if true
    * @return body
    */
-  def responseAsXML(
+  protected def responseAsXML(
     entity: Any,
     charset: Option[String] = Some("utf-8"),
     prettify: Boolean = false,

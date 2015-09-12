@@ -38,7 +38,7 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  private[this] def getMergedMultiParams(
+  protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
     params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
@@ -63,11 +63,11 @@ trait JSONParamsAutoBinderSupport
     }
   }
 
-  private[this] def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
+  protected def shouldParseBody(fmt: String)(implicit ctx: SkinnyContext) = {
     fmt == "json" && !ctx.request.requestMethod.isSafe
   }
 
-  private[this] def parsedBody(implicit ctx: SkinnyContext): Map[String, String] = {
+  protected def parsedBody(implicit ctx: SkinnyContext): Map[String, String] = {
     ctx.request
       .getAs[Map[String, String]](JSONSupport.ParsedBodyKey)
       .orElse(fromJSONString[Map[String, String]](request.body).toOption)
