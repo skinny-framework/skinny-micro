@@ -19,16 +19,16 @@ lazy val skinnyMicroVersion = "0.9.9"
 
 libraryDependencies ++= Seq(
   // micro Web framework
-  "org.skinny-framework" %% "skinny-micro"         % skinnyMicroVersion,
+  "org.skinny-framework" %% "skinny-micro"             % skinnyMicroVersion,
   // jackson integration
-  "org.skinny-framework" %% "skinny-micro-json"    % skinnyMicroVersion,
-  "org.skinny-framework" %% "skinny-micro-xml"     % skinnyMicroVersion,
+  "org.skinny-framework" %% "skinny-micro-jackson"     % skinnyMicroVersion,
+  "org.skinny-framework" %% "skinny-micro-jackson-xml" % skinnyMicroVersion,
   // json4s integration
-  "org.skinny-framework" %% "skinny-micro-json4s"  % skinnyMicroVersion,
+  "org.skinny-framework" %% "skinny-micro-json4s"      % skinnyMicroVersion,
   // Scalate integration
-  "org.skinny-framework" %% "skinny-micro-scalate" % skinnyMicroVersion,
+  "org.skinny-framework" %% "skinny-micro-scalate"     % skinnyMicroVersion,
   // Standalone Web server (Jetty 9.2 / Servlet 3.1)
-  "org.skinny-framework" %% "skinny-micro-server"  % skinnyMicroVersion
+  "org.skinny-framework" %% "skinny-micro-server"      % skinnyMicroVersion
 )
 ```
 

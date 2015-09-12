@@ -1,15 +1,14 @@
 package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
-import skinny.micro.contrib.Json4sSupport
+import skinny.micro.contrib.json4s.JSONSupport
 import skinny.micro.{ AsyncSkinnyMicroServlet, ServletConcurrencyException }
 
 import scala.concurrent.Future
-import scala.concurrent.duration._
 
 class FutureSpec extends ScalatraFlatSpec {
 
-  addServlet(new AsyncSkinnyMicroServlet with Json4sSupport {
+  addServlet(new AsyncSkinnyMicroServlet with JSONSupport {
 
     get("/") { implicit ctx =>
       responseAsJSON(params)
@@ -22,16 +21,14 @@ class FutureSpec extends ScalatraFlatSpec {
     }
 
     get("/no-future-error") { implicit ctx =>
-      responseAsJSON(awaitFutures(3.seconds) {
-        Future {
-          try {
-            responseAsJSON(params)
-          } catch {
-            case e: ServletConcurrencyException =>
-              Map("message" -> e.getMessage)
-          }
+      Future {
+        try {
+          responseAsJSON(params)
+        } catch {
+          case e: ServletConcurrencyException =>
+            Map("message" -> e.getMessage)
         }
-      })
+      }
     }
   }, "/*")
 

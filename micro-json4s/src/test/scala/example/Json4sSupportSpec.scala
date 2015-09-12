@@ -2,11 +2,11 @@ package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
 import skinny.micro.SkinnyMicroServlet
-import skinny.micro.contrib.Json4sSupport
+import skinny.micro.contrib.json4s.JSONSupport
 
 class Json4sSupportSpec extends ScalatraFlatSpec {
 
-  object App extends SkinnyMicroServlet with Json4sSupport {
+  object App extends SkinnyMicroServlet with JSONSupport {
     def name = params.getAs[String]("name").getOrElse("Anonymous")
 
     get("/hello") {

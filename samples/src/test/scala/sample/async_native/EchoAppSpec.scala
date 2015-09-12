@@ -1,6 +1,6 @@
 package sample.async_native
 
-import skinny.json.JSONStringOps
+import skinny.jackson.JSONStringOps
 import skinny.test.SkinnyFunSpec
 import scala.util._
 
