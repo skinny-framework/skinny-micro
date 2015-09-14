@@ -18,6 +18,12 @@ object TypedHello extends TypedWebApp {
   get("/cookie") {
     Ok(body = "ok", cookies = Seq(Cookie("foo", "bar")))
   }
+  get("/content-type") {
+    Ok(body = "foo,bar,baz", contentType = Some("text/csv"))
+  }
+  get("/content-type-shift_jis") {
+    Ok(body = "foo,bar,baz", contentType = Some("text/csv"), charset = Some("Shift_JIS"))
+  }
 
   // asynchronous action
   asyncGet("/hello/async") {
@@ -78,6 +84,23 @@ class TypedHelloSpec extends ScalatraFlatSpec {
     get("/cookie") {
       header("Set-Cookie") should equal("foo=bar;Path=/")
       status should equal(200)
+      body should equal("ok")
+    }
+  }
+
+  it should "return Content-Type in the ActionResult" in {
+    get("/content-type") {
+      header("Content-Type") should equal("text/csv; charset=UTF-8")
+      status should equal(200)
+      body should equal("foo,bar,baz")
+    }
+  }
+
+  it should "return Content-Type and charset in the ActionResult" in {
+    get("/content-type-shift_jis") {
+      header("Content-Type") should equal("text/csv; charset=Shift_JIS")
+      status should equal(200)
+      body should equal("foo,bar,baz")
     }
   }
 }
