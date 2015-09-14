@@ -8,5 +8,7 @@ import skinny.micro.cookie.Cookie
 case class ActionResult(
   status: ResponseStatus,
   body: Any,
-  headers: Map[String, String],
+  headers: Map[String, String] = Map.empty,
+  contentType: Option[String] = None,
+  charset: Option[String] = None,
   cookies: Seq[Cookie] = Seq.empty)

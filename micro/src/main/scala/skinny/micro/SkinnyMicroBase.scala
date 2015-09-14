@@ -395,11 +395,13 @@ trait SkinnyMicroBase
   private[skinny] def renderPipeline(implicit ctx: SkinnyContext): RenderPipeline = {
     case 404 =>
       doNotFound()
-    case ActionResult(status, x: Int, resultHeaders, cs) =>
+    case ActionResult(status, x: Int, resultHeaders, contentType, charset, cs) =>
       ctx.response.status = status
       resultHeaders foreach {
         case (name, value) => ctx.response.addHeader(name, value)
       }
+      contentType.foreach(ct => this.contentType = ct)
+      charset.foreach(c => response.setCharacterEncoding(c))
       cookies ++= cs
       ctx.response.writer.print(x.toString)
     case status: Int =>
@@ -423,7 +425,9 @@ trait SkinnyMicroBase
     // If an action returns Unit, it assumes responsibility for the response
     case _: Unit | Unit | null =>
     // If an action returns Unit, it assumes responsibility for the response
-    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, cs) =>
+    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, contentType, charset, cs) =>
+      contentType.foreach(ct => this.contentType = ct)
+      charset.foreach(c => response.setCharacterEncoding(c))
       cookies ++= cs
       doNotFound()
     case actionResult: ActionResult =>
@@ -431,6 +435,8 @@ trait SkinnyMicroBase
       actionResult.headers.foreach {
         case (name, value) => ctx.response.addHeader(name, value)
       }
+      actionResult.contentType.foreach(ct => this.contentType = ct)
+      actionResult.charset.foreach(c => response.setCharacterEncoding(c))
       cookies ++= actionResult.cookies
       actionResult.body
     case x =>
@@ -442,7 +448,7 @@ trait SkinnyMicroBase
       var rendered = false
       e match {
         case HaltException(Some(404), _, _, _: Unit | Unit) |
-          HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, _)) =>
+          HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _, _, _, _, _)) =>
           renderResponse(doNotFound())(ctx)
           rendered = true
         case HaltException(Some(status), Some(reason), _, _) =>
