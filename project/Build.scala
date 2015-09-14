@@ -6,7 +6,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.11-SNAPSHOT"
+  lazy val currentVersion = "0.9.11"
 
   lazy val json4SVersion = "3.3.0.RC5"
   lazy val scalatraTestVersion = "2.3.1"
@@ -119,7 +119,7 @@ object SkinnyMicroBuild extends Build {
         "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
         "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
         "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
-        "com.typesafe.akka"                %% "akka-actor"             % "2.3.12"            % Test,
+        "com.typesafe.akka"                %% "akka-actor"             % akkaVersion         % Test,
         "ch.qos.logback"                   %  "logback-classic"        % logbackVersion      % Test
       )
     )
@@ -132,7 +132,7 @@ object SkinnyMicroBuild extends Build {
         "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka" %% "akka-actor"         % "2.3.12"            % Test,
+        "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
         "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
       )
     )
@@ -145,7 +145,7 @@ object SkinnyMicroBuild extends Build {
         "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
         "org.scalatra"          %% "scalatra-specs2"    % scalatraTestVersion % Test,
         "org.scalatra"          %% "scalatra-scalatest" % scalatraTestVersion % Test,
-        "com.typesafe.akka"     %% "akka-actor"         % "2.3.12"            % Test,
+        "com.typesafe.akka"     %% "akka-actor"         % akkaVersion         % Test,
         "ch.qos.logback"        %  "logback-classic"    % logbackVersion      % Test
       )
     )
@@ -184,9 +184,9 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"            % "3.0.2",
+        "com.typesafe.slick" %% "slick"            % "3.0.3",
         "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
-        "com.h2database"     %  "h2"               % "1.4.188",
+        "com.h2database"     %  "h2"               % "1.4.189",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
     )
