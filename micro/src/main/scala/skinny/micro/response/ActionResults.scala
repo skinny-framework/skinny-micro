@@ -7,273 +7,274 @@ private object ActionResultHelpers {
 }
 
 import ActionResultHelpers._
+import skinny.micro.cookie.Cookie
 
-object Ok {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(200), body, headers)
+object Ok extends ActionResult(responseStatus(200), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(200), body, headers, cookies)
 }
 
-object Created {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(201), body, headers)
+object Created extends ActionResult(responseStatus(201), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(201), body, headers, cookies)
 }
 
-object Accepted {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(202), body, headers)
+object Accepted extends ActionResult(responseStatus(202), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(202), body, headers, cookies)
 }
 
-object NonAuthoritativeInformation {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(203), body, headers)
+object NonAuthoritativeInformation extends ActionResult(responseStatus(203), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(203), body, headers, cookies)
 }
 
-object NoContent {
-  def apply(headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(204), Unit, headers)
+object NoContent extends ActionResult(responseStatus(204), Unit, Map.empty) {
+  def apply(headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(204), Unit, headers, cookies)
 }
 
-object ResetContent {
-  def apply(headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(205), Unit, headers)
+object ResetContent extends ActionResult(responseStatus(205), Unit, Map.empty) {
+  def apply(headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(205), Unit, headers, cookies)
 }
 
-object PartialContent {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(206), body, headers)
+object PartialContent extends ActionResult(responseStatus(206), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(206), body, headers, cookies)
 }
 
-object MultiStatus {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(207), body, headers)
+object MultiStatus extends ActionResult(responseStatus(207), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(207), body, headers, cookies)
 }
 
-object AlreadyReported {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(208), body, headers)
+object AlreadyReported extends ActionResult(responseStatus(208), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(208), body, headers, cookies)
 }
 
-object IMUsed {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(226), body, headers)
+object IMUsed extends ActionResult(responseStatus(226), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(226), body, headers, cookies)
 }
 
-object MultipleChoices {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(300), body, headers)
+object MultipleChoices extends ActionResult(responseStatus(300), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(300), body, headers, cookies)
 }
 
 object MovedPermanently {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(301), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(301), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
 object Found {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(302), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(302), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
 object SeeOther {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(303), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(303), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
-object NotModified {
-  def apply(headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(304), Unit, headers)
+object NotModified extends ActionResult(responseStatus(304), Unit, Map.empty) {
+  def apply(headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(304), Unit, headers, cookies)
 }
 
 object UseProxy {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(305), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(305), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
 object TemporaryRedirect {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(307), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(307), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
 object PermanentRedirect {
-  def apply(location: String, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(308), Unit, Map("Location" -> location) ++ headers)
+  def apply(location: String, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(308), Unit, Map("Location" -> location) ++ headers, cookies)
 }
 
-object BadRequest {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(400), body, headers)
+object BadRequest extends ActionResult(responseStatus(400), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(400), body, headers, cookies)
 }
 
-object Unauthorized {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(401), body, headers)
+object Unauthorized extends ActionResult(responseStatus(401), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(401), body, headers, cookies)
 }
 
-object PaymentRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(402), body, headers)
+object PaymentRequired extends ActionResult(responseStatus(402), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(402), body, headers, cookies)
 }
 
-object Forbidden {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(403), body, headers)
+object Forbidden extends ActionResult(responseStatus(403), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(403), body, headers, cookies)
 }
 
-object NotFound {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(404), body, headers)
+object NotFound extends ActionResult(responseStatus(404), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(404), body, headers, cookies)
 }
 
-object MethodNotAllowed {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(405), body, headers)
+object MethodNotAllowed extends ActionResult(responseStatus(405), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(405), body, headers, cookies)
 }
 
-object NotAcceptable {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(406), body, headers)
+object NotAcceptable extends ActionResult(responseStatus(406), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(406), body, headers, cookies)
 }
 
-object ProxyAuthenticationRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(407), body, headers)
+object ProxyAuthenticationRequired extends ActionResult(responseStatus(407), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(407), body, headers, cookies)
 }
 
-object RequestTimeout {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(408), body, headers)
+object RequestTimeout extends ActionResult(responseStatus(408), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(408), body, headers, cookies)
 }
 
-object Conflict {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(409), body, headers)
+object Conflict extends ActionResult(responseStatus(409), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(409), body, headers, cookies)
 }
 
-object Gone {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(410), body, headers)
+object Gone extends ActionResult(responseStatus(410), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(410), body, headers, cookies)
 }
 
-object LengthRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(411), body, headers)
+object LengthRequired extends ActionResult(responseStatus(411), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(411), body, headers, cookies)
 }
 
-object PreconditionFailed {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(412), body, headers)
+object PreconditionFailed extends ActionResult(responseStatus(412), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(412), body, headers, cookies)
 }
 
-object RequestEntityTooLarge {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(413), body, headers)
+object RequestEntityTooLarge extends ActionResult(responseStatus(413), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(413), body, headers, cookies)
 }
 
-object RequestURITooLong {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(414), body, headers)
+object RequestURITooLong extends ActionResult(responseStatus(414), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(414), body, headers, cookies)
 }
 
-object UnsupportedMediaType {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(415), body, headers)
+object UnsupportedMediaType extends ActionResult(responseStatus(415), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(415), body, headers, cookies)
 }
 
-object RequestedRangeNotSatisfiable {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(416), body, headers)
+object RequestedRangeNotSatisfiable extends ActionResult(responseStatus(416), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(416), body, headers, cookies)
 }
 
-object ExpectationFailed {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(417), body, headers)
+object ExpectationFailed extends ActionResult(responseStatus(417), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(417), body, headers, cookies)
 }
 
-object UnprocessableEntity {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(422), body, headers)
+object UnprocessableEntity extends ActionResult(responseStatus(422), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(422), body, headers, cookies)
 }
 
-object Locked {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(423), body, headers)
+object Locked extends ActionResult(responseStatus(423), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(423), body, headers, cookies)
 }
 
-object FailedDependency {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(424), body, headers)
+object FailedDependency extends ActionResult(responseStatus(424), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(424), body, headers, cookies)
 }
 
-object UpgradeRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(426), body, headers)
+object UpgradeRequired extends ActionResult(responseStatus(426), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(426), body, headers, cookies)
 }
 
-object PreconditionRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(428), body, headers)
+object PreconditionRequired extends ActionResult(responseStatus(428), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(428), body, headers, cookies)
 }
 
-object TooManyRequests {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(429), body, headers)
+object TooManyRequests extends ActionResult(responseStatus(429), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(429), body, headers, cookies)
 }
 
-object RequestHeaderFieldsTooLarge {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(431), body, headers)
+object RequestHeaderFieldsTooLarge extends ActionResult(responseStatus(431), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(431), body, headers, cookies)
 }
 
-object InternalServerError {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(500), body, headers)
+object InternalServerError extends ActionResult(responseStatus(500), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(500), body, headers, cookies)
 }
 
-object NotImplemented {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(501), body, headers)
+object NotImplemented extends ActionResult(responseStatus(501), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(501), body, headers, cookies)
 }
 
-object BadGateway {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(502), body, headers)
+object BadGateway extends ActionResult(responseStatus(502), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(502), body, headers, cookies)
 }
 
-object ServiceUnavailable {
+object ServiceUnavailable extends ActionResult(responseStatus(503), Unit, Map.empty) {
   def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(503), body, headers)
+    ActionResult(responseStatus(503), body, headers, cookies)
 }
 
-object GatewayTimeout {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(504), body, headers)
+object GatewayTimeout extends ActionResult(responseStatus(504), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(504), body, headers, cookies)
 }
 
-object HTTPVersionNotSupported {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(505), body, headers)
+object HTTPVersionNotSupported extends ActionResult(responseStatus(505), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(505), body, headers, cookies)
 }
 
-object VariantAlsoNegotiates {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(506), body, headers)
+object VariantAlsoNegotiates extends ActionResult(responseStatus(506), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(506), body, headers, cookies)
 }
 
-object InsufficientStorage {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(507), body, headers)
+object InsufficientStorage extends ActionResult(responseStatus(507), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(507), body, headers, cookies)
 }
 
-object LoopDetected {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(508), body, headers)
+object LoopDetected extends ActionResult(responseStatus(508), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(508), body, headers, cookies)
 }
 
-object NotExtended {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(510), body, headers)
+object NotExtended extends ActionResult(responseStatus(510), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(510), body, headers, cookies)
 }
 
-object NetworkAuthenticationRequired {
-  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty) =
-    ActionResult(responseStatus(511), body, headers)
+object NetworkAuthenticationRequired extends ActionResult(responseStatus(511), Unit, Map.empty) {
+  def apply(body: Any = Unit, headers: Map[String, String] = Map.empty, cookies: Seq[Cookie] = Seq.empty) =
+    ActionResult(responseStatus(511), body, headers, cookies)
 }
