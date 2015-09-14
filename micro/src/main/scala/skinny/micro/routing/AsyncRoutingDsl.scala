@@ -3,27 +3,13 @@ package skinny.micro.routing
 import javax.servlet.http.HttpServletRequest
 
 import skinny.micro._
-import skinny.micro.base.{ UnstableAccessValidationConfig, RouteRegistryAccessor, ServletContextAccessor, SkinnyContextInitializer }
 import skinny.micro.constant._
 import skinny.micro.context.SkinnyContext
-import skinny.micro.control.HaltPassControl
-import skinny.micro.implicits.ServletApiImplicits
 
 /**
  * The core SkinnyMicro DSL.
  */
-trait AsyncRoutingDsl
-    extends HaltPassControl
-    with RouteRegistryAccessor
-    with SkinnyContextInitializer
-    with UnstableAccessValidationConfig
-    with ServletContextAccessor
-    with ServletApiImplicits {
-
-  /**
-   * The base path for URL generation
-   */
-  protected def routeBasePath(implicit ctx: SkinnyContext): String
+trait AsyncRoutingDsl extends RoutingDslBase {
 
   /**
    * The SkinnyMicro DSL core methods take a list of [[skinny.micro.routing.RouteMatcher]]
@@ -99,32 +85,6 @@ trait AsyncRoutingDsl
     val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(skinnyContext(servletContext)))
     routes.addStatusRoute(codes, route)
   }
-
-  /**
-   * Defines a block to run if no matching routes are found, or if all
-   * matching routes pass.
-   */
-  def notFound(block: => Any): Unit
-
-  /**
-   * Defines a block to run if matching routes are found only for other
-   * methods.  The set of matching methods is passed to the block.
-   */
-  def methodNotAllowed(block: Set[HttpMethod] => Any): Unit
-
-  /**
-   * Defines an error handler for exceptions thrown in either the before
-   * block or a route action.
-   *
-   * If the error handler does not match, the result falls through to the
-   * previously defined error handler.  The default error handler simply
-   * rethrows the exception.
-   *
-   * The error handler is run before the after filters, and the result is
-   * rendered like a standard response.  It is the error handler's
-   * responsibility to set any appropriate status code.
-   */
-  def error(handler: ErrorHandler): Unit
 
   /**
    * Error handler for HTTP response status code range. You can intercept every response code previously

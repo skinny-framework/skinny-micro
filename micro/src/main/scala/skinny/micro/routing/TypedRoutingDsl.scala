@@ -6,10 +6,12 @@ import skinny.micro._
 import skinny.micro.constant._
 import skinny.micro.context.SkinnyContext
 
+import scala.concurrent.Future
+
 /**
  * The core SkinnyMicro DSL.
  */
-trait RoutingDsl extends RoutingDslBase {
+trait TypedRoutingDsl extends RoutingDslBase {
 
   /**
    * The SkinnyMicro DSL core methods take a list of [[skinny.micro.routing.RouteMatcher]]
@@ -44,19 +46,26 @@ trait RoutingDsl extends RoutingDslBase {
    * }}}
    *
    */
-  def get(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Get, transformers, action)
+  def get(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Get, transformers, action)
+  def asyncGet(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Get, transformers, action)
 
-  def post(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Post, transformers, action)
+  def post(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Post, transformers, action)
+  def asyncPost(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Post, transformers, action)
 
-  def put(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Put, transformers, action)
+  def put(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Put, transformers, action)
+  def asyncPut(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Put, transformers, action)
 
-  def delete(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Delete, transformers, action)
+  def delete(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Delete, transformers, action)
+  def asyncDelete(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Delete, transformers, action)
 
-  def options(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Options, transformers, action)
+  def options(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Options, transformers, action)
+  def asyncOptions(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Options, transformers, action)
 
-  def head(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Head, transformers, action)
+  def head(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Head, transformers, action)
+  def asyncHead(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Head, transformers, action)
 
-  def patch(transformers: RouteTransformer*)(action: => Any): Route = addRoute(Patch, transformers, action)
+  def patch(transformers: RouteTransformer*)(action: => ActionResult): Route = addRoute(Patch, transformers, action)
+  def asyncPatch(transformers: RouteTransformer*)(action: => Future[ActionResult]): Route = addRoute(Patch, transformers, action)
 
   /**
    * Prepends a new route for the given HTTP method.
@@ -96,15 +105,21 @@ trait RoutingDsl extends RoutingDslBase {
    * }* }}}
    * }}
    */
-  def trap(codes: Range)(block: => Any): Unit = {
+  def trap(codes: Range)(block: => ActionResult): Unit = {
+    addStatusRoute(codes, block)
+  }
+  def asyncTrap(codes: Range)(block: => Future[ActionResult]): Unit = {
     addStatusRoute(codes, block)
   }
 
   /**
    * @see trap
    */
-  def trap(code: Int)(block: => Any): Unit = {
+  def trap(code: Int)(block: => ActionResult): Unit = {
     trap(Range(code, code + 1))(block)
+  }
+  def asyncTrap(code: Int)(block: => Future[ActionResult]): Unit = {
+    asyncTrap(Range(code, code + 1))(block)
   }
 
 }

@@ -53,12 +53,16 @@ package object micro
   type AppBase = skinny.micro.SkinnyMicroBase
 
   type SingleApp = skinny.micro.SkinnyMicroServlet
+  type TypedSingleApp = skinny.micro.TypedSkinnyMicroServlet
 
   type WebApp = skinny.micro.SkinnyMicroFilter
+  type TypedWebApp = skinny.micro.TypedSkinnyMicroFilter
 
   type AsyncSingleApp = skinny.micro.AsyncSkinnyMicroServlet
+  type TypedAsyncSingleApp = skinny.micro.TypedAsyncSkinnyMicroServlet
 
   type AsyncWebApp = skinny.micro.AsyncSkinnyMicroFilter
+  type TypedAsyncWebApp = skinny.micro.TypedAsyncSkinnyMicroFilter
 
   // ------------------
   // action results
