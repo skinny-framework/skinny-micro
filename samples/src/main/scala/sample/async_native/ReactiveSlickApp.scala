@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 
 import slick.driver.H2Driver.api._
 
-class ReactiveSlickApp extends AsyncWebApp with JSONSupport {
+class ReactiveSlickApp extends TypedAsyncWebApp with JSONSupport {
 
   lazy val db = Database.forConfig("h2mem1")
   lazy val suppliers = TableQuery[Suppliers]

@@ -6,12 +6,12 @@ import skinny.micro.contrib.jackson.JSONSupport
 
 import scala.concurrent.Future
 
-class TypedEchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
+class TypedEchoApp extends TypedAsyncWebApp with JSONSupport with ScalateSupport {
 
   get("/echo.json") { implicit ctx =>
     contentType = "application/json"
     Future {
-      toJSONString(params)
+      Ok(toJSONString(params))
     }
   }
 
@@ -33,7 +33,7 @@ class TypedEchoApp extends AsyncWebApp with JSONSupport with ScalateSupport {
   get("/html") { implicit ctx =>
     Future {
       contentType = "text/html"
-      ssp("/html.ssp", "name" -> "Martin")
+      Ok(ssp("/html.ssp", "name" -> "Martin"))
     }
   }
 

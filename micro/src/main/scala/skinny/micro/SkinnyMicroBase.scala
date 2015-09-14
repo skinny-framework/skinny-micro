@@ -395,11 +395,12 @@ trait SkinnyMicroBase
   private[skinny] def renderPipeline(implicit ctx: SkinnyContext): RenderPipeline = {
     case 404 =>
       doNotFound()
-    case ActionResult(status, x: Int, resultHeaders) =>
+    case ActionResult(status, x: Int, resultHeaders, cs) =>
       ctx.response.status = status
       resultHeaders foreach {
         case (name, value) => ctx.response.addHeader(name, value)
       }
+      cookies ++= cs
       ctx.response.writer.print(x.toString)
     case status: Int =>
       ctx.response.status = ResponseStatus(status)
@@ -422,12 +423,15 @@ trait SkinnyMicroBase
     // If an action returns Unit, it assumes responsibility for the response
     case _: Unit | Unit | null =>
     // If an action returns Unit, it assumes responsibility for the response
-    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _) => doNotFound()
+    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, cs) =>
+      cookies ++= cs
+      doNotFound()
     case actionResult: ActionResult =>
       ctx.response.status = actionResult.status
       actionResult.headers.foreach {
         case (name, value) => ctx.response.addHeader(name, value)
       }
+      cookies ++= actionResult.cookies
       actionResult.body
     case x =>
       ctx.response.writer.print(x.toString)
@@ -438,7 +442,7 @@ trait SkinnyMicroBase
       var rendered = false
       e match {
         case HaltException(Some(404), _, _, _: Unit | Unit) |
-          HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _: Unit | Unit, _)) =>
+          HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, _)) =>
           renderResponse(doNotFound())(ctx)
           rendered = true
         case HaltException(Some(status), Some(reason), _, _) =>

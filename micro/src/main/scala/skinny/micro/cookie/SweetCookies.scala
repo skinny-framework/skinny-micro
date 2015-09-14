@@ -39,8 +39,18 @@ class SweetCookies(
   }
 
   def +=(keyValuePair: (String, String))(
-    implicit cookieOptions: CookieOptions = CookieOptions()): Cookie = {
+    implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
     this.update(keyValuePair._1, keyValuePair._2)(cookieOptions)
+  }
+
+  def +=(cookie: Cookie): Unit = {
+    this.update(cookie.name, cookie.value)(cookie.options)
+  }
+
+  def ++=(cookies: Seq[Cookie]): Unit = {
+    cookies.foreach { cookie =>
+      this.update(cookie.name, cookie.value)(cookie.options)
+    }
   }
 
   def -=(key: String)(implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {

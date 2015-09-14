@@ -15,6 +15,10 @@ object TypedHello extends TypedWebApp {
   get("/hello")(Ok(message))
   post("/hello")(Ok(message))
 
+  get("/cookie") {
+    Ok(body = "ok", cookies = Seq(Cookie("foo", "bar")))
+  }
+
   // asynchronous action
   asyncGet("/hello/async") {
     implicit val ctx = context
@@ -67,6 +71,13 @@ class TypedHelloSpec extends ScalatraFlatSpec {
   it should "detect dynamic value access when the first access" in {
     get("/dynamic") {
       status should equal(500)
+    }
+  }
+
+  it should "return cookies in the ActionResult" in {
+    get("/cookie") {
+      header("Set-Cookie") should equal("foo=bar;Path=/")
+      status should equal(200)
     }
   }
 }

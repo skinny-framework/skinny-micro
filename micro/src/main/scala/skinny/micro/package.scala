@@ -31,6 +31,12 @@ package object micro
 
   type Params = MultiMapHeadView[String, String] with MapWithIndifferentAccess[String]
 
+  type Cookie = skinny.micro.cookie.Cookie
+  val Cookie = skinny.micro.cookie.Cookie
+
+  type CookieOptions = skinny.micro.cookie.CookieOptions
+  val CookieOptions = skinny.micro.cookie.CookieOptions
+
   type AsyncAction = (Context) => Any
 
   type Action = () => Any

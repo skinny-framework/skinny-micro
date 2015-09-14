@@ -1,8 +1,9 @@
 package sample.scalatra_compatible
 
 import skinny.micro._
+import skinny.micro.cookie.Cookie
 
-class TypedMinimumApp extends WebApp {
+class TypedMinimumApp extends TypedWebApp {
 
   before() {
     logger.info("before filter")
@@ -13,16 +14,19 @@ class TypedMinimumApp extends WebApp {
   }
 
   get("/hello") {
-    "Hello, World!"
+    Ok("Hello, World!")
   }
 
   post("/hello") {
-    s"Hello, ${params.getOrElse("name", "Anonymous")}!"
+    Ok(s"Hello, ${params.getOrElse("name", "Anonymous")}!")
   }
 
   get("/hello-with-cookie-1") {
     cookies += "theme" -> "light"
-    "Hello, World!"
+    Ok(
+      body = "Hello, World!",
+      cookies = Seq(Cookie("theme", "light"))
+    )
   }
 
   get("/hello-with-cookie-2") {

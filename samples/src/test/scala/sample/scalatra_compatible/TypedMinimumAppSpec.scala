@@ -3,7 +3,7 @@ package sample.scalatra_compatible
 import skinny.test.SkinnyFunSpec
 
 class TypedMinimumAppSpec extends SkinnyFunSpec {
-  addFilter(classOf[MinimumApp], "/*")
+  addFilter(classOf[TypedMinimumApp], "/*")
 
   describe("Scalatra compatible MinimumApp") {
 
