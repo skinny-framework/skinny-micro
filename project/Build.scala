@@ -8,7 +8,7 @@ object SkinnyMicroBuild extends Build {
 
   lazy val currentVersion = "0.9.11-SNAPSHOT"
 
-  lazy val json4SVersion = "3.3.0.RC4"
+  lazy val json4SVersion = "3.3.0.RC5"
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
