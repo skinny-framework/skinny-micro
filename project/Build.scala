@@ -50,8 +50,8 @@ object SkinnyMicroBuild extends Build {
       <url>http://skinny-framework.org/</url>
         <licenses>
           <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <name>The BSD 2-Clause License</name>
+            <url>http://opensource.org/licenses/BSD-2-Clause</url>
             <distribution>repo</distribution>
           </license>
         </licenses>

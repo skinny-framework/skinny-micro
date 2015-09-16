@@ -138,7 +138,7 @@ More working examples are available under [samples](https://github.com/skinny-fr
 
 ## License
 
-(The MIT License)
+(The BSD 2-Clause License)
 
 Copyright (c) Alan Dipert
 
