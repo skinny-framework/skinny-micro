@@ -8,7 +8,7 @@ object SkinnyMicroBuild extends Build {
 
   lazy val currentVersion = "0.9.12-SNAPSHOT"
 
-  lazy val json4SVersion = "3.3.0.RC5"
+  lazy val json4SVersion = "3.3.0.RC6"
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
@@ -16,7 +16,7 @@ object SkinnyMicroBuild extends Build {
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.12"
   lazy val jacksonVersion = "2.6.1"
-  lazy val akkaVersion = "2.3.13"
+  lazy val akkaVersion = "2.3.14"
   lazy val scalaTestVersion = "2.2.5"
 
   lazy val baseSettings = Seq(
@@ -116,7 +116,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-jackson-xml",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-        "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
+        "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % "2.6.2"             % Compile,
         "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
         "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
         "com.typesafe.akka"                %% "akka-actor"             % akkaVersion         % Test,
@@ -173,8 +173,8 @@ object SkinnyMicroBuild extends Build {
         "junit"              %  "junit"            % "4.12"           % Compile,
         "org.apache.commons" %  "commons-lang3"    % "3.4"            % Compile,
         "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-        "org.apache.httpcomponents" % "httpclient" % "4.5"            % Compile,
-        "org.apache.httpcomponents" % "httpmime"   % "4.5"            % Compile,
+        "org.apache.httpcomponents" % "httpclient" % "4.5.1"          % Compile,
+        "org.apache.httpcomponents" % "httpmime"   % "4.5.1"          % Compile,
         "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
       )
