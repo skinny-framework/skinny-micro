@@ -23,23 +23,23 @@ class SweetCookies(
   }
 
   def update(name: String, value: String)(
-    implicit cookieOptions: CookieOptions = CookieOptions()): Cookie = {
+    implicit cookieOptions: CookieOptions = CookieOptions.default): Cookie = {
     cookies += name -> value
     addCookie(name, value, cookieOptions)
   }
 
   def set(name: String, value: String)(
-    implicit cookieOptions: CookieOptions = CookieOptions()): Cookie = {
+    implicit cookieOptions: CookieOptions = CookieOptions.default): Cookie = {
     this.update(name, value)(cookieOptions)
   }
 
-  def delete(name: String)(implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
+  def delete(name: String)(implicit cookieOptions: CookieOptions = CookieOptions.default): Unit = {
     cookies -= name
     addCookie(name, "", cookieOptions.copy(maxAge = 0))
   }
 
   def +=(keyValuePair: (String, String))(
-    implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
+    implicit cookieOptions: CookieOptions = CookieOptions.default): Unit = {
     this.update(keyValuePair._1, keyValuePair._2)(cookieOptions)
   }
 
@@ -53,7 +53,7 @@ class SweetCookies(
     }
   }
 
-  def -=(key: String)(implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
+  def -=(key: String)(implicit cookieOptions: CookieOptions = CookieOptions.default): Unit = {
     delete(key)(cookieOptions)
   }
 

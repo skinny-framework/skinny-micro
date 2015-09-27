@@ -3,13 +3,38 @@ package skinny.micro.cookie
 import java.util.{ Date, Locale }
 import skinny.micro.implicits.RicherStringImplicits
 
-case class Cookie(name: String, value: String)(
-    implicit cookieOptions: CookieOptions = CookieOptions()) {
+case class Cookie(
+    name: String,
+    value: String)(implicit cookieOptions: CookieOptions = CookieOptions.default) {
 
   import Cookie._
   import RicherStringImplicits._
 
   val options: CookieOptions = cookieOptions
+
+  def withOptions(newOptions: CookieOptions): Cookie = new Cookie(name, value)(newOptions)
+
+  def withOptions(
+    domain: String = CookieOptions.default.domain,
+    path: String = CookieOptions.default.path,
+    maxAge: Int = CookieOptions.default.maxAge,
+    secure: Boolean = CookieOptions.default.secure,
+    comment: String = CookieOptions.default.comment,
+    httpOnly: Boolean = CookieOptions.default.httpOnly,
+    version: Int = CookieOptions.default.version,
+    encoding: String = CookieOptions.default.encoding): Cookie = {
+    val newOptions = CookieOptions(
+      domain = domain,
+      path = path,
+      maxAge = maxAge,
+      secure = secure,
+      comment = comment,
+      httpOnly = httpOnly,
+      version = version,
+      encoding = encoding
+    )
+    new Cookie(name, value)(newOptions)
+  }
 
   def toCookieString: String = {
     val sb = new StringBuilder
@@ -73,6 +98,8 @@ object Cookie {
   val SweetCookiesKey = "skinny.micro.SweetCookies"
 
   val CookieOptionsKey = "skinny.micro.CookieOptions"
+
+  def apply(keyValue: (String, String)): Cookie = new Cookie(keyValue._1, keyValue._2)
 
   private object DateUtil {
 
