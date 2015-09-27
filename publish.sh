@@ -10,7 +10,7 @@ sbt ++2.11.7 \
   microScalate/publishSigned \
   microServer/publishSigned \
   microTest/publishSigned \
-  ++2.10.5 \
+  ++2.10.6 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \
