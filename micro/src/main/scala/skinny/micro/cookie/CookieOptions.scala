@@ -12,3 +12,9 @@ case class CookieOptions(
   httpOnly: Boolean = false,
   version: Int = 0,
   encoding: String = "UTF-8")
+
+object CookieOptions {
+
+  val default = CookieOptions()
+
+}

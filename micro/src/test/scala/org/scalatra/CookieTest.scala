@@ -14,13 +14,26 @@ class CookieTest extends WordSpec with Matchers with BeforeAndAfterAll {
       cookie.toCookieString should equal("theName=theValue")
     }
 
+    "render a simple name value pair (2)" in {
+      val cookie = Cookie("theName" -> "theValue")
+      cookie.toCookieString should equal("theName=theValue")
+    }
+
     "have a dot in front of the domain when set" in {
       val cookie = Cookie("cookiename", "value1")(CookieOptions(domain = "nowhere.com"))
+      cookie.toCookieString should equal("cookiename=value1; Domain=.nowhere.com")
+    }
+    "have a dot in front of the domain when set (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(domain = "nowhere.com")
       cookie.toCookieString should equal("cookiename=value1; Domain=.nowhere.com")
     }
 
     "prefix a path with / if a path is set" in {
       val cookie = Cookie("cookiename", "value1")(CookieOptions(path = "path/to/resource"))
+      cookie.toCookieString should equal("cookiename=value1; Path=/path/to/resource")
+    }
+    "prefix a path with / if a path is set (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(path = "path/to/resource")
       cookie.toCookieString should equal("cookiename=value1; Path=/path/to/resource")
     }
 
@@ -29,9 +42,18 @@ class CookieTest extends WordSpec with Matchers with BeforeAndAfterAll {
       val dateString = Cookie.formatExpires(new Date(Cookie.currentTimeMillis + 86700000))
       cookie.toCookieString should equal("cookiename=value1; Expires=" + dateString)
     }
+    "have a maxAge when the value is >= 0 (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(maxAge = 86700)
+      val dateString = Cookie.formatExpires(new Date(Cookie.currentTimeMillis + 86700000))
+      cookie.toCookieString should equal("cookiename=value1; Expires=" + dateString)
+    }
 
     "set the comment when a comment is given" in {
       val cookie = Cookie("cookiename", "value1")(CookieOptions(comment = "This is the comment"))
+      cookie.toCookieString should equal("cookiename=value1; Comment=This is the comment")
+    }
+    "set the comment when a comment is given (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(comment = "This is the comment")
       cookie.toCookieString should equal("cookiename=value1; Comment=This is the comment")
     }
 
@@ -39,9 +61,17 @@ class CookieTest extends WordSpec with Matchers with BeforeAndAfterAll {
       val cookie = Cookie("cookiename", "value1")(CookieOptions(secure = true))
       cookie.toCookieString should equal("cookiename=value1; Secure")
     }
+    "flag the cookie as secure if needed (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(secure = true)
+      cookie.toCookieString should equal("cookiename=value1; Secure")
+    }
 
     "flag the cookie as http only if needed" in {
       val cookie = Cookie("cookiename", "value1")(CookieOptions(httpOnly = true))
+      cookie.toCookieString should equal("cookiename=value1; HttpOnly")
+    }
+    "flag the cookie as http only if needed (2)" in {
+      val cookie = Cookie("cookiename", "value1").withOptions(httpOnly = true)
       cookie.toCookieString should equal("cookiename=value1; HttpOnly")
     }
 
@@ -54,6 +84,21 @@ class CookieTest extends WordSpec with Matchers with BeforeAndAfterAll {
         secure = true,
         httpOnly = true
       ))
+      val d = new Date(Cookie.currentTimeMillis + 15500 * 1000)
+      cookie.toCookieString should
+        equal("cookiename=value3; Domain=.nowhere.com; Path=/path/to/page; Comment=the cookie thingy comment; " +
+          "Expires=" + Cookie.formatExpires(d) + "; Secure; HttpOnly")
+    }
+
+    "render a cookie with all options set (2)" in {
+      val cookie = Cookie("cookiename", "value3").withOptions(
+        domain = "nowhere.com",
+        path = "path/to/page",
+        comment = "the cookie thingy comment",
+        maxAge = 15500,
+        secure = true,
+        httpOnly = true
+      )
       val d = new Date(Cookie.currentTimeMillis + 15500 * 1000)
       cookie.toCookieString should
         equal("cookiename=value3; Domain=.nowhere.com; Path=/path/to/page; Comment=the cookie thingy comment; " +
