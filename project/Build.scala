@@ -155,7 +155,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.M4"       % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC1"      % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -184,7 +184,7 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"            % "3.0.3",
+        "com.typesafe.slick" %% "slick"            % "3.1.0-RC2",
         "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
         "com.h2database"     %  "h2"               % "1.4.189",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
