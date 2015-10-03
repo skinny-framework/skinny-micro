@@ -16,7 +16,7 @@ object SkinnyMicroBuild extends Build {
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.12"
   lazy val jacksonVersion = "2.6.1"
-  lazy val akkaVersion = "2.3.14"
+  lazy val akkaVersion = "2.3.14" // TODO: 2.4
   lazy val scalaTestVersion = "2.2.5"
 
   lazy val baseSettings = Seq(
@@ -130,7 +130,7 @@ object SkinnyMicroBuild extends Build {
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
         "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
-        "org.joda"          %  "joda-convert"       % "1.7"               % Compile,
+        "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
         "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
@@ -184,7 +184,7 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"            % "3.1.0-RC2",
+        "com.typesafe.slick" %% "slick"            % "3.1.0-RC3",
         "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
         "com.h2database"     %  "h2"               % "1.4.189",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
