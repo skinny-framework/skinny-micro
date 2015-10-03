@@ -6,9 +6,9 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.13"
+  lazy val currentVersion = "0.9.14-SNAPSHOT"
 
-  lazy val json4SVersion = "3.3.0.RC6"
+  lazy val json4SVersion = "3.3.0"
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
