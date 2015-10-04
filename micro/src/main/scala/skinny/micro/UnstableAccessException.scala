@@ -11,6 +11,10 @@ class UnstableAccessException(attribute: String)
 object UnstableAccessException {
 
   def message(attribute: String): String = {
+    val workaround = {
+      if (attribute == "getSession") "Or, if you accept the risk, set the web controller's #useMostlyStableHttpSession as false (default: true)."
+      else "Or, if you accept the risk, set the web controller's #unstableAccessValidationEnabled as false (default: true)."
+    }
     s"""
       |
       |------------------------------------------------------
@@ -23,7 +27,7 @@ object UnstableAccessException {
       |
       |  Fix your code to copy needed values from $attribute as read-only ones before entering Future blocks.
       |
-      |  Or, if you accept the risk, set the web controller's #unstableAccessValidationEnabled as false (default: true).
+      |  $workaround
       |
       |------------------------------------------------------
       |""".stripMargin

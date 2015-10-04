@@ -36,7 +36,8 @@ trait FlashMapSupport
 
   abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     withRequest(req) {
-      val context = SkinnyContext.build(servletContext, req, res, UnstableAccessValidation(unstableAccessValidationEnabled))
+      val context = SkinnyContext.build(servletContext, req, res,
+        UnstableAccessValidation(unstableAccessValidationEnabled, useMostlyStableHttpSession))
       val f = flash(context)
       val isOutermost = !req.contains(LockKey)
 

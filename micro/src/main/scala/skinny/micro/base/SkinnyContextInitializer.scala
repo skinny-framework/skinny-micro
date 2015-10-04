@@ -57,7 +57,10 @@ trait SkinnyContextInitializer {
           ctx,
           req.value,
           resp.value,
-          UnstableAccessValidation(unstableAccessValidationEnabled)
+          UnstableAccessValidation(
+            unstableAccessValidationEnabled,
+            useMostlyStableHttpSession
+          )
         )
       case _ =>
         // If the dynamic variables are None, this code is running on another thread
