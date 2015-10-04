@@ -2,10 +2,11 @@ package example
 
 import org.scalatra.test.scalatest.ScalatraFlatSpec
 import skinny.micro.AsyncSkinnyMicroServlet
+import scala.collection.JavaConverters._
 
 import scala.concurrent.Future
 
-class StableSessionSpec extends ScalatraFlatSpec {
+class MostlyStableHttpSessionSpec extends ScalatraFlatSpec {
 
   addServlet(new AsyncSkinnyMicroServlet {
     override def useMostlyStableHttpSession = true
@@ -30,6 +31,12 @@ class StableSessionSpec extends ScalatraFlatSpec {
       Future {
         session.setAttribute("bar", params.get("value").orNull[String])
         session.getAttribute("bar")
+      }
+    }
+
+    get("/names") { implicit ctx =>
+      Future {
+        session.getAttributeNames.asScala.mkString(",")
       }
     }
 
@@ -69,6 +76,24 @@ class StableSessionSpec extends ScalatraFlatSpec {
       get("/app/bar") {
         status should equal(200)
         body should equal("12345")
+      }
+    }
+
+    get("/app/names") {
+      status should equal(200)
+      body should equal("")
+    }
+
+    session {
+      get("/app/foo") {
+        status should equal(200)
+      }
+      put("/app/bar", Map("value" -> "skinny-micro")) {
+        status should equal(200)
+      }
+      get("/app/names") {
+        status should equal(200)
+        body should equal("foo,bar")
       }
     }
   }

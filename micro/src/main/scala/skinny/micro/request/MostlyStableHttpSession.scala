@@ -59,17 +59,35 @@ case class MostlyStableHttpSession(request: HttpServletRequest) extends HttpSess
 
   private[this] def unsupportedOperationError(msg: String) = throw new UnsupportedOperationException(msg)
 
-  override def getValue(name: String): AnyRef = attributes.get(name).map(_.asInstanceOf[AnyRef]).orNull[AnyRef]
+  override def getValue(name: String): AnyRef = {
+    val value = attributes.get(name).map(_.asInstanceOf[AnyRef]).orNull[AnyRef]
+    if (value == null && isUnderlyingAvailable) {
+      try {
+        val v = underlying.getAttribute(name)
+        if (v != null) {
+          attributes.put(name, v)
+        }
+        v
+      } catch { case NonFatal(_) => value }
+    } else {
+      value
+    }
+  }
 
   override def isNew: Boolean = _isNew
 
-  override def getValueNames: Array[String] = attributes.keys.toArray
+  override def getValueNames: Array[String] = {
+    val names: Array[String] = Option(attributes.keys).map(_.toArray).getOrElse(Array.empty)
+    if (isUnderlyingAvailable) {
+      (Option(underlying.getAttributeNames).map(_.asScala ++ names).getOrElse(Seq.empty)).toArray.distinct
+    } else {
+      names
+    }
+  }
 
   override def getLastAccessedTime: Long = createdTime.getTime
 
-  override def putValue(name: String, value: scala.Any): Unit = {
-    attributes.put(name, value)
-  }
+  override def putValue(name: String, value: scala.Any): Unit = setAttribute(name, value)
 
   override def getSessionContext: HttpSessionContext = unsupportedOperationError("#getSessionContext is unsupported")
 
@@ -93,7 +111,9 @@ case class MostlyStableHttpSession(request: HttpServletRequest) extends HttpSess
     }
   }
 
-  override def getAttributeNames: java.util.Enumeration[String] = Collections.enumeration(attributes.keys.toList.asJava)
+  override def getAttributeNames: java.util.Enumeration[String] = {
+    Collections.enumeration(getValueNames.toList.asJava)
+  }
 
   override def setAttribute(name: String, value: Any): Unit = {
     attributes.put(name, value)
