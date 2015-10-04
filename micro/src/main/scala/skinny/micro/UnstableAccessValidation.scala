@@ -5,4 +5,5 @@ package skinny.micro
  */
 case class UnstableAccessValidation(
   enabled: Boolean,
+  useMostlyStableHttpSession: Boolean,
   createdThreadId: Long = Thread.currentThread.getId)

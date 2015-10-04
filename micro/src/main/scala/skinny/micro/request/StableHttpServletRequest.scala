@@ -5,6 +5,7 @@ import java.security.Principal
 import java.util.Locale
 import javax.servlet._
 import javax.servlet.http._
+import skinny.logging.LoggerProvider
 import skinny.micro.{ UnstableAccessException, UnstableAccessValidation }
 
 import scala.collection.JavaConverters._
@@ -24,7 +25,14 @@ import scala.util.Try
 class StableHttpServletRequest(
   private val underlying: HttpServletRequest,
   private val unstableAccessValidation: UnstableAccessValidation)
-    extends HttpServletRequestWrapper(underlying) {
+    extends HttpServletRequestWrapper(underlying) with LoggerProvider {
+
+  private[this] var stableHttpSession: Option[HttpSession] = {
+    Option(underlying.getSession(false)) match {
+      case Some(_) => Some(MostlyStableHttpSession(underlying))
+      case _ => None
+    }
+  }
 
   private[this] def ensureStableAccessStrictly(attributeName: String): Unit = {
     if (unstableAccessValidation.enabled) {
@@ -183,14 +191,32 @@ class StableHttpServletRequest(
   private[this] val _getUserPrincipal = underlying.getUserPrincipal
   override def getUserPrincipal: Principal = _getUserPrincipal
 
-  // should not cache the value: java.lang.IllegalStateException: No SessionManager
+  // should not simply cache the value: java.lang.IllegalStateException: No SessionManager
+  private[this] def getOrInitializeSession(create: Boolean): HttpSession = {
+    stableHttpSession.synchronized {
+      stableHttpSession.getOrElse {
+        val session = MostlyStableHttpSession(underlying)
+        stableHttpSession = Some(session)
+        session
+      }
+    }
+  }
   override def getSession: HttpSession = {
-    ensureStableAccessStrictly("getSession")
-    underlying.getSession
+    if (unstableAccessValidation.useMostlyStableHttpSession) {
+      getOrInitializeSession(false)
+    } else {
+      ensureStableAccessStrictly("getSession")
+      underlying.getSession
+    }
   }
   override def getSession(create: Boolean): HttpSession = {
-    ensureStableAccessStrictly("getSession")
-    underlying.getSession(create)
+    if (unstableAccessValidation.useMostlyStableHttpSession) {
+      // NOTE: this operation cannot be completely safe
+      getOrInitializeSession(create)
+    } else {
+      ensureStableAccessStrictly("getSession")
+      underlying.getSession(create)
+    }
   }
 
   override def authenticate(response: HttpServletResponse): Boolean = {

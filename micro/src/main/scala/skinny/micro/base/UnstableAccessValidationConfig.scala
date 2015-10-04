@@ -10,4 +10,9 @@ trait UnstableAccessValidationConfig {
    */
   protected def unstableAccessValidationEnabled: Boolean = true
 
+  /**
+   * Enables mostly stable Servlet HttpSession implementation instead.
+   */
+  protected def useMostlyStableHttpSession: Boolean = false
+
 }

@@ -8,7 +8,7 @@ class UrlSupportTest extends ScalatraFunSuite {
 
   addServlet(new SkinnyMicroServlet {
     get("/") {
-      if (params.contains("session")) session // trigger a jsessionid
+      if (params.contains("session")) session // Scalatra's test case: trigger a jsessionid
       this.url(params("url"), params - "url", absolutize = false)
     }
 
@@ -66,7 +66,8 @@ class UrlSupportTest extends ScalatraFunSuite {
 
   test("encodes URL through response") {
     session {
-      url("foo", Map("session" -> "session")) should include("jsessionid=")
+      // NOTE: skinny-micro never appends jsessionid
+      url("foo", Map("session" -> "session")) should not include ("jsessionid=")
     }
   }
 }

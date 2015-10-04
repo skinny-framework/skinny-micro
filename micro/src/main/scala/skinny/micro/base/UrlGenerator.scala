@@ -19,10 +19,6 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
     }
   }
 
-  private[this] def appendSessionIdToUri(uri: String)(implicit ctx: SkinnyContext): String = {
-    ctx.response.encodeURL(uri)
-  }
-
   def relativeUrl(
     path: String,
     params: Iterable[(String, Any)] = Iterable.empty,
@@ -49,8 +45,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
     params: Iterable[(String, Any)] = Iterable.empty,
     includeContextPath: Boolean = true,
     includeServletPath: Boolean = true,
-    absolutize: Boolean = true,
-    withSessionId: Boolean = true)(implicit ctx: SkinnyContext): String = {
+    absolutize: Boolean = true)(implicit ctx: SkinnyContext): String = {
     try {
       val newPath = path match {
         case x if x.startsWith("/") && includeContextPath && includeServletPath =>
@@ -70,7 +65,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
         case (key, value) => key.urlEncode + "=" + value.toString.urlEncode
       }
       val queryString = if (pairs.isEmpty) "" else pairs.mkString("?", "&", "")
-      if (withSessionId) appendSessionIdToUri(newPath + queryString)(ctx) else newPath + queryString
+      newPath + queryString
     } catch {
       case e: NullPointerException =>
         // FIXME: 2.0.0 still has this issue.
