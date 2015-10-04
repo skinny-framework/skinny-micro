@@ -1,5 +1,4 @@
 import sbt._, Keys._
-import skinny.scalate.ScalatePlugin._, ScalateKeys._
 import skinny.servlet._, ServletPlugin._, ServletKeys._
 
 import scala.language.postfixOps
@@ -38,6 +37,7 @@ object SkinnyMicroBuild extends Build {
     incOptions := incOptions.value.withNameHashing(true),
     logBuffered in Test := false,
     javaOptions in Test ++= Seq("-Dskinny.env=test"),
+    fork in Test := true,
     updateOptions := updateOptions.value.withCachedResolution(true),
     javacOptions ++= Seq("-source", "1.7", "-target", "1.7", "-encoding", "UTF-8", "-Xlint:-options"),
     javacOptions in doc := Seq("-source", "1.7"),
