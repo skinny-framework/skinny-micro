@@ -12,10 +12,10 @@ Taking a look at [skinny-micro-heroku-example](https://github.com/skinny-framewo
 
 ### Library Dependencies
 
-When you start new sbt project, add the following dependencies like this:
+When you start new sbt project, add the following dependencies:
 
 ```scala
-lazy val skinnyMicroVersion = "0.9.13"
+lazy val skinnyMicroVersion = "0.9.+"
 
 libraryDependencies ++= Seq(
   // micro Web framework
@@ -40,13 +40,13 @@ Please also see more examples under [samples](https://github.com/skinny-framewor
 
 ### Simple Application
 
-The following is a minimum simple Servlet example. `skinny.micro.SkinnyListener` initializes Skinny Micro's environment.
+The following is a minimum Servlet example. `skinny.micro.SkinnyListener` initializes Skinny Micro's environment.
 
-As same as Scalatra, `_root_.Bootstrap` class (instead of `ScalatraBootstrap` for Scalatra) is detected by default. Of course, you can change the name of the Bootstrap class by configuring with an init parameter.
+As same as Scalatra, `_root_.Bootstrap` class (instead of `_root_.ScalatraBootstrap` for Scalatra) is detected by default. If you'd like to change the name of the `Bootstrap` class, it's also possible by specifying with Servlet's init parameter.
 
-Also take a look at [sbt-servlet-plugin](https://github.com/skinny-framework/sbt-servlet-plugin). The plugin will help you much when building Skinny applications.
+Also take a look at [sbt-servlet-plugin](https://github.com/skinny-framework/sbt-servlet-plugin). The plugin will help you much when building Servlet applications in Scala.
 
-See [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) too for details.
+See [samples](https://github.com/skinny-framework/skinny-micro/tree/master/samples) for more examples.
 
 #### src/main/scala/app.scala
 
@@ -117,7 +117,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 /***
 scalaVersion := "2.11.7"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.13"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "0.9.+"
 */
 import skinny.micro._
 object HelloApp extends WebApp {
