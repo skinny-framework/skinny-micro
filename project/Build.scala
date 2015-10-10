@@ -184,7 +184,7 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"            % "3.1.0-RC3",
+        "com.typesafe.slick" %% "slick"            % "3.1.0",
         "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
         "com.h2database"     %  "h2"               % "1.4.189",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
