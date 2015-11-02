@@ -36,7 +36,7 @@ class MostlyStableHttpSessionSpec extends ScalatraFlatSpec {
 
     get("/names") { implicit ctx =>
       Future {
-        session.getAttributeNames.asScala.mkString(",")
+        session.getAttributeNames.asScala.toSeq.sorted.mkString(",")
       }
     }
 
@@ -93,7 +93,7 @@ class MostlyStableHttpSessionSpec extends ScalatraFlatSpec {
       }
       get("/app/names") {
         status should equal(200)
-        body should equal("foo,bar")
+        body should equal("bar,foo")
       }
     }
   }

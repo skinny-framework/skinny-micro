@@ -5,7 +5,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "0.9.14"
+  lazy val currentVersion = "1.0.0.RC1"
 
   lazy val json4SVersion = "3.3.0"
   lazy val scalatraTestVersion = "2.3.1"
@@ -14,7 +14,7 @@ object SkinnyMicroBuild extends Build {
   lazy val jettyVersion = "9.2.13.v20150730"
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.12"
-  lazy val jacksonVersion = "2.6.1"
+  lazy val jacksonVersion = "2.6.3"
   lazy val akkaVersion = "2.3.14" // TODO: 2.4
   lazy val scalaTestVersion = "2.2.5"
 
@@ -116,7 +116,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-jackson-xml",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-        "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % "2.6.2"             % Compile,
+        "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
         "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
         "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
         "com.typesafe.akka"                %% "akka-actor"             % akkaVersion         % Test,
@@ -129,7 +129,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.8.2"             % Compile,
+        "joda-time"         %  "joda-time"          % "2.9"               % Compile,
         "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
