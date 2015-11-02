@@ -123,6 +123,10 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
 
   def header(name: String): Option[String] = Option(r.getHeader(name))
 
+  def headers(name: String): Seq[String] = Option(r.getHeaders(name)).map(_.asScala.toSeq).getOrElse(Seq.empty)
+
+  def headerNames: Seq[String] = Option(r.getHeaderNames).map(_.asScala.toSeq).getOrElse(Seq.empty)
+
   /**
    * Returns the name of the character encoding of the body, or None if no
    * character encoding is specified.
