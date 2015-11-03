@@ -5,7 +5,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.0.RC1"
+  lazy val currentVersion = "1.0.0.RC2"
 
   lazy val json4SVersion = "3.3.0"
   lazy val scalatraTestVersion = "2.3.1"
@@ -155,7 +155,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC1"      % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC2"      % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -186,7 +186,7 @@ object SkinnyMicroBuild extends Build {
       libraryDependencies ++= Seq(
         "com.typesafe.slick" %% "slick"            % "3.1.0",
         "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
-        "com.h2database"     %  "h2"               % "1.4.189",
+        "com.h2database"     %  "h2"               % "1.4.190",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
     )
