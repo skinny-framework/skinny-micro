@@ -54,6 +54,16 @@ class StableRequestSpec extends ScalatraFlatSpec {
         request.getSession
       }
     }
+    get("/cookie") { implicit ctx =>
+      Future {
+        request.cookie("cookie-name")
+      }
+    }
+    get("/multiCookie") { implicit ctx =>
+      Future {
+        request.multiCookie("cookie-name")
+      }
+    }
   }, "/app/*")
 
   it should "handle request attributes" in {
@@ -110,6 +120,22 @@ class StableRequestSpec extends ScalatraFlatSpec {
     (1 to 20).foreach { _ =>
       get("/app/getSession/ng") {
         status should equal(500)
+      }
+    }
+  }
+  it should "return cookie value" in {
+    (1 to 20).foreach { _ =>
+      get("/app/cookie", Map.empty, Map("Cookie" -> "cookie-name=foo")) {
+        status should equal(200)
+        body should equal("Some(foo)")
+      }
+    }
+  }
+  it should "return multiCookie value" in {
+    (1 to 20).foreach { _ =>
+      get("/app/multiCookie", Map.empty, Map("Cookie" -> "cookie-name=foo")) {
+        status should equal(200)
+        body should equal("ArrayBuffer(foo)")
       }
     }
   }

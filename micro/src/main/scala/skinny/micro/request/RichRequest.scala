@@ -218,8 +218,8 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
   def isWrite: Boolean = !HttpMethod(r.getMethod).isSafe
 
   /**
-   * Returns a map of cookie names to lists of their values.  The default
-   * value of the map is the empty sequence.
+   * Returns a map of cookie names to lists of their values.
+   * The default value of the map is the empty sequence.
    */
   def multiCookies: MultiMap = {
     val rr = Option(r.getCookies).getOrElse(Array()).toSeq.
@@ -230,6 +230,15 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
   }
 
   /**
+   * Returns values of the request cookie.
+   */
+  def multiCookie(name: String): Seq[String] = {
+    multiCookies.find { case (key, _) => key == name }.
+      map { case (_, value) => value }.
+      getOrElse(Seq.empty)
+  }
+
+  /**
    * Returns a map of cookie names to values.  If multiple values are present
    * for a given cookie, the value is the first cookie of that name.
    */
@@ -237,6 +246,15 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
     new MultiMapHeadView[String, String] {
       override protected def multiMap = multiCookies
     }
+  }
+
+  /**
+   * Returns a value of the request cookie.
+   */
+  def cookie(name: String): Option[String] = {
+    cookies.
+      find { case (key, _) => key == name }.
+      map { case (_, value) => value }
   }
 
   protected[skinny] def attributes: HttpServletRequest = r
