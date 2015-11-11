@@ -13,7 +13,7 @@ object SkinnyMicroBuild extends Build {
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.13.v20150730"
   lazy val logbackVersion = "1.1.3"
-  lazy val slf4jApiVersion = "1.7.12"
+  lazy val slf4jApiVersion = "1.7.13"
   lazy val jacksonVersion = "2.6.3"
   lazy val akkaVersion = "2.3.14" // TODO: 2.4
   lazy val scalaTestVersion = "2.2.5"
@@ -155,7 +155,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC2"      % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC3"      % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
