@@ -129,7 +129,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.9"               % Compile,
+        "joda-time"         %  "joda-time"          % "2.9.1"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
