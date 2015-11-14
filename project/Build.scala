@@ -5,13 +5,13 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.0-SNAPSHOT"
+  lazy val currentVersion = "1.0.0.RC3"
 
   lazy val json4SVersion = "3.3.0"
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
-  lazy val jettyVersion = "9.2.13.v20150730"
+  lazy val jettyVersion = "9.2.14.v20151106"
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.13"
   lazy val jacksonVersion = "2.6.3"
@@ -30,7 +30,6 @@ object SkinnyMicroBuild extends Build {
     scalaVersion := "2.11.7",
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
-    publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { x => false },
     transitiveClassifiers in Global := Seq(Artifact.SourceClassifier),
