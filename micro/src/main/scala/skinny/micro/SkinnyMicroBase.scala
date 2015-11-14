@@ -19,6 +19,7 @@ import skinny.micro.base._
 import skinny.micro.constant._
 import skinny.micro.context.SkinnyContext
 import skinny.micro.control.{ HaltPassControl, PassException, HaltException }
+import skinny.micro.cookie.SweetCookies
 import skinny.micro.implicits._
 import skinny.micro.multipart.FileCharset
 import skinny.micro.routing._
@@ -29,7 +30,7 @@ import skinny.micro.util.UriDecoder
  * Intended to be portable to all supported backends.
  */
 trait SkinnyMicroBase
-    extends CoreHandler
+    extends Handler
     with AsyncSupported // can mix async and thread-based model
     with UnstableAccessValidationConfig
     with RedirectionDsl
@@ -78,7 +79,33 @@ trait SkinnyMicroBase
   /**
    * Default charset.
    */
-  lazy val charset: Option[String] = Some("utf-8")
+  lazy val charset: Option[String] = Some(defaultCharacterEncoding.toLowerCase)
+
+  /**
+   * The default character encoding for requests and responses.
+   */
+  protected val defaultCharacterEncoding: String = "UTF-8"
+
+  /**
+   * Handles a request and renders a response.
+   *
+   * $ 1. If the request lacks a character encoding, `defaultCharacterEncoding` is set to the request.
+   * $ 2. Sets the response's character encoding to `defaultCharacterEncoding`.
+   * $ 3. Binds the current `request`, `response`, and `multiParams`, and calls `executeRoutes()`.
+   */
+  override def handle(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    // As default, the servlet tries to decode params with ISO_8859-1.
+    // It causes an EOFException if params are actually encoded with the
+    // other code (such as UTF-8)
+    if (request.getCharacterEncoding == null) {
+      request.setCharacterEncoding(defaultCharacterEncoding)
+    }
+    request(Cookie.SweetCookiesKey) = new SweetCookies(request, response)
+    response.characterEncoding = Some(defaultCharacterEncoding)
+    withRequestResponse(request, response) {
+      executeRoutes(request, response)
+    }
+  }
 
   /**
    * Executes routes in the context of the current request and response.

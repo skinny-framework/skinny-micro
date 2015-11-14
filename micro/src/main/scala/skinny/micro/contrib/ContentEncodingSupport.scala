@@ -1,6 +1,8 @@
-package skinny.micro
+package skinny.micro.contrib
 
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+
+import skinny.micro.{ ContentEncoding, ContentNegotiation, Handler, SkinnyMicroBase }
 
 /**
  * SkinnyMicro handler for gzipped responses.
@@ -25,9 +27,9 @@ trait ContentEncodingSupport extends Handler { self: SkinnyMicroBase =>
   /** Decodes the request if necessary. */
   private def decodedRequest(req: HttpServletRequest): HttpServletRequest = {
     (for {
-      name <- Option(req.getHeader("Content-Encoding"))
-      enc <- ContentEncoding.forName(name)
-    } yield enc(req)).getOrElse(req)
+      name: String <- Option(req.getHeader("Content-Encoding"))
+      enc: ContentEncoding <- ContentEncoding.forName(name)
+    } yield enc.apply(req)).getOrElse(req)
   }
 
 }

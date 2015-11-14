@@ -5,8 +5,9 @@ import java.io._
 import org.apache.http.impl.client.{ CloseableHttpClient, HttpClientBuilder }
 import org.scalatest._
 import org.scalatra.test.scalatest.ScalatraFunSuite
+import skinny.micro.contrib.ContentEncodingSupport
 import skinny.micro.routing.RoutingDsl
-import skinny.micro.{ SkinnyMicroBase, SkinnyMicroServlet, ContentEncodingSupport, ContentEncoding }
+import skinny.micro.{ ContentEncoding, SkinnyMicroBase, SkinnyMicroServlet }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
