@@ -19,6 +19,8 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
 
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
     val httpRequest = request.asInstanceOf[HttpServletRequest]
+    setRequestCharacterEncodingAsDefaultIfAbsent(httpRequest)
+
     val httpResponse = response.asInstanceOf[HttpServletResponse]
 
     _filterChain.withValue(chain) {

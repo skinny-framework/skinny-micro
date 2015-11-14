@@ -87,6 +87,16 @@ trait SkinnyMicroBase
   protected val defaultCharacterEncoding: String = "UTF-8"
 
   /**
+   * As default, the servlet tries to decode params with ISO_8859-1.
+   * It causes an EOFException if params are actually encoded with the other code (such as UTF-8)
+   */
+  protected def setRequestCharacterEncodingAsDefaultIfAbsent(request: HttpServletRequest): Unit = {
+    if (request != null && request.getCharacterEncoding == null) {
+      request.setCharacterEncoding(defaultCharacterEncoding)
+    }
+  }
+
+  /**
    * Handles a request and renders a response.
    *
    * $ 1. If the request lacks a character encoding, `defaultCharacterEncoding` is set to the request.
@@ -94,12 +104,7 @@ trait SkinnyMicroBase
    * $ 3. Binds the current `request`, `response`, and `multiParams`, and calls `executeRoutes()`.
    */
   override def handle(request: HttpServletRequest, response: HttpServletResponse): Unit = {
-    // As default, the servlet tries to decode params with ISO_8859-1.
-    // It causes an EOFException if params are actually encoded with the
-    // other code (such as UTF-8)
-    if (request.getCharacterEncoding == null) {
-      request.setCharacterEncoding(defaultCharacterEncoding)
-    }
+    setRequestCharacterEncodingAsDefaultIfAbsent(request)
     request(Cookie.SweetCookiesKey) = new SweetCookies(request, response)
     response.characterEncoding = Some(defaultCharacterEncoding)
     withRequestResponse(request, response) {

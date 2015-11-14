@@ -15,6 +15,7 @@ import scala.util.control.Exception._
 trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
 
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    setRequestCharacterEncodingAsDefaultIfAbsent(request)
     handle(request, response)
   }
 
