@@ -53,7 +53,7 @@ class FutureSupportAfterFilterServlet extends SkinnyMicroServlet {
 
   override def destroy() {
     super.destroy()
-    system.terminate()
+    system.shutdown()
   }
 }
 
