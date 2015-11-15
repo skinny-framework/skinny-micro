@@ -19,6 +19,8 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
 
   def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
     val httpRequest = request.asInstanceOf[HttpServletRequest]
+    // NOTICE: Keep this method invocation here
+    // When doing this in SKinnyMicroBase, www-form-urlencoded body request makes its included multi-byte chars garbled at least on Tomcat 7.
     setRequestCharacterEncodingAsDefaultIfAbsent(httpRequest)
 
     val httpResponse = response.asInstanceOf[HttpServletResponse]

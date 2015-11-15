@@ -15,6 +15,8 @@ import scala.util.control.Exception._
 trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
 
   override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
+    // NOTICE: Keep this method invocation here
+    // When doing this in SKinnyMicroBase, www-form-urlencoded body request makes its included multi-byte chars garbled at least on Tomcat 7.
     setRequestCharacterEncodingAsDefaultIfAbsent(request)
     handle(request, response)
   }
