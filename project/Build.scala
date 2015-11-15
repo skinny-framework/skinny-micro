@@ -15,7 +15,7 @@ object SkinnyMicroBuild extends Build {
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.13"
   lazy val jacksonVersion = "2.6.3"
-  lazy val akkaVersion = "2.3.14" // TODO: 2.4
+  lazy val akkaVersion = "2.4.0"
   lazy val scalaTestVersion = "2.2.5"
 
   lazy val baseSettings = Seq(
@@ -154,7 +154,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC3"      % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC4"      % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -184,7 +184,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
         "com.typesafe.slick" %% "slick"            % "3.1.0",
-        "org.slf4j"          %  "slf4j-nop"        % "1.7.12",
+        "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
         "com.h2database"     %  "h2"               % "1.4.190",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
