@@ -1,3 +1,4 @@
+// The MIT License (MIT)　Copyright (c) 2011 Mojolly Ltd.
 package skinny.micro.rl
 
 import java.util.Locale.ENGLISH
