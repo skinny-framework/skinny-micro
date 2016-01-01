@@ -8,13 +8,14 @@ object SkinnyMicroBuild extends Build {
   lazy val currentVersion = "1.0.1-SNAPSHOT"
 
   lazy val json4SVersion = "3.3.0"
+  // TODO: specs2 breaking changes
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.14.v20151106"
   lazy val logbackVersion = "1.1.3"
   lazy val slf4jApiVersion = "1.7.13"
-  lazy val jacksonVersion = "2.6.3"
+  lazy val jacksonVersion = "2.6.4"
   // Akka 2.4 dropped Scala 2.10 support
   lazy val akkaVersion = "2.3.14"
   lazy val scalaTestVersion = "2.2.5"
@@ -155,7 +156,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.0.RC4"      % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.0.+"          % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -184,7 +185,7 @@ object SkinnyMicroBuild extends Build {
   lazy val samples = Project(id = "samples", base = file("samples"),
     settings = baseSettings ++ Seq(
       libraryDependencies ++= Seq(
-        "com.typesafe.slick" %% "slick"            % "3.1.0",
+        "com.typesafe.slick" %% "slick"            % "3.1.1",
         "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
         "com.h2database"     %  "h2"               % "1.4.190",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
@@ -209,7 +210,7 @@ object SkinnyMicroBuild extends Build {
     "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
   )
   lazy val jacksonDependencies   = Seq(
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion % Compile
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.3" % Compile
   )
   lazy val json4sDependencies = Seq(
     "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
