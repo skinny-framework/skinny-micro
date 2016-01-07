@@ -2,11 +2,36 @@ package skinny.micro.routing
 
 import java.util.concurrent.ConcurrentHashMap
 
+import skinny.micro.base.RouteRegistryAccessor
 import skinny.micro.constant.{ Head, Get, HttpMethod }
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters._
-import scala.collection.concurrent.{ Map => ConcurrentMap }
+import scala.collection.concurrent.{ Map => ConcurrentMap, TrieMap }
+
+object RouteRegistry {
+
+  private[this] val controllerAndRoutes: ConcurrentMap[String, RouteRegistry] = new TrieMap[String, RouteRegistry]()
+
+  def getInstance(webapp: RouteRegistryAccessor): RouteRegistry = {
+    controllerAndRoutes.getOrElseUpdate(webapp.getClass.toString, new RouteRegistry)
+  }
+
+  def init(): Unit = controllerAndRoutes.clear()
+
+  def allRoutes: Seq[RouteRegistry] = controllerAndRoutes.values.toSeq
+
+  def allEntryPoints: Seq[String] = allRoutes.flatMap(_.entryPoints).sortWith(_ < _)
+
+  def allMethodRoutes: Map[HttpMethod, Seq[Route]] = {
+    allRoutes.foldLeft(Map.empty[HttpMethod, Seq[Route]]) {
+      case (all, reg) => all ++ reg.methodRoutes
+    }
+  }
+
+  override def toString: String = allEntryPoints.mkString("\n") + "\n"
+
+}
 
 /**
  * Route registry.
@@ -123,14 +148,15 @@ class RouteRegistry {
   /**
    * List of entry points, made of all route matchers
    */
-  def entryPoints: Seq[String] =
+  def entryPoints: Seq[String] = {
     (for {
       (method, routes) <- _methodRoutes
       route <- routes
-    } yield method + " " + route).toSeq sortWith (_ < _)
+    } yield method + "\t" + route).toSeq.sortWith(_ < _)
+  }
 
   def methodRoutes: Map[HttpMethod, Seq[Route]] = _methodRoutes.clone().toMap
 
-  override def toString: String = entryPoints mkString ", "
+  override def toString: String = entryPoints.mkString("\n") + "\n"
 
 }

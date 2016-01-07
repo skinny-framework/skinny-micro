@@ -10,6 +10,7 @@ class BeforeAfterFilterSpec extends ScalatraFlatSpec {
     before() {
       response.setHeader("x-first", "1")
     }
+    error { case e => e.printStackTrace() }
     get("/first") {
       "first one"
     }
