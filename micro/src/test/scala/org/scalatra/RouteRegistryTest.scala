@@ -16,12 +16,12 @@ object RouteRegistryTestServlet extends SkinnyMicroServlet {
 class RouteRegistryTest extends ScalatraFunSuite {
 
   test("route registry string representation contains the entry points") {
-    RouteRegistryTestServlet.renderRouteRegistry should equal(List(
-      "GET /foo",
-      "GET /nothing [Boolean Guard]",
-      "GET [Boolean Guard]",
-      "POST /foo/:bar",
-      "PUT ^/foo.../bar$"
-    ) mkString ", ")
+    RouteRegistryTestServlet.renderRouteRegistry should equal(Seq(
+      "GET\t/foo",
+      "GET\t/nothing [Boolean Guard]",
+      "GET\t[Boolean Guard]",
+      "POST\t/foo/:bar",
+      "PUT\t^/foo.../bar$"
+    ).mkString("\n") + "\n")
   }
 }

@@ -58,7 +58,7 @@ trait JettyServer extends LoggerProvider {
   private[this] var listener: ServletContextListener = new SkinnyListener
 
   private[this] var _port: Int = {
-    // PORT: Heroku default env varaible
+    // PORT: Heroku default env variable
     Option(System.getenv("PORT")).map(_.toInt).getOrElse(8080)
   }
 

@@ -18,7 +18,7 @@ object SkinnyMicroBuild extends Build {
   lazy val jacksonVersion = "2.6.4"
   // Akka 2.4 dropped Scala 2.10 support
   lazy val akkaVersion = "2.3.14"
-  lazy val scalaTestVersion = "2.2.5"
+  lazy val scalaTestVersion = "2.2.6"
 
   lazy val baseSettings = Seq(
     organization := "org.skinny-framework",

@@ -1,0 +1,49 @@
+package example
+
+import org.scalatest._
+import skinny.micro._
+import skinny.micro.routing.RouteRegistry
+
+class RouteRegistryWithoutBootstrapSpec extends FlatSpec with Matchers {
+
+  RouteRegistry.init()
+
+  private def sayHello(): String = ???
+
+  val app1 = new WebApp {
+    get("/echo")(sayHello)
+    post("/echo")(sayHello)
+
+    get("/routes") {
+      routes.toString
+    }
+    get("/all-routes") {
+      RouteRegistry.toString
+    }
+  }
+  val app2 = new WebApp {
+    get("/hello/:name")(sayHello)
+    post("/good-bye/:name")(sayHello)
+  }
+
+  it should "show routes" in {
+    app1.routes.toString should equal(
+      """GET	/all-routes
+        |GET	/echo
+        |GET	/routes
+        |POST	/echo
+        |""".stripMargin)
+  }
+
+  it should "show all routes" in {
+    RouteRegistry.toString should equal(
+      """GET	/all-routes
+        |GET	/echo
+        |GET	/hello/:name
+        |GET	/routes
+        |POST	/echo
+        |POST	/good-bye/:name
+        |""".stripMargin)
+  }
+
+}
