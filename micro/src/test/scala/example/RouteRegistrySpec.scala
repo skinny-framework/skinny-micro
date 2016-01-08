@@ -57,8 +57,8 @@ class RouteRegistrySpec extends ScalatraFlatSpec {
       body should equal(
         """GET	/all-routes
           |GET	/echo
-          |GET	/routes
           |POST	/echo
+          |GET	/routes
           |""".stripMargin)
     }
   }
@@ -69,10 +69,10 @@ class RouteRegistrySpec extends ScalatraFlatSpec {
       body should equal(
         """GET	/all-routes
           |GET	/echo
-          |GET	/hello/:name
-          |GET	/routes
           |POST	/echo
           |POST	/good-bye/:name
+          |GET	/hello/:name
+          |GET	/routes
           |""".stripMargin)
     }
   }

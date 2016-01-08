@@ -4,12 +4,17 @@ import java.util.concurrent.ConcurrentHashMap
 
 import skinny.micro.base.RouteRegistryAccessor
 import skinny.micro.constant.{ Head, Get, HttpMethod }
+import skinny.micro.routing.RouteRegistry.EntryPoint
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters._
 import scala.collection.concurrent.{ Map => ConcurrentMap, TrieMap }
 
 object RouteRegistry {
+
+  case class EntryPoint(method: HttpMethod, route: Route) {
+    override def toString = s"$method\t$route"
+  }
 
   private[this] val controllerAndRoutes: ConcurrentMap[String, RouteRegistry] = new TrieMap[String, RouteRegistry]()
 
@@ -21,7 +26,7 @@ object RouteRegistry {
 
   def allRoutes: Seq[RouteRegistry] = controllerAndRoutes.values.toSeq
 
-  def allEntryPoints: Seq[String] = allRoutes.flatMap(_.entryPoints).sortWith(_ < _)
+  def allEntryPoints: Seq[EntryPoint] = allRoutes.flatMap(_.entryPoints)
 
   def allMethodRoutes: Map[HttpMethod, Seq[Route]] = {
     allRoutes.foldLeft(Map.empty[HttpMethod, Seq[Route]]) {
@@ -29,7 +34,12 @@ object RouteRegistry {
     }
   }
 
-  override def toString: String = allEntryPoints.mkString("\n") + "\n"
+  override def toString: String = {
+    allEntryPoints
+      .sortWith { (a, b) => s"${a.route}\t${a.method}" < s"${b.route}\t${b.method}" }
+      .map(_.toString)
+      .mkString("\n") + "\n"
+  }
 
 }
 
@@ -148,15 +158,20 @@ class RouteRegistry {
   /**
    * List of entry points, made of all route matchers
    */
-  def entryPoints: Seq[String] = {
+  def entryPoints: Seq[EntryPoint] = {
     (for {
       (method, routes) <- _methodRoutes
       route <- routes
-    } yield method + "\t" + route).toSeq.sortWith(_ < _)
+    } yield EntryPoint(method, route)).toSeq
   }
 
   def methodRoutes: Map[HttpMethod, Seq[Route]] = _methodRoutes.clone().toMap
 
-  override def toString: String = entryPoints.mkString("\n") + "\n"
+  override def toString: String = {
+    entryPoints
+      .sortWith { (a, b) => s"${a.route}\t${a.method}" < s"${b.route}\t${b.method}" }
+      .map(_.toString)
+      .mkString("\n") + "\n"
+  }
 
 }

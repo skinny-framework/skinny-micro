@@ -69,7 +69,7 @@ trait Handler
   }
 
   private[this] def allRoutePaths: Seq[String] = {
-    routes.entryPoints
+    routes.entryPoints.map(_.toString)
       .flatMap(_.split("\\s+").tail.headOption.map(_.split("[:\\?]+").head))
       .distinct
       .flatMap { path =>
