@@ -18,9 +18,9 @@ class RouteRegistryTest extends ScalatraFunSuite {
   test("route registry string representation contains the entry points") {
     RouteRegistryTestServlet.renderRouteRegistry should equal(Seq(
       "GET\t/foo",
+      "POST\t/foo/:bar",
       "GET\t/nothing [Boolean Guard]",
       "GET\t[Boolean Guard]",
-      "POST\t/foo/:bar",
       "PUT\t^/foo.../bar$"
     ).mkString("\n") + "\n")
   }

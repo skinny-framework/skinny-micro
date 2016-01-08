@@ -30,20 +30,20 @@ class RouteRegistryWithoutBootstrapSpec extends FlatSpec with Matchers {
     app1.routes.toString should equal(
       """GET	/all-routes
         |GET	/echo
-        |GET	/routes
         |POST	/echo
+        |GET	/routes
         |""".stripMargin)
   }
 
   it should "show all routes" in {
     RouteRegistry.toString should equal(
       """GET	/all-routes
-        |GET	/echo
-        |GET	/hello/:name
-        |GET	/routes
-        |POST	/echo
-        |POST	/good-bye/:name
-        |""".stripMargin)
+          |GET	/echo
+          |POST	/echo
+          |POST	/good-bye/:name
+          |GET	/hello/:name
+          |GET	/routes
+          |""".stripMargin)
   }
 
 }
