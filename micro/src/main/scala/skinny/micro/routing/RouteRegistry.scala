@@ -19,7 +19,7 @@ object RouteRegistry {
   private[this] val controllerAndRoutes: ConcurrentMap[String, RouteRegistry] = new TrieMap[String, RouteRegistry]()
 
   def getInstance(webapp: RouteRegistryAccessor): RouteRegistry = {
-    controllerAndRoutes.getOrElseUpdate(webapp.getClass.toString, new RouteRegistry)
+    controllerAndRoutes.getOrElseUpdate(webapp.toString, new RouteRegistry)
   }
 
   def init(): Unit = controllerAndRoutes.clear()
