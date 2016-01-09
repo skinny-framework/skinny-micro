@@ -38,6 +38,7 @@ object RouteRegistry {
     allEntryPoints
       .sortWith { (a, b) => s"${a.route}\t${a.method}" < s"${b.route}\t${b.method}" }
       .map(_.toString)
+      .distinct
       .mkString("\n") + "\n"
   }
 
@@ -171,6 +172,7 @@ class RouteRegistry {
     entryPoints
       .sortWith { (a, b) => s"${a.route}\t${a.method}" < s"${b.route}\t${b.method}" }
       .map(_.toString)
+      .distinct
       .mkString("\n") + "\n"
   }
 
