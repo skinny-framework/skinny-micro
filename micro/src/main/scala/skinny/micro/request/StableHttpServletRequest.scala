@@ -259,7 +259,7 @@ class StableHttpServletRequest(
 
   override def getParameterNames: java.util.Enumeration[String] = _getParameterNames
   override def getParameterMap: java.util.Map[String, Array[String]] = _getParameterMap
-  override def getParameter(name: String): String = Option(getParameterMap.get(name)).map(_.headOption.orNull[String]).orNull[String]
+  override def getParameter(name: String): String = Option(getParameterMap.get(name)).flatMap(_.headOption).orNull[String]
   override def getParameterValues(name: String): Array[String] = getParameterMap.get(name)
 
   override def getRequestDispatcher(path: String): RequestDispatcher = underlying.getRequestDispatcher(path)
