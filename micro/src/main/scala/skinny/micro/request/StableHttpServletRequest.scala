@@ -2,6 +2,7 @@ package skinny.micro.request
 
 import java.io.BufferedReader
 import java.security.Principal
+import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.servlet._
 import javax.servlet.http._
@@ -316,6 +317,18 @@ class StableHttpServletRequest(
       .map(_.asScala.map(name => name -> underlying.getHeaders(name)).filterNot { case (_, v) => v == null }.toMap)
       .getOrElse(Map.empty)
   }
+  private[this] val _cachedGetDateHeaders: Map[String, Long] = {
+    Option(underlying.getHeaderNames)
+      .map {
+        _.asScala.map(name => name -> Try(underlying.getDateHeader(name)).toOption)
+          .filter { case (_, v) => v.isDefined }
+          .map { case (k: String, opt: Option[Long]) => k -> opt.getOrElse(unexpectedStateError) }
+          .toMap
+      }.getOrElse(Map.empty)
+  }
+  private[this] def unexpectedStateError = {
+    throw new IllegalStateException("This is a skinny-micro's bug. Please report us here: https://github.com/skinny-framework/skinny-micro/issues")
+  }
 
   override def getHeaderNames: java.util.Enumeration[String] = _getHeaderNames
   override def getHeader(name: String): String = _cachedGetHeader.get(name).orNull[String]
@@ -329,7 +342,11 @@ class StableHttpServletRequest(
   }
   override def getDateHeader(name: String): Long = {
     // -1 if the named header was not included with the request
-    _cachedGetHeader.get(name).map(_.toLong).getOrElse(-1L)
+    _cachedGetDateHeaders.getOrElse(name,
+      _cachedGetHeader.get(name)
+        .flatMap(date => Try(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").parse(date).getTime).toOption)
+        .getOrElse(-1L)
+    )
   }
 }
 
