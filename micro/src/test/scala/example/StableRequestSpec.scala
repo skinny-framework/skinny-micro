@@ -100,8 +100,39 @@ class StableRequestSpec extends ScalatraFlatSpec {
       }
     }
   }
-  it should "handle getDateHeader" in {
+  it should "handle getDateHeader with RFC1123 format values" in {
     get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Fri, 08 Jan 2016 10:52:30 GMT")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+  it should "handle getDateHeader with format 2" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Friday, 08-Jan-16 10:52:30 GMT")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+  it should "handle getDateHeader with format 3" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Fri January 08 10:52:30 2016")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+
+  it should "handle getDateHeader for IE10 1" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Fri, 08 Jan 2016 10:52:30 GMT; length=13774")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+  it should "handle getDateHeader for IE10 2" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Friday, 08-Jan-16 10:52:30 GMT; length=13774")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+  it should "handle getDateHeader for IE10 3" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Fri January 08 10:52:30 2016; length=13774")) {
       status should equal(200)
       body should equal("1452250350000")
     }

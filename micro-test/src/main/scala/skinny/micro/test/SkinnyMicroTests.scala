@@ -14,4 +14,3 @@ trait SkinnyMicroTests
     with HttpComponentsClient {
 
 }
-
