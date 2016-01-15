@@ -8,6 +8,11 @@ import scala.concurrent.Future
 class StableRequestSpec extends ScalatraFlatSpec {
 
   addServlet(new AsyncSkinnyMicroServlet {
+    //    error { case e: Throwable =>
+    //        e.printStackTrace()
+    //        throw e
+    //    }
+
     get("/foo") { implicit ctx =>
       request.setAttribute("foo", "bar")
       Future {
@@ -26,6 +31,9 @@ class StableRequestSpec extends ScalatraFlatSpec {
         Thread.sleep(100) // To get the container to give up the request
         request.getHeader("X-REQUEST-ID")
       }
+    }
+    get("/getDateHeader") { implicit ctx =>
+      request.getDateHeader("If-Modified-Since")
     }
     get("/getPathInfo") { implicit ctx =>
       Future {
@@ -92,6 +100,13 @@ class StableRequestSpec extends ScalatraFlatSpec {
       }
     }
   }
+  it should "handle getDateHeader" in {
+    get(uri = "/app/getDateHeader", headers = Map("If-Modified-Since" -> "Fri, 08 Jan 2016 10:52:30 GMT")) {
+      status should equal(200)
+      body should equal("1452250350000")
+    }
+  }
+
   it should "handle getPathInfo" in {
     (1 to 20).foreach { _ =>
       get("/app/getPathInfo") {
