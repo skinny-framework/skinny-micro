@@ -5,7 +5,7 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.2"
+  lazy val currentVersion = "1.0.3-SNAPSHOT"
 
   lazy val json4SVersion = "3.3.0"
   // TODO: specs2 breaking changes
