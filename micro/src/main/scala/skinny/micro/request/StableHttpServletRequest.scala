@@ -2,7 +2,7 @@ package skinny.micro.request
 
 import java.io.BufferedReader
 import java.security.Principal
-import java.text.SimpleDateFormat
+import java.text.{ DateFormat, SimpleDateFormat }
 import java.util.Locale
 import javax.servlet._
 import javax.servlet.http._
@@ -317,17 +317,15 @@ class StableHttpServletRequest(
       .map(_.asScala.map(name => name -> underlying.getHeaders(name)).filterNot { case (_, v) => v == null }.toMap)
       .getOrElse(Map.empty)
   }
-  private[this] val _cachedGetDateHeaders: Map[String, Long] = {
+  private[this] val _cachedGetDateHeaders: Map[String, Option[Long]] = {
     Option(underlying.getHeaderNames)
-      .map {
-        _.asScala.map(name => name -> Try(underlying.getDateHeader(name)).toOption)
-          .filter { case (_, v) => v.isDefined }
-          .map { case (k: String, opt: Option[Long]) => k -> opt.getOrElse(unexpectedStateError) }
-          .toMap
+      .map { names =>
+        names.asScala.map { name =>
+          // NOTE: Treat "-1" as None to try skinny-micro's parser later - see also: #getDateHeader(String)
+          val maybeValue = Try(underlying.getDateHeader(name)).toOption.filter(_ != getDateHeaderDefaultValue)
+          name -> maybeValue
+        }.toMap
       }.getOrElse(Map.empty)
-  }
-  private[this] def unexpectedStateError = {
-    throw new IllegalStateException("This is a skinny-micro's bug. Please report us here: https://github.com/skinny-framework/skinny-micro/issues")
   }
 
   override def getHeaderNames: java.util.Enumeration[String] = _getHeaderNames
@@ -342,12 +340,39 @@ class StableHttpServletRequest(
   }
   override def getDateHeader(name: String): Long = {
     // -1 if the named header was not included with the request
-    _cachedGetDateHeaders.getOrElse(name,
-      _cachedGetHeader.get(name)
-        .flatMap(date => Try(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz").parse(date).getTime).toOption)
-        .getOrElse(-1L)
-    )
+    _cachedGetDateHeaders.get(name) match {
+      case Some(Some(found)) => found
+      case _ => _cachedGetHeader.get(name).flatMap(parseDateHeader).getOrElse(getDateHeaderDefaultValue)
+    }
   }
+
+  private[this] val getDateHeaderDefaultValue: Long = -1L
+
+  // https://github.com/apache/tomcat/blob/TOMCAT_8_0_0/java/org/apache/catalina/connector/Request.java#L178-L180
+  // https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/savedrequest/SavedRequestAwareWrapper.java#L84-L86
+  private[this] def dateHeaderFormats: Array[DateFormat] = Array(
+    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), // RFC1123
+    new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
+    new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
+  )
+
+  private[this] def parseDateHeader(headerValue: String): Option[Long] = {
+    if (headerValue == null) {
+      None
+    } else {
+      // NOTE: Possibly an IE 10 style value: "Wed, 09 Apr 2014 09:57:42 GMT; length=13774"
+      // Thanks to https://github.com/spring-projects/spring-framework/blob/v4.2.4.RELEASE/spring-web/src/main/java/org/springframework/web/context/request/ServletWebRequest.java#L279
+      headerValue.split(";").headOption.map(_.trim) match {
+        case Some(value) =>
+          dateHeaderFormats.foldLeft[Option[Long]](None) {
+            case (alreadyParsed: Some[Long], _) => alreadyParsed
+            case (_, format) => Try(format.parse(value)).map(_.getTime).toOption
+          }
+        case _ => None
+      }
+    }
+  }
+
 }
 
 object StableHttpServletRequest {
