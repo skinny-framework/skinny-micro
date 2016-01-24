@@ -1,5 +1,6 @@
 import sbt._, Keys._
 import skinny.servlet._, ServletPlugin._, ServletKeys._
+import MimaSettings.mimaSettings
 
 import scala.language.postfixOps
 
@@ -26,6 +27,12 @@ object SkinnyMicroBuild extends Build {
     resolvers ++= Seq(
       "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases"
       //, "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+    ),
+    // https://github.com/sbt/sbt/issues/2217
+    fullResolvers ~= { _.filterNot(_.name == "jcenter") },
+    dependencyOverrides := Set(
+      "org.scala-lang" %  "scala-library"  % scalaVersion.value,
+      "org.scala-lang" %  "scala-reflect"  % scalaVersion.value
     ),
     publishMavenStyle := true,
     sbtPlugin := false,
@@ -74,7 +81,7 @@ object SkinnyMicroBuild extends Build {
   // skinny libraries
 
   lazy val microCommon = Project(id = "microCommon", base = file("micro-common"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-common",
       libraryDependencies ++= slf4jApiDependencies ++ Seq(
         "org.scalatest"  %% "scalatest"       % scalaTestVersion % Test,
@@ -85,7 +92,7 @@ object SkinnyMicroBuild extends Build {
   )
 
   lazy val micro = Project(id = "micro", base = file("micro"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro",
       libraryDependencies <++= (scalaVersion) { (sv) =>
         servletApiDependencies ++ slf4jApiDependencies ++ Seq(
@@ -103,7 +110,7 @@ object SkinnyMicroBuild extends Build {
   ).dependsOn(microCommon)
 
   lazy val microJackson = Project(id = "microJackson", base = file("micro-jackson"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-jackson",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
@@ -114,7 +121,7 @@ object SkinnyMicroBuild extends Build {
   ).dependsOn(micro)
 
   lazy val microJacksonXml = Project(id = "microJacksonXml", base = file("micro-jackson-xml"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-jackson-xml",
       libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
         "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
@@ -127,7 +134,7 @@ object SkinnyMicroBuild extends Build {
   ).dependsOn(micro, microJackson)
 
   lazy val microJson4s = Project(id = "microJson4s", base = file("micro-json4s"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
         "joda-time"         %  "joda-time"          % "2.9.1"             % Compile,
@@ -140,7 +147,7 @@ object SkinnyMicroBuild extends Build {
   ).dependsOn(micro)
 
   lazy val microScalate = Project(id = "microScalate", base = file("micro-scalate"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-scalate",
       libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
         "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
@@ -153,7 +160,7 @@ object SkinnyMicroBuild extends Build {
   ).dependsOn(micro)
 
   lazy val microServer = Project(id = "microServer", base = file("micro-server"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
         "org.skinny-framework" %% "skinny-http-client" % "2.0.+"          % Test,
@@ -168,7 +175,7 @@ object SkinnyMicroBuild extends Build {
   )
 
   lazy val microTest = Project(id = "microTest", base = file("micro-test"),
-    settings = baseSettings ++ Seq(
+    settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-test",
       libraryDependencies ++= servletApiDependencies ++ Seq(
         "junit"              %  "junit"            % "4.12"           % Compile,
