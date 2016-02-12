@@ -9,14 +9,15 @@ object SkinnyMicroBuild extends Build {
   lazy val currentVersion = "1.0.3-SNAPSHOT"
 
   lazy val json4SVersion = "3.3.0"
-  // TODO: specs2 breaking changes
+  // specs2 breaking changes since 2.4.0
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.14.v20151106"
   lazy val logbackVersion = "1.1.3"
-  lazy val slf4jApiVersion = "1.7.13"
-  lazy val jacksonVersion = "2.6.4"
+  lazy val slf4jApiVersion = "1.7.16"
+  // TODO: 2.7
+  lazy val jacksonVersion = "2.6.5"
   // Akka 2.4 dropped Scala 2.10 support
   lazy val akkaVersion = "2.3.14"
   lazy val scalaTestVersion = "2.2.6"
@@ -137,7 +138,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.9.1"             % Compile,
+        "joda-time"         %  "joda-time"          % "2.9.2"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
@@ -194,7 +195,7 @@ object SkinnyMicroBuild extends Build {
       libraryDependencies ++= Seq(
         "com.typesafe.slick" %% "slick"            % "3.1.1",
         "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-        "com.h2database"     %  "h2"               % "1.4.190",
+        "com.h2database"     %  "h2"               % "1.4.191",
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion
       )
     )
