@@ -45,14 +45,14 @@ class GetResponseStatusSupportTest extends ScalatraFunSuite {
 
   test("remembers status after sendRedirect") {
     session {
-      get("/redirect") {}
+      get("/redirect") { status should equal(302) }
       get("/session-status") { body should equal("302") }
     }
   }
 
   test("remembers status after sendError without a message") {
     session {
-      get("/send-error/500") {}
+      get("/send-error/500") { status should equal(500) }
       get("/session-status") { body should equal("500") }
     }
   }
