@@ -22,7 +22,8 @@ jackson: 2.51 ms / request
 json4s:  2.81 ms / request
  */
 class BenchmarkSpec extends SkinnyFunSpec {
-  implicit val ctx = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(10))
+
+  implicit val ec: ExecutionContextExecutor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(30))
 
   addFilter(classOf[EchoApp], "/*")
   addFilter(classOf[Json4sEchoApp], "/*")
@@ -45,7 +46,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
     it("should work with jackson-scala-module") {
       val before = System.currentTimeMillis
       val requests = 300
-      val futures = (1 to requests).map { i =>
+      val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
         Future {
           get("/echo.json", "name" -> "Alice", "age" -> i.toString) {
             if (status != 200) println(body)
@@ -62,7 +63,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
     it("should work with json4s") {
       val before = System.currentTimeMillis
       val requests = 300
-      val futures = (1 to requests).map { i =>
+      val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
         Future {
           get("/json4s/echo.json", "name" -> "Alice", "age" -> i.toString) {
             if (status != 200) println(body)

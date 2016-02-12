@@ -18,15 +18,11 @@ class TypedEchoApp extends TypedAsyncWebApp with JSONSupport with ScalateSupport
   post("/hello/:name") { implicit ctx =>
     contentType = "text/plain"
     Future {
-      (for {
-        name <- params.get("name")
-      } yield {
-        Ok {
-          params.get("with")
-            .map(something => s"Hello, ${name} with ${something}")
-            .getOrElse(s"Hello, ${name}")
-        }
-      }).getOrElse(NotFound)
+      (params.get("name"), params.get("with")) match {
+        case (Some(name), Some(something)) => Ok(s"Hello, ${name} with ${something}")
+        case (Some(name), None) => Ok(s"Hello, ${name}")
+        case _ => NotFound
+      }
     }
   }
 

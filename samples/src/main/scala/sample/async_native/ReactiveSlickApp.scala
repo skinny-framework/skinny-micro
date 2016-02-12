@@ -2,6 +2,8 @@ package sample.async_native
 
 import skinny.micro._
 import skinny.micro.contrib.jackson.JSONSupport
+import slick.dbio.Effect.{ Schema, Write }
+import slick.driver.H2Driver
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -10,9 +12,9 @@ import slick.driver.H2Driver.api._
 
 class ReactiveSlickApp extends TypedAsyncWebApp with JSONSupport {
 
-  lazy val db = Database.forConfig("h2mem1")
-  lazy val suppliers = TableQuery[Suppliers]
-  lazy val coffees = TableQuery[Coffees]
+  lazy val db: H2Driver.backend.DatabaseDef = Database.forConfig("h2mem1")
+  lazy val suppliers: TableQuery[Suppliers] = TableQuery[Suppliers]
+  lazy val coffees: TableQuery[Coffees] = TableQuery[Coffees]
 
   before() { implicit ctx =>
     contentType = "application/json"
@@ -34,7 +36,7 @@ class ReactiveSlickApp extends TypedAsyncWebApp with JSONSupport {
     }
   }
 
-  val setupAction = DBIO.seq(
+  val setupAction: DBIOAction[Unit, NoStream, Write with Schema] = DBIO.seq(
     (suppliers.schema ++ coffees.schema).create,
     suppliers += (101, "Acme, Inc.", "99 Market Street", "Groundsville", "CA", "95199"),
     suppliers += (49, "Superior Coffee", "1 Party Place", "Mendocino", "CA", "95460"),
@@ -47,5 +49,7 @@ class ReactiveSlickApp extends TypedAsyncWebApp with JSONSupport {
       ("French_Roast_Decaf", 49, 9.99, 0, 0)
     )
   )
-  Await.result(db.run(setupAction), 3.seconds)
+  val dbFuture: Future[Unit] = db.run(setupAction)
+  Await.result(dbFuture, 3.seconds)
+
 }
