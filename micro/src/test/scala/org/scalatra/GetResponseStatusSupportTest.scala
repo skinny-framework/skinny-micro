@@ -1,6 +1,5 @@
 package org.scalatra
 
-import org.scalatest.Retries
 import org.scalatest.exceptions.TestFailedException
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.SkinnyMicroServlet
@@ -36,7 +35,7 @@ class GetResponseStatusSupportTestServlet extends SkinnyMicroServlet {
   }
 }
 
-class GetResponseStatusSupportTest extends ScalatraFunSuite with Retries {
+class GetResponseStatusSupportTest extends ScalatraFunSuite {
   addServlet(classOf[GetResponseStatusSupportTestServlet], "/*")
 
   test("remember status after setStatus") {
@@ -55,7 +54,7 @@ class GetResponseStatusSupportTest extends ScalatraFunSuite with Retries {
       case _: TestFailedException if count < 5 => _verifySession(path, status, count + 1)
       case e: TestFailedException => throw e
     }
-    _verifySession(path, status, 0)
+    _verifySession(path, status, 1)
   }
 
   test("remembers status after sendRedirect") {

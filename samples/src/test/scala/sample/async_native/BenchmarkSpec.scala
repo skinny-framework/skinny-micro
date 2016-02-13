@@ -32,7 +32,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
   describe("JSON serialization performance") {
 
     it("warm up") {
-      (1 to 50).foreach { _ =>
+      (1 to 100).foreach { _ =>
         get("/echo.json", "name" -> "Alice", "age" -> "18") {
           if (status != 200) println(body)
           status should equal(200)
@@ -42,12 +42,11 @@ class BenchmarkSpec extends SkinnyFunSpec {
           status should equal(200)
         }
       }
-      Thread.sleep(100)
     }
 
     it("should work with jackson-scala-module") {
       val before = System.currentTimeMillis
-      val requests = 100
+      val requests = 200
       val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
         Future {
           get("/echo.json", "name" -> "Alice", "age" -> i.toString) {
@@ -64,7 +63,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
 
     it("should work with json4s") {
       val before = System.currentTimeMillis
-      val requests = 100
+      val requests = 200
       val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
         Future {
           get("/json4s/echo.json", "name" -> "Alice", "age" -> i.toString) {
