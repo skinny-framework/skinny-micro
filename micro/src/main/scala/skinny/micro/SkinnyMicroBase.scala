@@ -12,7 +12,6 @@ import java.io.{ File, FileInputStream }
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.servlet.http.{ HttpServletResponse, HttpServlet, HttpServletRequest }
 import javax.servlet._
-import java.util.concurrent.Executors
 
 import skinny.micro.async.AsyncSupported
 import skinny.micro.base._
@@ -619,10 +618,9 @@ object SkinnyMicroBase {
 
   import ServletApiImplicits._
   import scala.collection.JavaConverters._
+  import skinny.concurrent.ExecutionContextFactory
 
-  lazy val defaultExecutionContext: ExecutionContext = {
-    ExecutionContext.fromExecutor(Executors.newFixedThreadPool(300))
-  }
+  lazy val defaultExecutionContext: ExecutionContext = ExecutionContextFactory.create(300)
 
   /**
    * A key for request attribute that contains any exception that might have occured

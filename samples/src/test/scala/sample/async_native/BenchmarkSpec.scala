@@ -5,6 +5,7 @@ import skinny.test.SkinnyFunSpec
 import java.util.concurrent.Executors
 import scala.concurrent._
 import scala.concurrent.duration._
+import skinny.concurrent.ExecutionContextFactory
 
 /*
 Mostly same performance
@@ -23,7 +24,7 @@ json4s:  2.81 ms / request
  */
 class BenchmarkSpec extends SkinnyFunSpec {
 
-  implicit val ec: ExecutionContextExecutor = ExecutionContext.fromExecutor(Executors.newFixedThreadPool(30))
+  implicit val ec: ExecutionContextExecutor = ExecutionContextFactory.create(100)
 
   addFilter(classOf[EchoApp], "/*")
   addFilter(classOf[Json4sEchoApp], "/*")
