@@ -5,6 +5,7 @@ import java.io._
 import org.apache.http.impl.client.{ CloseableHttpClient, HttpClientBuilder }
 import org.scalatest._
 import org.scalatra.test.scalatest.ScalatraFunSuite
+import skinny.concurrent.ExecutionContextFactory
 import skinny.micro.contrib.ContentEncodingSupport
 import skinny.micro.routing.RoutingDsl
 import skinny.micro.{ ContentEncoding, SkinnyMicroBase, SkinnyMicroServlet }
@@ -17,7 +18,8 @@ import scala.concurrent.{ ExecutionContext, Future }
 class ContentEncodingSupportTestServlet extends SkinnyMicroServlet
     with RoutingDsl
     with ContentEncodingSupport {
-  override implicit protected def executionContext: ExecutionContext = ExecutionContext.global
+
+  override implicit protected def executionContext: ExecutionContext = ExecutionContextFactory.create(3)
 
   get("/") {
     Helper.body

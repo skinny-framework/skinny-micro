@@ -1,14 +1,17 @@
 package org.scalatra
 
 import org.scalatra.test.scalatest.ScalatraWordSpec
+import skinny.concurrent.ExecutionContextFactory
 import skinny.micro.SkinnyMicroServlet
 import skinny.micro.constant.HttpMethod
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent._
 import scala.concurrent.duration._
 
 class RouteConcurrencyServlet extends SkinnyMicroServlet {
+
+  implicit val ec: ExecutionContextExecutor = ExecutionContextFactory.create(3)
+
   for {
     i <- 0 until 250
     x = Future { get(false) { "/" } }
