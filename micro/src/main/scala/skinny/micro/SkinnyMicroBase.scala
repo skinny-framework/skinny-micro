@@ -238,25 +238,25 @@ trait SkinnyMicroBase
 
     cradleHalt(
       body = {
-        result = runActions(request, response)
-      },
+      result = runActions(request, response)
+    },
       errorHandler = { error =>
-        cradleHalt(
-          body = {
-            result = currentErrorHandler.apply(error)
-            rendered = false
-          },
-          errorHandler =
-            e => {
-              SkinnyMicroBase.runCallbacks(Failure(e))(skinnyContext)
-              try {
-                renderUncaughtException(e)(skinnyContext)
-              } finally {
-                SkinnyMicroBase.runRenderCallbacks(Failure(e))(context)
-              }
-            }
-        )
-      }
+      cradleHalt(
+        body = {
+        result = currentErrorHandler.apply(error)
+        rendered = false
+      },
+        errorHandler =
+        e => {
+          SkinnyMicroBase.runCallbacks(Failure(e))(skinnyContext)
+          try {
+            renderUncaughtException(e)(skinnyContext)
+          } finally {
+            SkinnyMicroBase.runRenderCallbacks(Failure(e))(context)
+          }
+        }
+      )
+    }
     )
     if (!rendered) {
       renderResponse(result)(context)
@@ -343,7 +343,9 @@ trait SkinnyMicroBase
   }
 
   protected def setMultiparams[S](matchedRoute: Option[MatchedRoute], originalParams: MultiParams)(
-    implicit ctx: SkinnyContext): Unit = {
+    implicit
+    ctx: SkinnyContext
+  ): Unit = {
     val routeParams = matchedRoute.map(_.multiParams).getOrElse(Map.empty).map {
       case (key, values) =>
         key -> values.map(s => if (s.nonBlank) UriDecoder.secondStep(s) else s)

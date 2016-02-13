@@ -59,7 +59,8 @@ class RouteRegistrySpec extends ScalatraFlatSpec {
           |GET	/echo
           |POST	/echo
           |GET	/routes
-          |""".stripMargin)
+          |""".stripMargin
+      )
     }
   }
 
@@ -73,7 +74,8 @@ class RouteRegistrySpec extends ScalatraFlatSpec {
           |POST	/good-bye/:name
           |GET	/hello/:name
           |GET	/routes
-          |""".stripMargin)
+          |""".stripMargin
+      )
     }
   }
 

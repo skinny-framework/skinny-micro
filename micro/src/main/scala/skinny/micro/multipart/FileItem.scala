@@ -50,7 +50,8 @@ case class FileItem(part: Part) {
   private[this] def partAttribute(
     part: Part,
     headerName: String, attributeName: String,
-    defaultValue: String = null): String = {
+    defaultValue: String = null
+  ): String = {
 
     Option(part.getHeader(headerName)) match {
       case Some(value) => {

@@ -68,7 +68,8 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
       }
     }
 
-    assert(cycleClass != null,
+    assert(
+      cycleClass != null,
       """----------------
         |
         | *** No skinny.micro.LifeCycle class found! ****
@@ -88,7 +89,8 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
         | NOTE: If you're using only skinny.micro, inherit skinny.micro.LifeCycle instead.
         |
         |----------------
-        |""".stripMargin)
+        |""".stripMargin
+    )
     logger.debug(s"Loaded lifecycle class: ${cycleClass}")
 
     if (cycleClass.getName == OldDefaultLifeCycle) {

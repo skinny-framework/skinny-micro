@@ -48,7 +48,8 @@ class JSONOperation2Spec extends FlatSpec with JSONStringOps with Matchers {
         |}, {
         |  "id" : 2,
         |  "first_name" : "Bob"
-        |} ]""".stripMargin)
+        |} ]""".stripMargin
+    )
 
   }
   it should "have toJSONString 4" in {
@@ -65,11 +66,13 @@ class JSONOperation2Spec extends FlatSpec with JSONStringOps with Matchers {
         |}, {
         |  "id" : 2,
         |  "firstName" : "Bob"
-        |} ]""".stripMargin)
+        |} ]""".stripMargin
+    )
   }
   it should "have toJSONString 7" in {
     toJSONString7 should equal(
-      """{"name":"Dennis","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]},{"name":"Chris","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]}]}]}""")
+      """{"name":"Dennis","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]},{"name":"Chris","parent":{"name":"Alice","parent":null,"children":[]},"children":[{"name":"Bob","parent":{"name":"Alice","parent":null,"children":[]},"children":[]}]}]}"""
+    )
   }
 
   it should "have fromJSONString 1" in {

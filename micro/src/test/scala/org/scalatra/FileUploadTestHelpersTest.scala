@@ -16,8 +16,7 @@ class FileUploadTestHelpersTestServlet extends SkinnyMicroServlet with FileUploa
     params.foreach(p => response.setHeader("Param-" + p._1, p._2))
 
     request.getHeaderNames.filter(header => header.startsWith("Test-")).foreach(header =>
-      response.setHeader(header, request.getHeader(header))
-    )
+      response.setHeader(header, request.getHeader(header)))
 
     fileParams.foreach(fileParam => {
       response.setHeader("File-" + fileParam._1 + "-Name", fileParam._2.name)

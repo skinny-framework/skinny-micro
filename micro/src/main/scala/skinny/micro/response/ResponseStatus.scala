@@ -5,7 +5,8 @@ package skinny.micro.response
  */
 case class ResponseStatus(
     code: Int,
-    message: String) extends Ordered[ResponseStatus] {
+    message: String
+) extends Ordered[ResponseStatus] {
 
   def compare(that: ResponseStatus): Int = code.compareTo(that.code)
 

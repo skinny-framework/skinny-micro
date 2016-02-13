@@ -13,8 +13,7 @@ import scala.collection.JavaConversions._
 class FileUploadSupportSpecServlet extends SkinnyMicroServlet with FileUploadSupport with LoggerProvider {
   def headersToHeaders() {
     request.getHeaderNames.filter(_.startsWith("X")).foreach(header =>
-      response.setHeader(header, request.getHeader(header))
-    )
+      response.setHeader(header, request.getHeader(header)))
   }
 
   def fileParamsToHeaders() {
@@ -27,8 +26,7 @@ class FileUploadSupportSpecServlet extends SkinnyMicroServlet with FileUploadSup
 
   def paramsToHeaders() {
     params.foreach(param =>
-      response.setHeader(param._1, param._2)
-    )
+      response.setHeader(param._1, param._2))
   }
 
   post("/upload") {

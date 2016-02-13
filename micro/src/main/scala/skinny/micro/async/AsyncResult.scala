@@ -14,7 +14,9 @@ import scala.concurrent.duration._
  * Result value of async skinny.micro.
  */
 abstract class AsyncResult(
-    implicit val context: SkinnyContext) {
+    implicit
+    val context: SkinnyContext
+) {
 
   val request: HttpServletRequest = {
     context.surelyStable(context.unstableAccessValidation).request
@@ -39,7 +41,9 @@ abstract class AsyncResult(
 object AsyncResult {
 
   def apply(action: Any)(
-    implicit ctx: SkinnyContext, executionContext: ExecutionContext): AsyncResult = {
+    implicit
+    ctx: SkinnyContext, executionContext: ExecutionContext
+  ): AsyncResult = {
     withFuture(Future(action))
   }
 

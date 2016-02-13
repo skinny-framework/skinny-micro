@@ -44,7 +44,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Anonymous</message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Anonymous</message></response>"""
+      )
     }
   }
 
@@ -53,7 +54,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Martin</message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Martin</message></response>"""
+      )
     }
   }
 
@@ -62,7 +64,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, &lt;Map1>foo&lt;/Map1></message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, &lt;Map1>foo&lt;/Map1></message></response>"""
+      )
     }
   }
 
@@ -71,7 +74,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><item><firstName>Alice</firstName><lastName>Cooper</lastName></item><item><firstName>Bob</firstName><lastName>Marley</lastName></item><item><firstName>Chris</firstName><lastName/></item></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><item><firstName>Alice</firstName><lastName>Cooper</lastName></item><item><firstName>Bob</firstName><lastName>Marley</lastName></item><item><firstName>Chris</firstName><lastName/></item></response>"""
+      )
     }
   }
 
@@ -80,7 +84,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><persons><firstName>Alice</firstName><lastName>Cooper</lastName></persons><persons><firstName>Bob</firstName><lastName>Marley</lastName></persons><persons><firstName>Chris</firstName><lastName/></persons></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><persons><firstName>Alice</firstName><lastName>Cooper</lastName></persons><persons><firstName>Bob</firstName><lastName>Marley</lastName></persons><persons><firstName>Chris</firstName><lastName/></persons></response>"""
+      )
     }
   }
 
@@ -89,7 +94,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml; charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><item><first_name>Alice</first_name><last_name>Cooper</last_name></item><item><first_name>Bob</first_name><last_name>Marley</last_name></item><item><first_name>Chris</first_name><last_name/></item></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?><response><item><first_name>Alice</first_name><last_name>Cooper</last_name></item><item><first_name>Bob</first_name><last_name>Marley</last_name></item><item><first_name>Chris</first_name><last_name/></item></response>"""
+      )
     }
   }
 
@@ -111,7 +117,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
           |    <firstName>Chris</firstName>
           |    <lastName/>
           |  </item>
-          |</response>""".stripMargin)
+          |</response>""".stripMargin
+      )
     }
   }
 
@@ -133,7 +140,8 @@ class XMLOperationSpec extends ScalatraFlatSpec {
           |    <first_name>Chris</first_name>
           |    <last_name/>
           |  </item>
-          |</response>""".stripMargin)
+          |</response>""".stripMargin
+      )
     }
   }
 

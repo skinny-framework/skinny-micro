@@ -27,7 +27,9 @@ trait ScalateI18nSupport
    * #{messages("hello")}
    */
   override protected def createRenderContext(out: PrintWriter)(
-    implicit ctx: SkinnyContext): SkinnyScalateRenderContext = {
+    implicit
+    ctx: SkinnyContext
+  ): SkinnyScalateRenderContext = {
     val context = super.createRenderContext(out)(ctx)
     context.attributes("messages") = messages(ctx)
     context

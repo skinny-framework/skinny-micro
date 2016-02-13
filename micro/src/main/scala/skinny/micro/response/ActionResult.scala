@@ -11,4 +11,5 @@ case class ActionResult(
   headers: Map[String, String] = Map.empty,
   contentType: Option[String] = None,
   charset: Option[String] = None,
-  cookies: Seq[Cookie] = Seq.empty)
+  cookies: Seq[Cookie] = Seq.empty
+)

@@ -101,7 +101,8 @@ trait JSONParamsAutoBinderSupport
 
   protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
-    params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
+    params2: Map[String, Seq[String]]
+  ): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
   }
 

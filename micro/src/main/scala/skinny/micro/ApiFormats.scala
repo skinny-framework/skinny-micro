@@ -110,8 +110,7 @@ trait ApiFormats extends SkinnyMicroBase with RicherStringImplicits {
 
   private[this] def getFromAcceptHeader(implicit request: HttpServletRequest): Option[String] = {
     val hdrs = request.contentType.fold(acceptHeader(request))(contentType =>
-      (acceptHeader(request) ::: List(contentType)).distinct
-    )
+      (acceptHeader(request) ::: List(contentType)).distinct)
     formatForMimeTypes(hdrs: _*)
   }
 

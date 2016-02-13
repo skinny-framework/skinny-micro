@@ -91,7 +91,8 @@ trait TypedAsyncRoutingDsl extends RoutingDslBase {
     val route: Route = {
       val r = Route(transformers, () => action.apply(context), (req: HttpServletRequest) => routeBasePath(
         SkinnyContext.buildWithoutResponse(req, servletContext,
-          UnstableAccessValidation(unstableAccessValidationEnabled, useMostlyStableHttpSession))))
+          UnstableAccessValidation(unstableAccessValidationEnabled, useMostlyStableHttpSession))
+      ))
       r.copy(metadata = r.metadata.updated(Handler.RouteMetadataHttpMethodCacheKey, method))
     }
     routes.prependRoute(method, route)

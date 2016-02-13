@@ -32,10 +32,12 @@ trait SkinnyContext
 object SkinnyContext {
 
   private class StableSkinnyContext(
-      implicit val request: HttpServletRequest,
+      implicit
+      val request: HttpServletRequest,
       val response: HttpServletResponse,
       val servletContext: ServletContext,
-      val unstableAccessValidation: UnstableAccessValidation) extends SkinnyContext {
+      val unstableAccessValidation: UnstableAccessValidation
+  ) extends SkinnyContext {
   }
 
   def surelyStable(ctx: SkinnyContext, validation: UnstableAccessValidation): SkinnyContext = {

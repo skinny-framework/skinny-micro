@@ -202,6 +202,7 @@ object FileUploadSupport {
 
   case class BodyParams(
     fileParams: FileMultiParams,
-    formParams: Map[String, List[String]])
+    formParams: Map[String, List[String]]
+  )
 
 }

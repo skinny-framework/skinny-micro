@@ -215,7 +215,9 @@ trait ScalateSupport extends SkinnyMicroBase {
    * layouts by passing `layout -> ""`.
    */
   protected def layoutTemplateAs(ext: Set[String])(path: String, attributes: (String, Any)*)(
-    implicit ctx: SkinnyContext): String = {
+    implicit
+    ctx: SkinnyContext
+  ): String = {
     val uri = findTemplate(path, ext).getOrElse(path)
     using(new StringWriter()) { buffer =>
       using(new PrintWriter(buffer)) { out =>

@@ -22,11 +22,13 @@ trait SkinnyContextInitializer {
 
   private[this] case class HttpServletRequestHolder(
     value: HttpServletRequest,
-    threadId: Long)
+    threadId: Long
+  )
 
   private[this] case class HttpServletResponseHolder(
     value: HttpServletResponse,
-    threadId: Long)
+    threadId: Long
+  )
 
   private[this] def currentThreadId: Long = Thread.currentThread.getId
 
@@ -88,7 +90,8 @@ trait SkinnyContextInitializer {
    */
   protected def withRequest[A](request: HttpServletRequest)(f: => A): A = {
     mainThreadDynamicRequest.withValue(
-      Some(HttpServletRequestHolder(request, currentThreadId))) {
+      Some(HttpServletRequestHolder(request, currentThreadId))
+    ) {
         f
       }
   }
@@ -99,7 +102,8 @@ trait SkinnyContextInitializer {
    */
   protected def withResponse[A](response: HttpServletResponse)(f: => A) = {
     mainThreadDynamicResponse.withValue(
-      Some(HttpServletResponseHolder(response, currentThreadId))) {
+      Some(HttpServletResponseHolder(response, currentThreadId))
+    ) {
         f
       }
   }

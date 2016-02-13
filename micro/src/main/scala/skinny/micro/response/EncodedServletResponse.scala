@@ -15,7 +15,8 @@ import scala.util.Try
  */
 private[skinny] class EncodedServletResponse(
     res: HttpServletResponse,
-    enc: ContentEncoding) extends HttpServletResponseWrapper(res) {
+    enc: ContentEncoding
+) extends HttpServletResponseWrapper(res) {
 
   // Object to flush when complete, if any.
   // Note that while this is essentially a mutable shared state, it's not really an issue here - or rather, if multiple

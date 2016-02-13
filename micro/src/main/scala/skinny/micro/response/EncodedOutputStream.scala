@@ -10,7 +10,8 @@ import javax.servlet.ServletOutputStream
  */
 private[skinny] class EncodedOutputStream(
     out: OutputStream,
-    orig: ServletOutputStream) extends ServletOutputStream {
+    orig: ServletOutputStream
+) extends ServletOutputStream {
 
   override def write(b: Int): Unit = out.write(b)
   override def write(b: Array[Byte]) = write(b, 0, b.length)

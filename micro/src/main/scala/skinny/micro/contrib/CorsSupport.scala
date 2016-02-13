@@ -12,8 +12,10 @@ trait CORSSupport { self: SkinnyMicroBase with BeforeAfterDsl =>
 
   before() {
     implicit val ctx = context
-    response.setHeader("Access-Control-Allow-Origin",
-      accessControlAllowOriginHeaderValue)
+    response.setHeader(
+      "Access-Control-Allow-Origin",
+      accessControlAllowOriginHeaderValue
+    )
   }
 
 }

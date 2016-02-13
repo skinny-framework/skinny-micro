@@ -49,7 +49,8 @@ trait UrlCodingUtils {
     toEncode: String,
     charset: Charset = Utf8,
     spaceIsPlus: Boolean = false,
-    toSkip: BitSet = toSkip): String = {
+    toSkip: BitSet = toSkip
+  ): String = {
 
     val in = charset.encode(ensureUppercasedEncodings(toEncode))
     val out = CharBuffer.allocate((in.remaining() * 3).ceil.toInt)
@@ -73,7 +74,8 @@ trait UrlCodingUtils {
     toDecode: String,
     charset: Charset = Utf8,
     plusIsSpace: Boolean = false,
-    toSkip: String = ""): String = {
+    toSkip: String = ""
+  ): String = {
 
     val in = CharBuffer.wrap(toDecode)
     // reserve enough space for 3-byte chars like japanese, and hope nobody uses a string of only 4-byte chars

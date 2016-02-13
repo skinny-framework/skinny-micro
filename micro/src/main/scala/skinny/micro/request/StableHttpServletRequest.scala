@@ -25,7 +25,8 @@ import scala.util.Try
  */
 class StableHttpServletRequest(
   private val underlying: HttpServletRequest,
-  private val unstableAccessValidation: UnstableAccessValidation)
+  private val unstableAccessValidation: UnstableAccessValidation
+)
     extends HttpServletRequestWrapper(underlying) with LoggerProvider {
 
   private[this] var stableHttpSession: Option[HttpSession] = {
