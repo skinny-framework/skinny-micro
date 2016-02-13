@@ -20,12 +20,14 @@ class TypedEchoAppSpec extends SkinnyFunSpec with JSONStringOps {
 
     it("shows greeting") {
       post("/hello/Martin") {
+        if (status != 200) println(body)
         status should equal(200)
         body should equal("Hello, Martin")
         header("Content-Type") should equal("text/plain; charset=UTF-8")
       }
 
       post("/hello/Martin", "with" -> "Love") {
+        if (status != 200) println(body)
         status should equal(200)
         body should equal("Hello, Martin with Love")
         header("Content-Type") should equal("text/plain; charset=UTF-8")
@@ -33,10 +35,13 @@ class TypedEchoAppSpec extends SkinnyFunSpec with JSONStringOps {
     }
 
     it("shows html") {
-      get("/html") {
-        status should equal(200)
-        body should equal("""<html><body>Hello, Martin</body></html>""")
-        header("Content-Type") should equal("text/html; charset=UTF-8")
+      withRetries(3) {
+        get("/html") {
+          if (status != 200) println(body)
+          status should equal(200)
+          body should equal("""<html><body>Hello, Martin</body></html>""")
+          header("Content-Type") should equal("text/html; charset=UTF-8")
+        }
       }
     }
 

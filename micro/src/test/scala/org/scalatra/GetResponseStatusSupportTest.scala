@@ -1,15 +1,17 @@
 package org.scalatra
 
+import org.scalatest.Retries
+import org.scalatest.exceptions.TestFailedException
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.SkinnyMicroServlet
 
 class GetResponseStatusSupportTestServlet extends SkinnyMicroServlet {
   before() {
-    session // Establish a session before we commit the response
+    request.getSession(true) // Establish a session before we commit the response
   }
 
   after() {
-    session("status") = status.toString
+    session.setAttribute("status", status.toString)
   }
 
   get("/status/:status") {
@@ -34,7 +36,7 @@ class GetResponseStatusSupportTestServlet extends SkinnyMicroServlet {
   }
 }
 
-class GetResponseStatusSupportTest extends ScalatraFunSuite {
+class GetResponseStatusSupportTest extends ScalatraFunSuite with Retries {
   addServlet(classOf[GetResponseStatusSupportTestServlet], "/*")
 
   test("remember status after setStatus") {
@@ -43,24 +45,28 @@ class GetResponseStatusSupportTest extends ScalatraFunSuite {
     }
   }
 
-  test("remembers status after sendRedirect") {
-    session {
-      get("/redirect") { status should equal(302) }
-      get("/session-status") { body should equal("302") }
+  def verifySession(path: String, status: Int): Unit = {
+    def _verifySession(path: String, status: Int, count: Int): Unit = try {
+      session {
+        get(path) { status should equal(status) }
+        get("/session-status") { body should equal(status.toString) }
+      }
+    } catch {
+      case _: TestFailedException if count < 5 => _verifySession(path, status, count + 1)
+      case e: TestFailedException => throw e
     }
+    _verifySession(path, status, 0)
+  }
+
+  test("remembers status after sendRedirect") {
+    verifySession("/redirect", 302)
   }
 
   test("remembers status after sendError without a message") {
-    session {
-      get("/send-error/500") { status should equal(500) }
-      get("/session-status") { body should equal("500") }
-    }
+    verifySession("/send-error/500", 500)
   }
 
   test("remembers status after sendError with a message") {
-    session {
-      get("/send-error/504/Gateway%20Timeout") { status should equal(504) }
-      get("/session-status") { body should equal("504") }
-    }
+    verifySession("/send-error/504/Gateway%20Timeout", 504)
   }
 }

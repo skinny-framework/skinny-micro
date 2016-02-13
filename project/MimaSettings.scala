@@ -1,6 +1,6 @@
 import sbt._, Keys._
 import com.typesafe.tools.mima.plugin.MimaPlugin
-import com.typesafe.tools.mima.plugin.MimaKeys.{previousArtifacts, reportBinaryIssues}
+import com.typesafe.tools.mima.plugin.MimaKeys.{previousArtifacts, reportBinaryIssues, binaryIssueFilters}
 
 /*
  * MiMa settings of Skinny-Micro libs.
@@ -18,6 +18,13 @@ object MimaSettings {
     test in Test := {
       reportBinaryIssues.value
       (test in Test).value
+    },
+    binaryIssueFilters ++= {
+      import com.typesafe.tools.mima.core._
+      Seq(
+        // Add new method since 1.0.3
+        ProblemFilters.exclude[MissingMethodProblem]("skinny.micro.test.scalatest.SkinnyMicroSuite.withRetries")
+      )
     }
   )
 }

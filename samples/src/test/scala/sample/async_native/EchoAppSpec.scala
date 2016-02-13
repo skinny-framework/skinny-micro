@@ -11,6 +11,7 @@ class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
 
     it("shows params as JSON") {
       get("/echo.json", "name" -> "Alice", "age" -> "18") {
+        if (status != 200) println(body)
         status should equal(200)
         fromJSONString[Map[String, String]](body) should equal(Success(Map("name" -> "Alice", "age" -> "18")))
         header("Content-Type") should equal("application/json; charset=UTF-8")
@@ -19,12 +20,14 @@ class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
 
     it("shows greeting") {
       post("/hello/Martin") {
+        if (status != 200) println(body)
         status should equal(200)
         body should equal("Hello, Martin")
         header("Content-Type") should equal("text/plain; charset=UTF-8")
       }
 
       post("/hello/Martin", "with" -> "Love") {
+        if (status != 200) println(body)
         status should equal(200)
         body should equal("Hello, Martin with Love")
         header("Content-Type") should equal("text/plain; charset=UTF-8")
@@ -32,10 +35,13 @@ class EchoAppSpec extends SkinnyFunSpec with JSONStringOps {
     }
 
     it("shows html") {
-      get("/html") {
-        status should equal(200)
-        body should equal("""<html><body>Hello, Martin</body></html>""")
-        header("Content-Type") should equal("text/html; charset=UTF-8")
+      withRetries(3) {
+        get("/html") {
+          if (status != 200) println(body)
+          status should equal(200)
+          body should equal("""<html><body>Hello, Martin</body></html>""")
+          header("Content-Type") should equal("text/html; charset=UTF-8")
+        }
       }
     }
 
