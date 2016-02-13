@@ -50,6 +50,9 @@ object SkinnyMicroBuild extends Build {
     updateOptions := updateOptions.value.withCachedResolution(true),
     javacOptions ++= Seq("-source", "1.7", "-target", "1.7", "-encoding", "UTF-8", "-Xlint:-options"),
     javacOptions in doc := Seq("-source", "1.7"),
+    // https://github.com/sbt/sbt/issues/653
+    // https://github.com/travis-ci/travis-ci/issues/3775
+    javaOptions += "-Xmx1G",
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
       if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
