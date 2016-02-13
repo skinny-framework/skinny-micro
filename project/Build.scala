@@ -52,7 +52,7 @@ object SkinnyMicroBuild extends Build {
     javacOptions in doc := Seq("-source", "1.7"),
     // https://github.com/sbt/sbt/issues/653
     // https://github.com/travis-ci/travis-ci/issues/3775
-    javaOptions += "-Xmx1500M",
+    javaOptions += "-Xmx512M",
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
       if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
