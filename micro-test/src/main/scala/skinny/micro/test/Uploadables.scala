@@ -4,6 +4,9 @@ import java.io.{ ByteArrayOutputStream, File, FileInputStream }
 
 import scala.annotation.tailrec
 
+/**
+ * File part entity.
+ */
 case class FilePart(
   file: File,
   contentType: String = "application/octet-stream")
@@ -37,6 +40,9 @@ case class FilePart(
 
 }
 
+/**
+ * Bytes entity.
+ */
 case class BytesPart(
   fileName: String,
   content: Array[Byte],

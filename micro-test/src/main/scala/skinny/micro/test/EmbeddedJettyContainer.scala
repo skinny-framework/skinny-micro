@@ -3,6 +3,9 @@ package skinny.micro.test
 import org.eclipse.jetty.server.{ Server, ServerConnector }
 import org.eclipse.jetty.servlet.ServletContextHandler
 
+/**
+ * Embedeed Jetty Servlet container.
+ */
 trait EmbeddedJettyContainer extends JettyContainer {
 
   /**
@@ -19,11 +22,11 @@ trait EmbeddedJettyContainer extends JettyContainer {
     case x: ServerConnector => x.getLocalPort
   }
 
-  def contextPath = "/"
+  def contextPath: String = "/"
 
-  lazy val server = new Server(port)
+  lazy val server: Server = new Server(port)
 
-  lazy val servletContextHandler = {
+  lazy val servletContextHandler: ServletContextHandler = {
     val handler = new ServletContextHandler(ServletContextHandler.SESSIONS)
     handler.setContextPath(contextPath)
     handler.setResourceBase(resourceBasePath)

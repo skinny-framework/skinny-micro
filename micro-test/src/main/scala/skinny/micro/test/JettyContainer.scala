@@ -14,12 +14,13 @@ object JettyContainer {
   private val DefaultDispatcherTypes: EnumSet[DispatcherType] = {
     EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC)
   }
-
 }
 
-import JettyContainer._
-
+/**
+ * Jetty Servlet container.
+ */
 trait JettyContainer extends Container {
+  import JettyContainer._
 
   def servletContextHandler: ServletContextHandler
   def skipDefaultServlet: Boolean = false
@@ -72,8 +73,7 @@ trait JettyContainer extends Container {
   def addFilter(filter: Class[_ <: Filter], path: String, dispatches: util.EnumSet[DispatcherType]): FilterHolder =
     servletContextHandler.addFilter(filter, path, dispatches)
 
-  // Add a default servlet.  If there is no underlying servlet, then
-  // filters just return 404.
+  // Add a default servlet. If there is no underlying servlet, then filters just return 404.
   if (!skipDefaultServlet) servletContextHandler.addServlet(new ServletHolder("default", classOf[DefaultServlet]), "/")
 
   protected def ensureSessionIsSerializable() {

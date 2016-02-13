@@ -13,6 +13,9 @@ import org.apache.http.impl.client.{ BasicCookieStore, HttpClientBuilder }
 
 import scala.util.DynamicVariable
 
+/**
+ * Apache Http Client's response.
+ */
 case class HttpComponentsClientResponse(res: HttpResponse) extends ClientResponse {
   lazy val bodyBytes: Array[Byte] = {
     Option(res.getEntity) match {
@@ -43,6 +46,9 @@ case class HttpComponentsClientResponse(res: HttpResponse) extends ClientRespons
   }
 }
 
+/**
+ * Apache Http Client.
+ */
 trait HttpComponentsClient extends Client {
   def baseUrl: String
 
@@ -180,22 +186,18 @@ trait HttpComponentsClient extends Client {
   }
 }
 
+/**
+ * Apache Http Client's uploaded request body.
+ */
 case class UploadableBody(uploadable: Uploadable) extends ContentBody {
-  def getMimeType = uploadable.contentType
 
-  def getMediaType = "MULTIPART"
+  override def getMimeType = uploadable.contentType
+  override def getMediaType = "MULTIPART"
+  override def getSubType = "FORM-DATA"
+  override def getCharset = null
+  override def getTransferEncoding = "binary"
+  override def getContentLength = uploadable.contentLength
+  override def getFilename = uploadable.fileName
+  override def writeTo(out: OutputStream): Unit = out.write(uploadable.content)
 
-  def getSubType = "FORM-DATA"
-
-  def getCharset = null
-
-  def getTransferEncoding = "binary"
-
-  def getContentLength = uploadable.contentLength
-
-  def getFilename = uploadable.fileName
-
-  def writeTo(out: OutputStream) {
-    out.write(uploadable.content)
-  }
 }

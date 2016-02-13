@@ -5,6 +5,9 @@ import java.io.InputStream
 import scala.collection.DefaultMap
 import scala.collection.JavaConverters._
 
+/**
+ * Http Client's response.
+ */
 abstract class ClientResponse {
 
   def bodyBytes: Array[Byte]

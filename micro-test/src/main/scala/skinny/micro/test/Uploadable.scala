@@ -1,5 +1,8 @@
 package skinny.micro.test
 
+/**
+ * Uploadable request entity.
+ */
 abstract class Uploadable {
 
   def content: Array[Byte]

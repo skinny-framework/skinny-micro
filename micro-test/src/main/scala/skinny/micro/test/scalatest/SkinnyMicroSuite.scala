@@ -6,8 +6,8 @@ import org.scalatest.{ BeforeAndAfterAll, Matchers, Suite }
 import skinny.micro.test.SkinnyMicroTests
 
 /**
- * Provides Scalatra test support to ScalaTest suites.  The servlet tester
- * is started before the first test in the suite and stopped after the last.
+ * Provides Skinny Micro test support to ScalaTest suites.
+ * The servlet tester is started before the first test in the suite and stopped after the last.
  */
 @RunWith(classOf[JUnitRunner])
 trait SkinnyMicroSuite
