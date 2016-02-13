@@ -46,7 +46,6 @@ class GetResponseStatusSupportTest extends ScalatraFunSuite {
   test("remembers status after sendRedirect") {
     session {
       get("/redirect") { status should equal(302) }
-      Thread.sleep(50)
       get("/session-status") { body should equal("302") }
     }
   }
@@ -54,15 +53,13 @@ class GetResponseStatusSupportTest extends ScalatraFunSuite {
   test("remembers status after sendError without a message") {
     session {
       get("/send-error/500") { status should equal(500) }
-      Thread.sleep(50)
       get("/session-status") { body should equal("500") }
     }
   }
 
   test("remembers status after sendError with a message") {
     session {
-      get("/send-error/504/Gateway%20Timeout") {}
-      Thread.sleep(50)
+      get("/send-error/504/Gateway%20Timeout") { status should equal(504) }
       get("/session-status") { body should equal("504") }
     }
   }
