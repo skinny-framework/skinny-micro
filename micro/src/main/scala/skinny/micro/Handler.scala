@@ -30,7 +30,7 @@ trait Handler
         allRoutePaths.foreach { path =>
           val name = this.getClass.getName
           val registration: FilterRegistration = {
-            val reg = Option(ctx.getFilterRegistration(name)).getOrElse(ctx.addFilter(name, this.asInstanceOf[Filter]))
+            val reg = Option(ctx.getFilterRegistration(name)).getOrElse(ctx.addFilter(name, filter))
             // mocked object can be null
             if (reg != null && filter.isInstanceOf[AsyncSupported]) {
               reg.asInstanceOf[FilterRegistration.Dynamic].setAsyncSupported(true)
