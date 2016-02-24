@@ -14,7 +14,7 @@ object SkinnyMicroBuild extends Build {
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.15.v20160210"
-  lazy val logbackVersion = "1.1.4"
+  lazy val logbackVersion = "1.1.5"
   lazy val slf4jApiVersion = "1.7.16"
   // TODO: 2.7
   lazy val jacksonVersion = "2.6.5"
