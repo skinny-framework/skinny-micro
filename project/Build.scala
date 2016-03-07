@@ -14,8 +14,8 @@ object SkinnyMicroBuild extends Build {
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.15.v20160210"
-  lazy val logbackVersion = "1.1.5"
-  lazy val slf4jApiVersion = "1.7.16"
+  lazy val logbackVersion = "1.1.6"
+  lazy val slf4jApiVersion = "1.7.18"
   // TODO: 2.7
   lazy val jacksonVersion = "2.6.5"
   // Akka 2.4 dropped Scala 2.10 support
@@ -185,8 +185,8 @@ object SkinnyMicroBuild extends Build {
         "junit"              %  "junit"            % "4.12"           % Compile,
         "org.apache.commons" %  "commons-lang3"    % "3.4"            % Compile,
         "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-        "org.apache.httpcomponents" % "httpclient" % "4.5.1"          % Compile,
-        "org.apache.httpcomponents" % "httpmime"   % "4.5.1"          % Compile,
+        "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
+        "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
         "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
         "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
       )
@@ -221,7 +221,7 @@ object SkinnyMicroBuild extends Build {
     "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
   )
   lazy val jacksonDependencies   = Seq(
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.3" % Compile
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.5" % Compile
   )
   lazy val json4sDependencies = Seq(
     "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
