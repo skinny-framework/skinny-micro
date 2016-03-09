@@ -37,7 +37,7 @@ object SkinnyMicroBuild extends Build {
     ),
     publishMavenStyle := true,
     sbtPlugin := false,
-    scalaVersion := "2.11.7",
+    scalaVersion := "2.11.8",
     ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
     scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
     publishArtifact in Test := false,

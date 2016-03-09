@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sbt ++2.11.7 \
+sbt ++2.11.8 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \
