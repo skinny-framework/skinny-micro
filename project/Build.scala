@@ -15,7 +15,7 @@ object SkinnyMicroBuild extends Build {
   // Jetty 9.3 dropped Java 7
   lazy val jettyVersion = "9.2.15.v20160210"
   lazy val logbackVersion = "1.1.6"
-  lazy val slf4jApiVersion = "1.7.18"
+  lazy val slf4jApiVersion = "1.7.19"
   // TODO: 2.7
   lazy val jacksonVersion = "2.6.5"
   // Akka 2.4 dropped Scala 2.10 support
