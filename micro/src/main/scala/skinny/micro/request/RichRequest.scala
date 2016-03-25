@@ -177,6 +177,18 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
   def referer: Option[String] = referrer
 
   /**
+   * Optionally returns User-Agent header.
+   *
+   * @return the `User-Agent` header, or None if not set
+   */
+  def userAgent: Option[String] = {
+    Option(r.getHeader("User-Agent")).filterNot(_.isEmpty).orElse {
+      // Tomcat accepts only "user-agent"
+      Option(r.getHeader("user-agent")).filterNot(_.isEmpty)
+    }
+  }
+
+  /**
    * Caches and returns the body of the response.  The method is idempotent
    * for any given request.  The result is cached in memory regardless of size,
    * so be careful.  Calling this method consumes the request's input stream.
