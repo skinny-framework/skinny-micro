@@ -6,20 +6,20 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.5-SNAPSHOT"
+  lazy val currentVersion = "1.0.5"
 
   lazy val json4SVersion = "3.3.0"
   // specs2 breaking changes since 2.4.0
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
-  lazy val jettyVersion = "9.2.15.v20160210"
-  lazy val logbackVersion = "1.1.6"
-  lazy val slf4jApiVersion = "1.7.19"
+  lazy val jettyVersion = "9.2.16.v20160414"
+  lazy val logbackVersion = "1.1.7"
+  lazy val slf4jApiVersion = "1.7.21"
   // TODO: 2.7
-  lazy val jacksonVersion = "2.6.5"
+  lazy val jacksonVersion = "2.6.6"
   // Akka 2.4 dropped Scala 2.10 support
-  lazy val akkaVersion = "2.3.14"
+  lazy val akkaVersion = "2.3.15"
   lazy val scalaTestVersion = "2.2.6"
 
   lazy val baseSettings = Seq(
@@ -141,7 +141,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.9.2"             % Compile,
+        "joda-time"         %  "joda-time"          % "2.9.3"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
