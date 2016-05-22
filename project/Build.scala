@@ -6,14 +6,14 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.5"
+  lazy val currentVersion = "1.0.6-SNAPSHOT"
 
   lazy val json4SVersion = "3.3.0"
   // specs2 breaking changes since 2.4.0
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
   // Jetty 9.3 dropped Java 7
-  lazy val jettyVersion = "9.2.16.v20160414"
+  lazy val jettyVersion = "9.2.17.v20160517"
   lazy val logbackVersion = "1.1.7"
   lazy val slf4jApiVersion = "1.7.21"
   // TODO: 2.7
@@ -221,7 +221,7 @@ object SkinnyMicroBuild extends Build {
     "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
   )
   lazy val jacksonDependencies   = Seq(
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.5" % Compile
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.6" % Compile
   )
   lazy val json4sDependencies = Seq(
     "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
