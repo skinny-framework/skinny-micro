@@ -6,7 +6,8 @@ import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaRepor
  * MiMa settings of Skinny-Micro libs.
  */
 object MimaSettings {
-  val previousVersions = (0 to 5).map(patch => s"1.0.$patch").toSet
+  // val previousVersions = (0 to 0).map(patch => s"1.1.$patch").toSet
+  val previousVersions = Set.empty
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
     mimaPreviousArtifacts := {
@@ -21,10 +22,7 @@ object MimaSettings {
     },
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
-      Seq(
-        // Add new method since 1.0.3
-        ProblemFilters.exclude[MissingMethodProblem]("skinny.micro.test.scalatest.SkinnyMicroSuite.withRetries")
-      )
+      Seq()
     }
   )
 }

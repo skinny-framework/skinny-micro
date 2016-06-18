@@ -6,9 +6,9 @@ import scala.language.postfixOps
 
 object SkinnyMicroBuild extends Build {
 
-  lazy val currentVersion = "1.0.6"
+  lazy val currentVersion = "1.1.0"
 
-  lazy val json4SVersion = "3.3.0"
+  lazy val json4SVersion = "3.4.0"
   // specs2 breaking changes since 2.4.0
   lazy val scalatraTestVersion = "2.3.1"
   lazy val mockitoVersion = "1.10.19"
@@ -17,7 +17,7 @@ object SkinnyMicroBuild extends Build {
   lazy val logbackVersion = "1.1.7"
   lazy val slf4jApiVersion = "1.7.21"
   // TODO: 2.7
-  lazy val jacksonVersion = "2.6.6"
+  lazy val jacksonVersion = "2.6.7"
   // Akka 2.4 dropped Scala 2.10 support
   lazy val akkaVersion = "2.3.15"
   lazy val scalaTestVersion = "2.2.6"
@@ -141,7 +141,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-json4s",
       libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-        "joda-time"         %  "joda-time"          % "2.9.3"             % Compile,
+        "joda-time"         %  "joda-time"          % "2.9.4"             % Compile,
         "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
         "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
         "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
@@ -167,7 +167,7 @@ object SkinnyMicroBuild extends Build {
     settings = baseSettings ++ mimaSettings ++ Seq(
       name := "skinny-micro-server",
       libraryDependencies ++= jettyDependencies ++ Seq(
-        "org.skinny-framework" %% "skinny-http-client" % "2.0.+"          % Test,
+        "org.skinny-framework" %% "skinny-http-client" % "2.1.+"          % Test,
         "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
         "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
         "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -221,7 +221,7 @@ object SkinnyMicroBuild extends Build {
     "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
   )
   lazy val jacksonDependencies   = Seq(
-    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.6" % Compile
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7" % Compile
   )
   lazy val json4sDependencies = Seq(
     "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
