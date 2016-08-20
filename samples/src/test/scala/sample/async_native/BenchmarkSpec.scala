@@ -1,8 +1,10 @@
 package sample.async_native
 
 import skinny.test.SkinnyFunSpec
-
 import java.util.concurrent.Executors
+
+import org.scalatest.Assertion
+
 import scala.concurrent._
 import scala.concurrent.duration._
 import skinny.concurrent.ExecutionContextFactory
@@ -47,7 +49,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
     it("should work with jackson-scala-module") {
       val before = System.currentTimeMillis
       val requests = 200
-      val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
+      val futures: Seq[Future[Assertion]] = (1 to requests).map { i =>
         Future {
           get("/echo.json", "name" -> "Alice", "age" -> i.toString) {
             if (status != 200) println(body)
@@ -64,7 +66,7 @@ class BenchmarkSpec extends SkinnyFunSpec {
     it("should work with json4s") {
       val before = System.currentTimeMillis
       val requests = 200
-      val futures: Seq[Future[Unit]] = (1 to requests).map { i =>
+      val futures: Seq[Future[Assertion]] = (1 to requests).map { i =>
         Future {
           get("/json4s/echo.json", "name" -> "Alice", "age" -> i.toString) {
             if (status != 200) println(body)
