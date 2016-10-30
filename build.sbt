@@ -5,11 +5,9 @@ import scala.language.postfixOps
 lazy val currentVersion = "1.1.1-SNAPSHOT"
 
 lazy val json4SVersion = "3.4.0"
-// specs2 breaking changes since 2.4.0
-lazy val scalatraTestVersion = "2.3.1"
 lazy val mockitoVersion = "1.10.19"
 // Jetty 9.3 dropped Java 7
-lazy val jettyVersion = "9.2.18.v20160721"
+lazy val jettyVersion = "9.2.19.v20160908"
 lazy val logbackVersion = "1.1.7"
 lazy val slf4jApiVersion = "1.7.21"
 // TODO: 2.7
@@ -50,9 +48,9 @@ lazy val baseSettings = Seq(
   // https://github.com/sbt/sbt/issues/653
   // https://github.com/travis-ci/travis-ci/issues/3775
   javaOptions += "-Xmx256M",
-  publishTo <<= version { (v: String) =>
+  publishTo := {
     val nexus = "https://oss.sonatype.org/"
-    if (v.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
+    if (version.value.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "content/repositories/snapshots")
     else Some("releases" at nexus + "service/local/staging/deploy/maven2")
   },
   pomExtra := {
@@ -92,61 +90,54 @@ lazy val microCommon = (project in file("micro-common")).settings(baseSettings +
 
 lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro",
-  libraryDependencies <++= (scalaVersion) { (sv) =>
+  libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
       "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
-      "org.scalatra"      %% "scalatra-specs2"          % scalatraTestVersion % Test,
-      "org.scalatra"      %% "scalatra-scalatest"       % scalatraTestVersion % Test,
       "com.typesafe.akka" %% "akka-actor"               % akkaVersion         % Test,
       "ch.qos.logback"    %  "logback-classic"          % logbackVersion      % Test
-    ) ++ (sv match {
+    ) ++ (scalaVersion.value match {
       case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
       case _ => Nil
     })
   }
-)).dependsOn(microCommon)
+)).dependsOn(microCommon, scalatraTest % Test)
 
 lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
   )
-)).dependsOn(micro)
+)).dependsOn(micro, scalatraTest % Test)
 
 lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson-xml",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
     "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
     "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
-    "org.scalatra"                     %% "scalatra-scalatest"     % scalatraTestVersion % Test,
     "com.typesafe.akka"                %% "akka-actor"             % akkaVersion         % Test,
     "ch.qos.logback"                   %  "logback-classic"        % logbackVersion      % Test
   )
-)).dependsOn(micro, microJackson)
+)).dependsOn(micro, microJackson, scalatraTest % Test)
 
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
     "joda-time"         %  "joda-time"          % "2.9.4"             % Compile,
     "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
-    "org.scalatra"      %% "scalatra-scalatest" % scalatraTestVersion % Test,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
   )
-)).dependsOn(micro)
+)).dependsOn(micro, scalatraTest % Test)
 
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
     "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
-    "org.scalatra"          %% "scalatra-specs2"    % scalatraTestVersion % Test,
-    "org.scalatra"          %% "scalatra-scalatest" % scalatraTestVersion % Test,
     "com.typesafe.akka"     %% "akka-actor"         % akkaVersion         % Test,
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion      % Test
   )
-)).dependsOn(micro)
+)).dependsOn(micro, scalatraTest % Test)
 
 lazy val microServer = (project in file("micro-server")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-server",
@@ -156,13 +147,29 @@ lazy val microServer = (project in file("micro-server")).settings(baseSettings +
     "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
     "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
   )
-)).dependsOn(micro, microJackson % Test)
+)).dependsOn(micro, microJackson % Test, scalatraTest % Test)
+
+lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings ++ Seq(
+  name := "scalatra-test",
+  libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
+    "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
+    "junit"              %  "junit"            % "4.12"           % Compile,
+    "org.testng"         %  "testng"           % "6.8.21"         % Compile,
+    "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
+    "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
+    "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
+    "org.specs2"         %% "specs2-core"      % "2.3.13"         % Compile
+  )
+))
 
 lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-test",
   libraryDependencies ++= servletApiDependencies ++ Seq(
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.4"            % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
@@ -175,7 +182,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
   libraryDependencies ++= Seq(
     "com.typesafe.slick" %% "slick"            % "3.1.1",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.191",
+    "com.h2database"     %  "h2"               % "1.4.192",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
@@ -191,7 +198,7 @@ lazy val fullExclusionRules = Seq(
   ExclusionRule("org.slf4j", "slf4j-log4j12")
 )
 lazy val servletApiDependencies = Seq(
-  "javax.servlet" % "javax.servlet-api" % "3.0.1"  % Provided
+  "javax.servlet" % "javax.servlet-api" % "3.1.0"  % Provided
 )
 lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
