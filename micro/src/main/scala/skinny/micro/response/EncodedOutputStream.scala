@@ -1,7 +1,7 @@
 package skinny.micro.response
 
 import java.io.OutputStream
-import javax.servlet.ServletOutputStream
+import javax.servlet.{ ServletOutputStream, WriteListener }
 
 /**
  * Encoded output stream in a Servlet response.
@@ -19,5 +19,8 @@ private[skinny] class EncodedOutputStream(
 
   override def flush(): Unit = out.flush()
   override def close(): Unit = out.close()
+
+  override def isReady: Boolean = orig.isReady
+  override def setWriteListener(writeListener: WriteListener): Unit = orig.setWriteListener(writeListener)
 
 }

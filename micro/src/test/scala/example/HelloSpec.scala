@@ -77,7 +77,7 @@ class HelloSpec extends ScalatraFlatSpec {
   it should "work fine with User-Agent" in {
     get("/ua") {
       status should equal(200)
-      body should equal("Some(Apache-HttpClient/4.3.6 (java 1.5))")
+      body should startWith("Some(Apache-HttpClient/")
     }
     get("/ua", Map(), Map("User-Agent" -> "user-agent-string")) {
       status should equal(200)
