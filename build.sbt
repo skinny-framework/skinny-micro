@@ -12,6 +12,7 @@ lazy val logbackVersion = "1.1.7"
 lazy val slf4jApiVersion = "1.7.21"
 // TODO: 2.7
 lazy val jacksonVersion = "2.6.7"
+lazy val jacksonScalaVersion = "2.6.7"
 // Akka 2.4 dropped Scala 2.10 support
 lazy val akkaVersion = "2.3.15"
 lazy val scalaTestVersion = "3.0.0"
@@ -142,7 +143,6 @@ lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings
 lazy val microServer = (project in file("micro-server")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-server",
   libraryDependencies ++= jettyDependencies ++ Seq(
-    "org.skinny-framework" %% "skinny-http-client" % "2.2.+"          % Test,
     "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
     "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
     "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
@@ -204,7 +204,7 @@ lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
 lazy val jacksonDependencies   = Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.6.7" % Compile
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
