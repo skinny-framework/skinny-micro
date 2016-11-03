@@ -51,7 +51,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch hello message" in {
     get("/hello") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal("""{"message":"Hello, Anonymous"}""")
     }
   }
@@ -59,7 +59,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch hello message for Martin" in {
     get("/hello?name=Martin") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal("""{"message":"Hello, Martin"}""")
     }
   }
@@ -67,7 +67,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch persons" in {
     get("/persons") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]"""
       )
@@ -77,7 +77,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch snake cased persons" in {
     get("/snake-cased-persons") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """[{"first_name":"Alice","last_name":"Cooper"},{"first_name":"Bob","last_name":"Marley"},{"first_name":"Chris","last_name":null}]"""
       )
@@ -87,7 +87,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch prettified persons" in {
     get("/persons-prettify") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """[ {
           |  "firstName" : "Alice",
@@ -108,7 +108,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch prettified snake cased persons" in {
     get("/snake-cased-persons-prettify") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """[ {
           |  "first_name" : "Alice",
@@ -129,7 +129,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   it should "fetch persons for Angular apps" in {
     get("/persons.json") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """)]}',
           |[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]""".stripMargin

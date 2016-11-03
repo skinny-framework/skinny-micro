@@ -53,7 +53,7 @@ trait JSONStringOps {
 
   private[this] lazy val _snakeCaseMapper = {
     val m = withBasicConfiguration(new ObjectMapper with ScalaObjectMapper)
-    m.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
+    m.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
     m
   }
 

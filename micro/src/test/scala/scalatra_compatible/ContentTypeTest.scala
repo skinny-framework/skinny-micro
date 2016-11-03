@@ -20,12 +20,12 @@ import scala.xml.Text
 
 class ContentTypeTestServlet(system: ActorSystem) extends SkinnyMicroServlet {
   get("/json") {
-    contentType = "application/json; charset=utf-8"
+    contentType = "application/json;charset=utf-8"
     """{msg: "test"}"""
   }
 
   get("/html") {
-    contentType = "text/html; charset=utf-8"
+    contentType = "text/html;charset=utf-8"
     "test"
   }
 
@@ -122,7 +122,7 @@ class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
     }
   }
 
-  test("contentType of a byte array with text content detects text/plain; charset=iso-8859-5") {
+  test("contentType of a byte array with text content detects text/plain;charset=iso-8859-5") {
     get("/implicit/byte-array-text") {
       response.charset should equal(Some("ISO-8859-5"))
       response.mediaType should equal(Some("text/plain"))
@@ -135,9 +135,9 @@ class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
     }
   }
 
-  test("implicit content type does not override charset") {
+  test("implicit content type does not overridecharset") {
     get("/implicit/string/iso-8859-1") {
-      response.charset should equal(Some("ISO-8859-1"))
+      response.charset should equal(Some("iso-8859-1"))
     }
   }
 
@@ -159,7 +159,7 @@ class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
 
   test("charset is set to default when only content type is explicitly set") {
     get("/default-charset") {
-      response.charset should equal(Some("UTF-8"))
+      response.charset should equal(Some("utf-8"))
     }
   }
 
@@ -169,7 +169,7 @@ class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
 
     post(
       "/echo",
-      headers = Map("Content-Type" -> ("application/x-www-form-urlencoded; charset=" + charset)),
+      headers = Map("Content-Type" -> ("application/x-www-form-urlencoded;charset=" + charset)),
       body = ("echo=" + message.urlEncode(Charset.forName(charset)))
     ) {
         body should equal(message)

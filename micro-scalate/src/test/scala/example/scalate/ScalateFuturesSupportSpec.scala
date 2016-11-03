@@ -1,7 +1,7 @@
 package example.scalate
 
 import org.scalatra.test.specs2.MutableScalatraSpec
-import org.specs2.specification.{ Fragments, Step }
+import org.specs2.specification._
 
 class ScalateFuturesSupportSpec extends MutableScalatraSpec {
 
@@ -34,7 +34,10 @@ class ScalateFuturesSupportSpec extends MutableScalatraSpec {
   val pool = DaemonThreadFactory.newPool()
   addServlet(new ScalateFuturesSupportServlet(pool), "/*")
 
-  override def map(fs: => Fragments): Fragments = super.map(fs) ^ Step(pool.shutdown())
+  override def afterAll = {
+    super.afterAll
+    pool.shutdown()
+  }
 
   def e1 = get("/barf") {
     status must_== 500

@@ -42,7 +42,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch hello message" in {
     get("/hello") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Anonymous</message></response>"""
       )
@@ -52,7 +52,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch hello message for Martin" in {
     get("/hello?name=Martin") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Martin</message></response>"""
       )
@@ -62,7 +62,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch hello message for tag value" in {
     get("/hello?name=%3CMap1%3Efoo%3C/Map1%3E") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, &lt;Map1>foo&lt;/Map1></message></response>"""
       )
@@ -72,7 +72,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch persons" in {
     get("/persons") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><item><firstName>Alice</firstName><lastName>Cooper</lastName></item><item><firstName>Bob</firstName><lastName>Marley</lastName></item><item><firstName>Chris</firstName><lastName/></item></response>"""
       )
@@ -82,7 +82,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch a group with persons" in {
     get("/group") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><persons><firstName>Alice</firstName><lastName>Cooper</lastName></persons><persons><firstName>Bob</firstName><lastName>Marley</lastName></persons><persons><firstName>Chris</firstName><lastName/></persons></response>"""
       )
@@ -92,7 +92,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch snake cased persons" in {
     get("/snake-cased-persons") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><item><first_name>Alice</first_name><last_name>Cooper</last_name></item><item><first_name>Bob</first_name><last_name>Marley</last_name></item><item><first_name>Chris</first_name><last_name/></item></response>"""
       )
@@ -102,7 +102,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch prettified persons" in {
     get("/persons-prettify") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response>
           |  <item>
@@ -117,6 +117,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
           |    <firstName>Chris</firstName>
           |    <lastName/>
           |  </item>
+          |
           |</response>""".stripMargin
       )
     }
@@ -125,7 +126,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
   it should "fetch prettified snake cased persons" in {
     get("/snake-cased-persons-prettify") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response>
           |  <item>
@@ -140,6 +141,7 @@ class XMLOperationSpec extends ScalatraFlatSpec {
           |    <first_name>Chris</first_name>
           |    <last_name/>
           |  </item>
+          |
           |</response>""".stripMargin
       )
     }

@@ -11,7 +11,7 @@ class MinimumAppSpec extends SkinnyFunSpec {
       get("/hello") {
         status should equal(200)
         body should equal("Hello, World!")
-        header("Content-Type") should equal("text/plain; charset=UTF-8")
+        header("Content-Type") should equal("text/plain;charset=utf-8")
       }
     }
 
@@ -19,7 +19,7 @@ class MinimumAppSpec extends SkinnyFunSpec {
       post("/hello", "name" -> "Martin") {
         status should equal(200)
         body should equal("Hello, Martin!")
-        header("Content-Type") should equal("text/plain; charset=UTF-8")
+        header("Content-Type") should equal("text/plain;charset=utf-8")
       }
     }
 
@@ -27,14 +27,14 @@ class MinimumAppSpec extends SkinnyFunSpec {
       get("/hello-with-cookie-1") {
         status should equal(200)
         body should equal("Hello, World!")
-        header("Content-Type") should equal("text/plain; charset=UTF-8")
+        header("Content-Type") should equal("text/plain;charset=utf-8")
         header("Set-Cookie") should equal("theme=light;Path=/")
       }
 
       get("/hello-with-cookie-2") {
         status should equal(200)
         body should equal("Hello, World!")
-        header("Content-Type") should equal("text/plain; charset=UTF-8")
+        header("Content-Type") should equal("text/plain;charset=utf-8")
         header("Set-Cookie") should equal("theme=light")
       }
     }

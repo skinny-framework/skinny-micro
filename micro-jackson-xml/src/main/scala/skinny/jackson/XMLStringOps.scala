@@ -40,7 +40,7 @@ trait XMLStringOps {
 
   private[this] lazy val _snakeCaseMapper: XmlMapper = {
     val m = withBasicConfiguration(new XmlMapper with ScalaObjectMapper)
-    m.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
+    m.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
     m
   }
 

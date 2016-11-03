@@ -2,13 +2,12 @@ package skinny.micro.base
 
 import scala.language.reflectiveCalls
 import scala.language.implicitConversions
+import javax.servlet.{ FilterConfig, ServletConfig, ServletContext }
 
-import javax.servlet.ServletContext
-
-import skinny.micro.implicits.{ ServletApiImplicits, RicherStringImplicits }
-import skinny.micro.{ SkinnyMicroBase, Initializable }
+import skinny.micro.implicits.{ RicherStringImplicits, ServletApiImplicits }
+import skinny.micro.{ Initializable, SkinnyMicroBase }
 import skinny.micro.context.SkinnyContext
-import skinny.micro.cookie.{ CookieOptions, Cookie }
+import skinny.micro.cookie.{ Cookie, CookieOptions }
 
 import scala.collection.immutable.DefaultMap
 import scala.collection.JavaConverters._
@@ -32,10 +31,13 @@ trait ServletContextAccessor
     def getInitParameterNames(): java.util.Enumeration[String]
 
   }
-  private trait NullConfig {
-    def getServletContext(): ServletContext = null
-    def getInitParameter(name: String): String = null
-    def getInitParameterNames(): java.util.Enumeration[String] = null
+
+  private trait NullConfig extends ServletConfig with FilterConfig {
+    override def getServletName: String = null
+    override def getFilterName: String = null
+    override def getServletContext(): ServletContext = null
+    override def getInitParameter(name: String): String = null
+    override def getInitParameterNames(): java.util.Enumeration[String] = null
   }
 
   protected implicit def configWrapper(config: ConfigT) = new Config {

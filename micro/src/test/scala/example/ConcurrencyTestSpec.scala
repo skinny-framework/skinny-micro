@@ -82,7 +82,7 @@ class ConcurrencyTestSpec extends ScalatraFlatSpec {
         Future {
           get("/content-type-1") {
             status should equal(200)
-            header("Content-Type") should equal("text/csv; charset=UTF-8")
+            header("Content-Type") should equal("text/csv;charset=utf-8")
             body should equal("foo,bar,baz")
           }
         }
@@ -96,7 +96,7 @@ class ConcurrencyTestSpec extends ScalatraFlatSpec {
         Future {
           get("/content-type-2") {
             status should equal(200)
-            header("Content-Type") should equal("text/csv; charset=UTF-8")
+            header("Content-Type") should equal("text/csv;charset=utf-8")
             body should equal("foo,bar,baz")
           }
         }
@@ -110,7 +110,7 @@ class ConcurrencyTestSpec extends ScalatraFlatSpec {
         Future {
           get("/content-type-3") {
             status should equal(200)
-            header("Content-Type") should equal("text/csv; charset=UTF-8")
+            header("Content-Type") should equal("text/csv;charset=utf-8")
             body should equal("foo,bar,baz")
           }
         }

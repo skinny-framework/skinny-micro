@@ -26,7 +26,7 @@ trait XMLSupport extends XMLStringOps { self: SkinnyMicroBase =>
 
     // If Content-Type is already set, never overwrite it.
     if (contentType(ctx) == null) {
-      (contentType = Format.XML.contentType + charset.map(c => s"; charset=${c}").getOrElse(""))(ctx)
+      (contentType = Format.XML.contentType + charset.map(c => s";charset=${c}").getOrElse(""))(ctx)
     }
 
     if (prettify) toPrettyXMLString(entity, underscoreKeys = underscoreKeys)

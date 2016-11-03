@@ -4,7 +4,6 @@ import java.io.{ InputStream, InputStreamReader }
 
 import org.json4s.Xml._
 import org.json4s._
-import org.slf4j.LoggerFactory
 import skinny.json4s.JSONStringOps
 import skinny.logging.LoggerProvider
 import skinny.micro.context.SkinnyContext
@@ -58,8 +57,6 @@ trait JSONParamsAutoBinderSupport
       super.invoke(matchedRoute)
     }
   }
-
-  private[this] val logger = LoggerFactory.getLogger(getClass)
 
   private[this] val _defaultCacheRequestBody = true
 

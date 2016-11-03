@@ -76,7 +76,7 @@ trait SkinnyMicroBase
   protected def routeBasePath(implicit ctx: SkinnyContext): String
 
   /**
-   * Default charset.
+   * Defaultcharset.
    */
   lazy val charset: Option[String] = Some(defaultCharacterEncoding.toLowerCase)
 

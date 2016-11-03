@@ -1,6 +1,5 @@
 package skinny.micro.contrib.jackson
 
-import org.slf4j.LoggerFactory
 import skinny.jackson.JSONStringOps
 import skinny.logging.LoggerProvider
 import skinny.micro.context.SkinnyContext
@@ -44,8 +43,6 @@ trait JSONParamsAutoBinderSupport
   ): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
   }
-
-  private[this] val logger = LoggerFactory.getLogger(getClass)
 
   private[this] val _defaultCacheRequestBody = true
 
