@@ -17,9 +17,6 @@ package eu.medsea.util;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * A string utility class with various string manipulation functions
- */
 public class StringUtil {
 
     static final byte[] HEX_CHAR_TABLE = {(byte) '0', (byte) '1', (byte) '2',
@@ -27,13 +24,6 @@ public class StringUtil {
             (byte) '8', (byte) '9', (byte) 'a', (byte) 'b', (byte) 'c',
             (byte) 'd', (byte) 'e', (byte) 'f'};
 
-    /**
-     * Convert a byte array into a hex string representation
-     *
-     * @param raw the byte [] to convert to a hex string representation
-     * @return the hex representation
-     * @throws UnsupportedEncodingException
-     */
     public static String getHexString(byte[] raw)
             throws UnsupportedEncodingException {
         if (raw == null) {

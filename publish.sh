@@ -10,6 +10,7 @@ sbt ++2.12.0 \
   microScalate/publishSigned \
   microServer/publishSigned \
   microTest/publishSigned \
+  scalatraTest/publishSigned \
   ++2.11.8 \
   clean \
   microCommon/publishSigned \
@@ -20,6 +21,7 @@ sbt ++2.12.0 \
   microScalate/publishSigned \
   microServer/publishSigned \
   microTest/publishSigned \
+  scalatraTest/publishSigned \
   ++2.10.6 \
   clean \
   microCommon/publishSigned \
@@ -29,4 +31,5 @@ sbt ++2.12.0 \
   microJacksonXml/publishSigned \
   microScalate/publishSigned \
   microServer/publishSigned \
-  microTest/publishSigned
+  microTest/publishSigned \
+  scalatraTest/publishSigned

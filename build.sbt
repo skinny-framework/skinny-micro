@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.0-SNAPSHOT"
+lazy val currentVersion = "1.2.0-M1"
 
 lazy val json4SVersion = "3.5.0.RC1"
 lazy val mockitoVersion = "1.10.19"
@@ -14,7 +14,7 @@ lazy val jettyVersion = "9.3.14.v20161028"
 lazy val logbackVersion = "1.1.7"
 lazy val slf4jApiVersion = "1.7.21"
 lazy val jacksonVersion = "2.8.4"
-lazy val jacksonScalaVersion = "2.8.3"
+lazy val jacksonScalaVersion = "2.8.4"
 lazy val scalaTestVersion = "3.0.0"
 
 def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.12"
@@ -107,7 +107,7 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
 
 lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson",
-  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies(scalaVersion.value) ++ Seq(
+  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
   )
@@ -115,7 +115,7 @@ lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings
 
 lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson-xml",
-  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies(scalaVersion.value) ++ Seq(
+  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
     "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion                  % Compile,
     "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"                         % Compile,
     "com.typesafe.akka"                %% "akka-actor"             % akkaVersion(scalaVersion.value) % Test,
@@ -205,16 +205,11 @@ lazy val servletApiDependencies = Seq(
 lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
-def jacksonDependencies(sv: String) = {
+lazy val jacksonDependencies = Seq(
+  // TODO: https://github.com/FasterXML/jackson-module-scala/pull/294
   // "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
-  val artifact = sv match {
-    case _ if sv.startsWith("2.10") => "jackson-module-scala_2.10"
-    case _ if sv.startsWith("2.11") => "jackson-module-scala_2.11"
-    // TODO: https://github.com/FasterXML/jackson-module-scala/pull/294
-    case _ if sv.startsWith("2.12") => "jackson-module-scala_2.12.0-RC1"
-  }
-  Seq("com.fasterxml.jackson.module" % artifact % jacksonScalaVersion % Compile)
-}
+  "org.skinny-framework.com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+)
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
   "org.json4s"    %% "json4s-native"      % json4SVersion    % Provided excludeAll(fullExclusionRules: _*),
