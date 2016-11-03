@@ -8,11 +8,11 @@ import skinny.micro.contrib.FileUploadSupport
 import skinny.micro.multipart.{ MultipartConfig, SizeConstraintExceededException }
 import skinny.logging.LoggerProvider
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class FileUploadSupportSpecServlet extends SkinnyMicroServlet with FileUploadSupport with LoggerProvider {
   def headersToHeaders() {
-    request.getHeaderNames.filter(_.startsWith("X")).foreach(header =>
+    request.getHeaderNames.asScala.filter(_.startsWith("X")).foreach(header =>
       response.setHeader(header, request.getHeader(header)))
   }
 
@@ -237,7 +237,7 @@ class FileUploadSupportSpec extends MutableScalatraSpec {
       }
     }
 
-    "use default charset (UTF-8) for decoding form params if not excplicitly set to something else" in {
+    "use defaultcharset (UTF-8) for decoding form params if not excplicitly set to something else" in {
       val boundary = "XyXyXy"
       val reqBody = ("--{boundary}\r\n" +
         "Content-Disposition: form-data; name=\"utf8-string\"\r\n" +
@@ -251,10 +251,10 @@ class FileUploadSupportSpec extends MutableScalatraSpec {
       }
     }
 
-    "use the charset specified in Content-Type header of a part for decoding form params" in {
+    "use thecharset specified in Content-Type header of a part for decoding form params" in {
       val reqBody = ("--XyXyXy\r\n" +
         "Content-Disposition: form-data; name=\"latin1-string\"\r\n" +
-        "Content-Type: text/plain; charset=ISO-8859-1\r\n" +
+        "Content-Type: text/plain;charset=ISO-8859-1\r\n" +
         "\r\n" +
         "äöööölfldflfldfdföödfödfödfåååååå\r\n" +
         "--XyXyXy--").getBytes("ISO-8859-1")

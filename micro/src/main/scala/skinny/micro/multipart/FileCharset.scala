@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 import scala.io.Codec
 
 /**
- * File charset utility.
+ * Filecharset utility.
  */
 object FileCharset {
 
@@ -31,7 +31,7 @@ object FileCharset {
       getCharset(detector, Codec.fileEncodingCodec)
     } catch {
       case scala.util.control.NonFatal(t) =>
-        logger.warn("Failed to detect charset for file: " + file.getPath + ".", t)
+        logger.warn("Failed to detectcharset for file: " + file.getPath + ".", t)
         Codec.defaultCharsetCodec.charSet
     } finally {
       detector.reset()
@@ -59,7 +59,7 @@ object FileCharset {
       getCharset(detector, Codec.defaultCharsetCodec)
     } catch {
       case scala.util.control.NonFatal(t) =>
-        logger.warn("Failed to detect charset.", t)
+        logger.warn("Failed to detectcharset.", t)
         Codec.defaultCharsetCodec.charSet
     } finally {
       detector.reset()

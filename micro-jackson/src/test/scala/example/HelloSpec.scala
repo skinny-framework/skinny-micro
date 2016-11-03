@@ -79,12 +79,12 @@ class HelloSpec extends ScalatraFlatSpec {
   it should "return JSON response" in {
     get("/hello/json") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal("""{"message":"Hello, Anonymous"}""")
     }
     get("/hello/json/async?name=Martin") {
       status should equal(200)
-      header("Content-Type") should equal("application/json; charset=utf-8")
+      header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal("""{"message":"Hello, Martin"}""")
     }
   }

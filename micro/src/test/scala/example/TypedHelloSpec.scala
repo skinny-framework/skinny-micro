@@ -90,7 +90,7 @@ class TypedHelloSpec extends ScalatraFlatSpec {
 
   it should "return Content-Type in the ActionResult" in {
     get("/content-type") {
-      header("Content-Type") should equal("text/csv; charset=UTF-8")
+      header("Content-Type") should equal("text/csv;charset=utf-8")
       status should equal(200)
       body should equal("foo,bar,baz")
     }
@@ -98,7 +98,7 @@ class TypedHelloSpec extends ScalatraFlatSpec {
 
   it should "return Content-Type and charset in the ActionResult" in {
     get("/content-type-shift_jis") {
-      header("Content-Type") should equal("text/csv; charset=Shift_JIS")
+      header("Content-Type") should equal("text/csv;charset=Shift_JIS")
       status should equal(200)
       body should equal("foo,bar,baz")
     }

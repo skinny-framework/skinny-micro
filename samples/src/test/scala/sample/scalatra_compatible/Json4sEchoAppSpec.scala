@@ -14,7 +14,7 @@ class Json4sEchoAppSpec extends SkinnyFunSpec with JSONStringOps {
       get("/json4s/echo.json", "name" -> "Alice", "age" -> "18") {
         status should equal(200)
         fromJSONString[Map[String, String]](body) should equal(Success(Map("name" -> "Alice", "age" -> "18")))
-        header("Content-Type") should equal("application/json; charset=UTF-8")
+        header("Content-Type") should equal("application/json;charset=utf-8")
       }
     }
 

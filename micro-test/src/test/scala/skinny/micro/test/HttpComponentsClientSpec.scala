@@ -6,7 +6,7 @@ import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse
 import org.scalatest._
 
 import scala.annotation.tailrec
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class HttpComponentsClientSpec
     extends WordSpec
@@ -35,10 +35,10 @@ class HttpComponentsClientSpec
 
       resp.setHeader("Request-Method", req.getMethod.toUpperCase)
       resp.setHeader("Request-URI", req.getRequestURI)
-      req.getHeaderNames.foreach(headerName =>
+      req.getHeaderNames.asScala.foreach(headerName =>
         resp.setHeader("Request-Header-%s".format(headerName), req.getHeader(headerName)))
 
-      req.getParameterMap.foreach {
+      req.getParameterMap.asScala.foreach {
         case (name, values) =>
           resp.setHeader("Request-Param-%s".format(name), values.mkString(", "))
       }

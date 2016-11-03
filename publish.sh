@@ -1,6 +1,16 @@
 #!/bin/sh
 
-sbt ++2.11.8 \
+sbt ++2.12.0 \
+  clean \
+  microCommon/publishSigned \
+  micro/publishSigned \
+  microJson4s/publishSigned \
+  microJackson/publishSigned \
+  microJacksonXml/publishSigned \
+  microScalate/publishSigned \
+  microServer/publishSigned \
+  microTest/publishSigned \
+  ++2.11.8 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \

@@ -8,7 +8,7 @@ import org.scalatra.test.scalatest.ScalatraFunSuite
 
 class ScalatraSuiteTestServlet extends SkinnyMicroServlet {
   before() {
-    contentType = "text/html; charset=utf-8"
+    contentType = "text/html;charset=utf-8"
   }
 
   get("/") {

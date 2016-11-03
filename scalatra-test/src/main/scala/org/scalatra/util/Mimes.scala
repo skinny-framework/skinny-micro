@@ -3,7 +3,7 @@ package org.scalatra.util
 import eu.medsea.util.EncodingGuesser
 import eu.medsea.mimeutil.{ MimeType, MimeUtil2 }
 
-import collection.JavaConversions._
+import collection.JavaConverters._
 import java.io.{ File, InputStream }
 import java.net.{ URI, URL }
 
@@ -23,7 +23,7 @@ object Mimes {
     synchronized {
       if (EncodingGuesser.getSupportedEncodings.isEmpty) {
         val enc = Set("UTF-8", "ISO-8859-1", "windows-1252", "MacRoman", EncodingGuesser.getDefaultEncoding)
-        EncodingGuesser.setSupportedEncodings(enc)
+        EncodingGuesser.setSupportedEncodings(enc.asJava)
       }
     }
   }

@@ -1,16 +1,14 @@
 package org.scalatra.test
 
-import org.apache.http.impl.client.{ HttpClientBuilder, BasicCookieStore, DefaultHttpClient }
+import org.apache.http.impl.client.{ HttpClientBuilder, BasicCookieStore }
 import org.apache.http.HttpResponse
 import org.apache.http.client.methods._
 import org.apache.http.entity.ByteArrayEntity
 import java.io.{ OutputStream, File, ByteArrayOutputStream }
-import org.apache.http.client.params.{ CookiePolicy, ClientPNames }
 import org.apache.http.entity.mime.{ FormBodyPart, MultipartEntity, HttpMultipartMode }
-import org.apache.http.entity.mime.content.{ ContentBody, FileBody, StringBody }
+import org.apache.http.entity.mime.content.{ ContentBody, StringBody }
 import util.DynamicVariable
-import org.apache.http.client.{ RedirectStrategy, CookieStore }
-import scala.io.Codec
+import org.apache.http.client.CookieStore
 import org.apache.http.client.config.RequestConfig
 
 case class HttpComponentsClientResponse(res: HttpResponse) extends ClientResponse {

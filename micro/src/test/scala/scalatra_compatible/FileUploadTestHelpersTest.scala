@@ -7,7 +7,7 @@ import skinny.micro.SkinnyMicroServlet
 import skinny.logging.{ LoggerProvider, Logging }
 import skinny.micro.contrib.FileUploadSupport
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class FileUploadTestHelpersTestServlet extends SkinnyMicroServlet with FileUploadSupport with LoggerProvider {
 
@@ -15,7 +15,7 @@ class FileUploadTestHelpersTestServlet extends SkinnyMicroServlet with FileUploa
     response.setHeader("Request-Method", request.getMethod)
     params.foreach(p => response.setHeader("Param-" + p._1, p._2))
 
-    request.getHeaderNames.filter(header => header.startsWith("Test-")).foreach(header =>
+    request.getHeaderNames.asScala.filter(header => header.startsWith("Test-")).foreach(header =>
       response.setHeader(header, request.getHeader(header)))
 
     fileParams.foreach(fileParam => {

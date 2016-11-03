@@ -30,14 +30,14 @@ class HelloServletSpec extends ScalatraFlatSpec {
   it should "return XML response" in {
     get("/hello/xml") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Anonymous</message></response>"""
       )
     }
     get("/hello/xml/async?name=Martin") {
       status should equal(200)
-      header("Content-Type") should equal("application/xml; charset=utf-8")
+      header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
         """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Martin</message></response>"""
       )

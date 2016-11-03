@@ -27,7 +27,7 @@ class WebAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       }
     }).mount(new WebApp with JSONSupport {
       before() {
-        contentType = "application/json; charset=utf-8"
+        contentType = "application/json;charset=utf-8"
       }
       get("/json1") {
         val name = params.getAs[String]("name")
@@ -52,7 +52,7 @@ class WebAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       }
     }).mount(new AsyncWebApp with JSONSupport {
       before() { implicit ctx =>
-        contentType = "application/json; charset=utf-8"
+        contentType = "application/json;charset=utf-8"
       }
 
       get("/async/json") { implicit ctx =>
@@ -87,7 +87,7 @@ class WebAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
       } else {
         failureFound = true
         response.status should equal(500)
-        response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+        response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
         response.textBody should equal("""{"message":"Oops... ServletConcurrencyException"}""")
       }
     }
@@ -96,35 +96,35 @@ class WebAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
   it should "respond as 500 error with JSON body" in {
     val response = HTTP.get("http://127.0.0.1:8765/json1?name=Martin")
     response.status should equal(500)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Oops... RuntimeException"}""")
   }
 
   it should "respond as OK with JSON body 2" in {
     val response = HTTP.get("http://127.0.0.1:8765/json2")
     response.status should equal(200)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Hello, Anonymous"}""")
   }
 
   it should "respond as 500 error with JSON body 2" in {
     val response = HTTP.get("http://127.0.0.1:8765/json2?name=Martin")
     response.status should equal(500)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Oops... RuntimeException"}""")
   }
 
   it should "respond as OK with JSON body in async mode" in {
     val response = HTTP.get("http://127.0.0.1:8765/async/json")
     response.status should equal(200)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Hello, Anonymous"}""")
   }
 
   it should "respond as 500 error with JSON body in async mode" in {
     val response = HTTP.get("http://127.0.0.1:8765/async/json?name=Martin")
     response.status should equal(500)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Oops... RuntimeException"}""")
   }
 

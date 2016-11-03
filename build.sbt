@@ -1,21 +1,23 @@
-import skinny.servlet._, ServletPlugin._, ServletKeys._
+import skinny.servlet._
+import ServletPlugin._
+import ServletKeys._
 import MimaSettings.mimaSettings
+import sbt.Keys._
+
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.1.1-SNAPSHOT"
+lazy val currentVersion = "1.2.0-SNAPSHOT"
 
-lazy val json4SVersion = "3.4.0"
+lazy val json4SVersion = "3.5.0.RC1"
 lazy val mockitoVersion = "1.10.19"
-// Jetty 9.3 dropped Java 7
-lazy val jettyVersion = "9.2.19.v20160908"
+lazy val jettyVersion = "9.3.14.v20161028"
 lazy val logbackVersion = "1.1.7"
 lazy val slf4jApiVersion = "1.7.21"
-// TODO: 2.7
-lazy val jacksonVersion = "2.6.7"
-lazy val jacksonScalaVersion = "2.6.7"
-// Akka 2.4 dropped Scala 2.10 support
-lazy val akkaVersion = "2.3.15"
+lazy val jacksonVersion = "2.8.4"
+lazy val jacksonScalaVersion = "2.8.3"
 lazy val scalaTestVersion = "3.0.0"
+
+def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.12"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -24,8 +26,6 @@ lazy val baseSettings = Seq(
     "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases"
     //, "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   ),
-  // https://github.com/sbt/sbt/issues/2217
-  fullResolvers ~= { _.filterNot(_.name == "jcenter") },
   dependencyOverrides := Set(
     "org.scala-lang" %  "scala-library"  % scalaVersion.value,
     "org.scala-lang" %  "scala-reflect"  % scalaVersion.value,
@@ -33,7 +33,7 @@ lazy val baseSettings = Seq(
   ),
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.12.0",
   ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   publishArtifact in Test := false,
@@ -44,8 +44,8 @@ lazy val baseSettings = Seq(
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
   updateOptions := updateOptions.value.withCachedResolution(true),
-  javacOptions ++= Seq("-source", "1.7", "-target", "1.7", "-encoding", "UTF-8", "-Xlint:-options"),
-  javacOptions in doc := Seq("-source", "1.7"),
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-encoding", "UTF-8", "-Xlint:-options"),
+  javacOptions in doc := Seq("-source", "1.8"),
   // https://github.com/sbt/sbt/issues/653
   // https://github.com/travis-ci/travis-ci/issues/3775
   javaOptions += "-Xmx256M",
@@ -93,11 +93,13 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
   name := "skinny-micro",
   libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-      "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"     % Compile,
-      "com.typesafe.akka" %% "akka-actor"               % akkaVersion         % Test,
-      "ch.qos.logback"    %  "logback-classic"          % logbackVersion      % Test
+      "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"        % Compile,
+      "ch.qos.logback"    %  "logback-classic" % logbackVersion                  % Test,
+      "com.typesafe.akka" %% "akka-actor"      % akkaVersion(scalaVersion.value) % Test
     ) ++ (scalaVersion.value match {
-      case v if v.startsWith("2.11.") => Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
+      case v if v.startsWith("2.11.")
+             || v.startsWith("2.12.") =>
+        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4" % Compile)
       case _ => Nil
     })
   }
@@ -105,38 +107,38 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
 
 lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson",
-  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
-    "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
+  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies(scalaVersion.value) ++ Seq(
+    "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
+    "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 
 lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson-xml",
-  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion      % Compile,
-    "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"             % Compile,
-    "com.typesafe.akka"                %% "akka-actor"             % akkaVersion         % Test,
-    "ch.qos.logback"                   %  "logback-classic"        % logbackVersion      % Test
+  libraryDependencies ++= servletApiDependencies ++ jacksonDependencies(scalaVersion.value) ++ Seq(
+    "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion                  % Compile,
+    "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"                         % Compile,
+    "com.typesafe.akka"                %% "akka-actor"             % akkaVersion(scalaVersion.value) % Test,
+    "ch.qos.logback"                   %  "logback-classic"        % logbackVersion                  % Test
   )
 )).dependsOn(micro, microJackson, scalatraTest % Test)
 
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.4"             % Compile,
-    "org.joda"          %  "joda-convert"       % "1.8.1"             % Compile,
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion         % Test,
-    "ch.qos.logback"    %  "logback-classic"    % logbackVersion      % Test
+    "joda-time"         %  "joda-time"          % "2.9.4"                         % Compile,
+    "org.joda"          %  "joda-convert"       % "1.8.1"                         % Compile,
+    "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
+    "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.7.1"             % Compile excludeAll(fullExclusionRules: _*),
-    "com.typesafe.akka"     %% "akka-actor"         % akkaVersion         % Test,
-    "ch.qos.logback"        %  "logback-classic"    % logbackVersion      % Test
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0-RC1"                     % Compile excludeAll(fullExclusionRules: _*),
+    "com.typesafe.akka"     %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
+    "ch.qos.logback"        %  "logback-classic"    % logbackVersion                  % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 
@@ -161,7 +163,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
-    "org.specs2"         %% "specs2-core"      % "2.3.13"         % Compile
+    "org.specs2"         %% "specs2-core"      % "3.8.6"          % Compile
   )
 ))
 
@@ -180,7 +182,7 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
 
 lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
   libraryDependencies ++= Seq(
-    "com.typesafe.slick" %% "slick"            % "3.1.1",
+    // "com.typesafe.slick" %% "slick"            % "3.1.1",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
     "com.h2database"     %  "h2"               % "1.4.192",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
@@ -203,9 +205,16 @@ lazy val servletApiDependencies = Seq(
 lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
-lazy val jacksonDependencies   = Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
-)
+def jacksonDependencies(sv: String) = {
+  // "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+  val artifact = sv match {
+    case _ if sv.startsWith("2.10") => "jackson-module-scala_2.10"
+    case _ if sv.startsWith("2.11") => "jackson-module-scala_2.11"
+    // TODO: https://github.com/FasterXML/jackson-module-scala/pull/294
+    case _ if sv.startsWith("2.12") => "jackson-module-scala_2.12.0-RC1"
+  }
+  Seq("com.fasterxml.jackson.module" % artifact % jacksonScalaVersion % Compile)
+}
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
   "org.json4s"    %% "json4s-native"      % json4SVersion    % Provided excludeAll(fullExclusionRules: _*),

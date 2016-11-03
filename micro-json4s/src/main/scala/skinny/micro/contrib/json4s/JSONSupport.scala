@@ -13,7 +13,7 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
    * Returns JSON response.
    *
    * @param entity entity
-   * @param charset charset
+   * @paramcharsetcharset
    * @param prettify prettify if true
    * @return body
    */
@@ -26,7 +26,7 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
 
     // If Content-Type is already set, never overwrite it.
     if (contentType(ctx) == null) {
-      (contentType = Format.JSON.contentType + charset.map(c => s"; charset=${c}").getOrElse(""))(ctx)
+      (contentType = Format.JSON.contentType + charset.map(c => s";charset=${c}").getOrElse(""))(ctx)
     }
 
     if (prettify) toPrettyJSONString(entity)

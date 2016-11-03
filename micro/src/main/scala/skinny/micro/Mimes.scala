@@ -7,7 +7,7 @@ import eu.medsea.mimeutil.{ MimeType, MimeUtil2 }
 import eu.medsea.util.EncodingGuesser
 import skinny.logging.Logger
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.util.control.Exception._
 
 import Mimes._
@@ -100,7 +100,7 @@ object Mimes {
     synchronized {
       if (EncodingGuesser.getSupportedEncodings.isEmpty) {
         val enc = Set("UTF-8", "ISO-8859-1", "windows-1252", "MacRoman", EncodingGuesser.getDefaultEncoding)
-        EncodingGuesser.setSupportedEncodings(enc)
+        EncodingGuesser.setSupportedEncodings(enc.asJava)
       }
     }
   }

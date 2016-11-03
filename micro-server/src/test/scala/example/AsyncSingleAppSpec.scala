@@ -20,7 +20,7 @@ class AsyncSingleAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
   override def beforeAll() = {
     WebServer.init().mount(new AsyncSingleApp with JSONSupport {
       before() { implicit ctx =>
-        contentType = "application/json; charset=utf-8"
+        contentType = "application/json;charset=utf-8"
       }
 
       get("/ok") { implicit ctx =>
@@ -77,21 +77,21 @@ class AsyncSingleAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
   it should "respond as 500 error with JSON body" in {
     val response = HTTP.get("http://127.0.0.1:8767/json1?name=Martin")
     response.status should equal(500)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Oops... RuntimeException"}""")
   }
 
   it should "respond as OK with JSON body 2" in {
     val response = HTTP.get("http://127.0.0.1:8767/json2")
     response.status should equal(200)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Hello, Anonymous"}""")
   }
 
   it should "respond as 500 error with JSON body 2" in {
     val response = HTTP.get("http://127.0.0.1:8767/json2?name=Martin")
     response.status should equal(500)
-    response.header("Content-Type") should equal(Some("application/json; charset=utf-8"))
+    response.header("Content-Type") should equal(Some("application/json;charset=utf-8"))
     response.textBody should equal("""{"message":"Oops... RuntimeException"}""")
   }
 
