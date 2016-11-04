@@ -13,7 +13,7 @@ trait JSONSupport extends JSONStringOps { self: SkinnyMicroBase =>
    * Returns JSON response.
    *
    * @param entity entity
-   * @paramcharsetcharset
+   * @param charset charset
    * @param prettify prettify if true
    * @return body
    */
