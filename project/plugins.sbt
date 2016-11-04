@@ -2,7 +2,7 @@ resolvers += Classpaths.sbtPluginReleases
 resolvers += "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases"
 //addMavenResolverPlugin
 
-addSbtPlugin("com.typesafe"         % "sbt-mima-plugin"         % "0.1.9")
+addSbtPlugin("com.typesafe"         % "sbt-mima-plugin"         % "0.1.11")
 addSbtPlugin("org.skinny-framework" % "sbt-servlet-plugin"      % "2.0.6")
 addSbtPlugin("org.scalariform"      % "sbt-scalariform"         % "1.6.0")
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea"                % "1.6.0")

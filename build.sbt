@@ -6,9 +6,9 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.0-M1"
+lazy val currentVersion = "1.2.0-RC1"
 
-lazy val json4SVersion = "3.5.0.RC1"
+lazy val json4SVersion = "3.5.0"
 lazy val mockitoVersion = "1.10.19"
 lazy val jettyVersion = "9.3.14.v20161028"
 lazy val logbackVersion = "1.1.7"
@@ -126,7 +126,7 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.4"                         % Compile,
+    "joda-time"         %  "joda-time"          % "2.9.5"                         % Compile,
     "org.joda"          %  "joda-convert"       % "1.8.1"                         % Compile,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
@@ -136,7 +136,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0-RC1"                     % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0"                         % Compile excludeAll(fullExclusionRules: _*),
     "com.typesafe.akka"     %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion                  % Test
   )
@@ -184,7 +184,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
   libraryDependencies ++= Seq(
     // "com.typesafe.slick" %% "slick"            % "3.1.1",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.192",
+    "com.h2database"     %  "h2"               % "1.4.193",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
