@@ -10,14 +10,36 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
+/**
+ * <p>
+ * All methods in this class that return a Collection object actually return a {@link MimeTypeHashSet}
+ * that implements both the {@link Set} and {@link Collection} interfaces.
+ * </p>
+ *
+ * @author Steven McArdle
+ */
 class MimeDetectorRegistry {
 
     private static Logger log = LoggerFactory.getLogger(MimeDetectorRegistry.class);
 
+    /**
+     * This property holds an instance of the TextMimeDetector.
+     * This is the only pre-registerd MimeDetector and cannot be
+     * de-registered or registered by your code
+     */
     private TextMimeDetector TextMimeDetector = new TextMimeDetector(1);
+
 
     private Map mimeDetectors = new TreeMap();
 
+    /**
+     * Use the fully qualified name of a MimeDetector and try to instantiate it if
+     * it's not already registered. If it's already registered then log a warning and
+     * return the already registered MimeDetector
+     *
+     * @param mimeDetector
+     * @return MimeDetector registered under this name. Returns null if an exception occurs
+     */
     MimeDetector registerMimeDetector(final String mimeDetector) {
         if (mimeDetectors.containsKey(mimeDetector)) {
             log.warn("MimeDetector [" + mimeDetector + "] will not be registered as a MimeDetector with this name is already registered.");

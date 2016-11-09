@@ -16,6 +16,11 @@
 
 package eu.medsea.mimeutil;
 
+/**
+ * This exception is thrown by methods that fail while checking a file to determine the mime types.
+ *
+ * @author Steven McArdle
+ */
 public class MimeException extends RuntimeException {
 
     private static final long serialVersionUID = -1931354615779382666L;
