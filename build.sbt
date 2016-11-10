@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.0-RC1"
+lazy val currentVersion = "1.2.0"
 
 lazy val json4SVersion = "3.5.0"
 lazy val mockitoVersion = "1.10.19"
@@ -15,7 +15,7 @@ lazy val logbackVersion = "1.1.7"
 lazy val slf4jApiVersion = "1.7.21"
 lazy val jacksonVersion = "2.8.4"
 lazy val jacksonScalaVersion = "2.8.4"
-lazy val scalaTestVersion = "3.0.0"
+lazy val scalaTestVersion = "3.0.1"
 
 def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.12"
 
@@ -206,9 +206,7 @@ lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
 lazy val jacksonDependencies = Seq(
-  // TODO: https://github.com/FasterXML/jackson-module-scala/pull/294
-  // "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
-  "org.skinny-framework.com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
