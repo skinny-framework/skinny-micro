@@ -17,6 +17,14 @@ package eu.medsea.mimeutil;
 
 import eu.medsea.util.EncodingGuesser;
 
+/**
+ * This class can be used to represent a mime type for a text file.
+ * This should only be returned by MimeDetector(s) that use magic number
+ * type matching. It allows for an encoding to be associated to a text type
+ * mime type such as text/plain.
+ *
+ * @author Steven McArdle
+ */
 public class TextMimeType extends MimeType {
 
     private static final long serialVersionUID = -4798584119063522367L;
@@ -24,11 +32,24 @@ public class TextMimeType extends MimeType {
     // The default encoding is always set Unknown
     private String encoding = "Unknown";
 
+    /**
+     * Construct a TextMimeType from a string representation of a MimeType and
+     * an encoding that should be one of the known encodings.
+     *
+     * @param mimeType
+     * @param encoding
+     */
     public TextMimeType(final String mimeType, final String encoding) {
         super(mimeType);
         this.encoding = getValidEncoding(encoding);
     }
 
+    /**
+     * Get the encoding currently set for this TextMimeType.
+     *
+     * @return the encoding as a string
+     * @see #setEncoding(String)
+     */
     public String getEncoding() {
         return encoding;
     }
@@ -41,6 +62,12 @@ public class TextMimeType extends MimeType {
         return super.toString() + ";charset=" + getEncoding();
     }
 
+    /**
+     * Utility method to see if the passed in encoding is known to this class.
+     *
+     * @param encoding
+     * @return true if encoding passed in is one of the known encodings else false
+     */
     private boolean isKnownEncoding(String encoding) {
         return EncodingGuesser.isKnownEncoding(encoding);
     }

@@ -20,8 +20,20 @@ import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
 
+/**
+ * Utility class providing methods to work with Zip and Jar Files
+ *
+ * @author Steven McArdle
+ */
 public class ZipJarUtil {
 
+    /**
+     * Get an InputStream from the zip file capable of reading from
+     *
+     * @param url
+     * @return InputStream for reading from a jar or zip file
+     * @throws IOException
+     */
     public static InputStream getInputStreamForURL(URL url) throws IOException {
         JarURLConnection conn = (JarURLConnection) url.openConnection();
         return conn.getInputStream();

@@ -22,6 +22,46 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 
+/**
+ * This class contains a list of known encodings used by TextMimeType.
+ * It is used by the TextMimeDetector but can be used as a stand alone utility class
+ * in other parts of your program if you want.
+ * <p>
+ * The getPossibleEncodings() method takes a byte [] as its source and the bigger the
+ * array the better the detection ratio will be.
+ * </p>
+ * <p>
+ * The class is initialised with an empty list of encodings so it is effectively disabled by
+ * default. You can set the supported encodings to ALL of the encodings supported by your JVM at
+ * any point during your program execution using the following method
+ * EncodingGuesser.setSupportedEncodings(EncodingGuesser.getCanonicalEncodingNamesSupportedByJVM());
+ * You can also clear the encodings and disable the detector at any point by calling
+ * EncodingGuesser.setSupportedEncodings(new ArrayList()). If later on you dynamically
+ * add more encodings they will NOT be detected automatically by this class but you can recall the
+ * above method.
+ * </p>
+ * <p>
+ * As the JVM can have a large number of encodings and each one is checked against the
+ * byte array it may be wise to remove all encodings you are sure you will not use
+ * to trim down on the number of tests. It will not stop at the first match but will try to
+ * match as many encodings as possible and return this as a Collection.
+ * </p>
+ * <p>
+ * A common scenario is where an application can handle only a small set of text encodings such as UTF-8
+ * and windows-1252. If this is your case you can use the setSupportedEncodings() method so that
+ * these are the only encodings in the supported encodings Collection.
+ * This will dramatically improve the performance of this class.
+ * </p>
+ * <p>
+ * It's possible that small byte arrays that should contain binary data are considered
+ * possible text matches but generally binary data, such as images, should return no matches.
+ * </p>
+ * <p>
+ * There are some optimisations that are applicable to text files containing BOM's (Byte Order Marks) such as
+ * UTF-8, UTF-16LE, UTF-16BE, UTF-32LE and UTF-32BE. These are not required but if present will greatly improve
+ * the resultant possible matches returned from the getPossibleEncodings() method.
+ * </p>
+ */
 public class EncodingGuesser {
 
     private static Logger log = LoggerFactory.getLogger(EncodingGuesser.class);
@@ -34,6 +74,14 @@ public class EncodingGuesser {
 
     private static Map boms = new HashMap();
 
+    /**
+     * Initialise the supported encodings to be those supported by the JVM.
+     * This will NOT be updated should you later add encodings dynamically to your
+     * running code.
+     *
+     * You can also remove some of these later if you know they will not be used.
+     * The more you remove the more performant the it will be.
+     */
     static {
         // We have this switched off by default. If you want to initialise with all encodings
         // supported by your JVM the just un-comment the following line
@@ -53,10 +101,22 @@ public class EncodingGuesser {
 
     }
 
+    /**
+     * Check if the encoding String is one of the encodings supported.
+     *
+     * @param encoding
+     * @return true if encoding is understood by this class
+     */
     public static boolean isKnownEncoding(String encoding) {
         return supportedEncodings.contains(encoding);
     }
 
+    /**
+     * Get a Collection of all the possible encodings this byte array could be used to represent.
+     *
+     * @param data
+     * @return the Collection of possible encodings from the supported encodings
+     */
     public static Collection getPossibleEncodings(byte[] data) {
 
         Collection possibleEncodings = new TreeSet();
@@ -129,6 +189,15 @@ public class EncodingGuesser {
         return possibleEncodings;
     }
 
+    /**
+     * Get a Collection containing entries in both the supported encodings
+     * and the passed in String [] of encodings.
+     * <p>
+     * This is used by TextMimeDetector to get a valid list of the preferred encodings.
+     *
+     * @param encodings
+     * @return a Collection containing all valid encodings contained in the passed in encodings array
+     */
     public static Collection getValidEncodings(String[] encodings) {
         Collection c = new ArrayList();
         for (int i = 0; i < encodings.length; i++) {
@@ -139,14 +208,31 @@ public class EncodingGuesser {
         return c;
     }
 
+
+    /**
+     * Get the JVM default canonical encoding. For instance the canonical encoding for cp1252 is windows-1252
+     *
+     * @return the default canonical encoding name for the JVM
+     */
     public static String getDefaultEncoding() {
         return EncodingGuesser.defaultJVMEncoding;
     }
 
+    /**
+     * Get the Collection of currently supported encodings
+     *
+     * @return the supported encodings.
+     */
     public static Collection getSupportedEncodings() {
         return supportedEncodings;
     }
 
+    /**
+     * Set the supported encodings
+     *
+     * @param encodings If this is null the supported encodings are left unchanged.
+     * @return a copy of the currently supported encodings
+     */
     public static Collection setSupportedEncodings(Collection encodings) {
         Collection current = new TreeSet();
         for (Iterator it = supportedEncodings.iterator(); it.hasNext(); ) {
@@ -161,6 +247,13 @@ public class EncodingGuesser {
         return current;
     }
 
+    /**
+     * Get the length of a BOM for this this encoding and byte array
+     *
+     * @param encoding
+     * @param data
+     * @return length of BOM if the data contains a BOM else returns 0
+     */
     public static int getLengthBOM(String encoding, byte[] data) {
         if (!boms.containsKey(encoding)) {
             return 0;
@@ -173,6 +266,14 @@ public class EncodingGuesser {
         }
     }
 
+    /**
+     * Get a sub array of this byte array starting at offset until length
+     *
+     * @param a
+     * @param offset
+     * @param length
+     * @return new byte array unless is would replicate or increase the original array in which case it returns the original
+     */
     public static byte[] getByteArraySubArray(byte[] a, int offset, int length) {
         if ((offset + length > a.length)) {
             return a;
@@ -184,6 +285,16 @@ public class EncodingGuesser {
         return data;
     }
 
+    /**
+     * Utility method to compare a region of two byte arrays for equality
+     *
+     * @param a
+     * @param aOffset
+     * @param b
+     * @param bOffset
+     * @param length
+     * @return true is the two regions contain the same byte values else false
+     */
     public static boolean compareByteArrays(byte[] a, int aOffset, byte[] b, int bOffset, int length) {
         if ((a.length < aOffset + length) || (b.length < bOffset + length)) {
             // would match beyond one of the arrays
@@ -199,3 +310,4 @@ public class EncodingGuesser {
     }
 
 }
+
