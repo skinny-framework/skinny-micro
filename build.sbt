@@ -11,13 +11,13 @@ lazy val currentVersion = "1.2.0"
 lazy val json4SVersion = "3.5.0"
 lazy val mockitoVersion = "1.10.19"
 lazy val jettyVersion = "9.3.14.v20161028"
-lazy val logbackVersion = "1.1.7"
+lazy val logbackVersion = "1.1.8"
 lazy val slf4jApiVersion = "1.7.21"
-lazy val jacksonVersion = "2.8.4"
+lazy val jacksonVersion = "2.8.5"
 lazy val jacksonScalaVersion = "2.8.4"
 lazy val scalaTestVersion = "3.0.1"
 
-def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.12"
+def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.14"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -33,7 +33,7 @@ lazy val baseSettings = Seq(
   ),
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.12.0",
+  scalaVersion := "2.11.8",
   ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   scalacOptions in (Compile, doc) ++= {
@@ -165,7 +165,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.testng"         %  "testng"           % "6.8.21"         % Compile,
+    "org.testng"         %  "testng"           % "6.10"           % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
