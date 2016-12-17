@@ -7,8 +7,7 @@ import scala.collection.immutable.Map
 /**
  * Map which contains multi values for each key.
  */
-class MultiMap(wrapped: Map[String, Seq[String]] = Map.empty)
-    extends Map[String, Seq[String]] {
+class MultiMap(wrapped: Map[String, Seq[String]] = Map.empty) extends Map[String, Seq[String]] {
 
   def get(key: String): Option[Seq[String]] = {
     (wrapped.get(key) orElse wrapped.get(key + "[]"))

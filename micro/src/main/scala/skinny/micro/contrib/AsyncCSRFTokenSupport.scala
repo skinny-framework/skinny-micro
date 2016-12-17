@@ -24,8 +24,7 @@ trait AsyncCSRFTokenSupport { this: SkinnyMicroBase with AsyncBeforeAfterDsl =>
    * CONNECT, PATCH) and the request parameter at `csrfKey` does not match
    * the session key of the same name.
    */
-  protected def isForged(implicit ctx: SkinnyContext): Boolean = {
-    implicit val ctx = context
+  protected def isForged(implicit ctx: SkinnyContext = context): Boolean = {
     !request.requestMethod.isSafe &&
       session.get(csrfKey) != params.get(csrfKey) &&
       !CSRFTokenSupport.HeaderNames.map(request.headers.get).contains(session.get(csrfKey))
@@ -57,7 +56,8 @@ trait AsyncCSRFTokenSupport { this: SkinnyMicroBase with AsyncBeforeAfterDsl =>
   /**
    * Returns the token from the session.
    */
-  protected[skinny] def csrfToken(implicit ctx: SkinnyContext): String =
+  protected[skinny] def csrfToken(implicit ctx: SkinnyContext): String = {
     context.request.getSession.getAttribute(csrfKey).asInstanceOf[String]
+  }
 
 }

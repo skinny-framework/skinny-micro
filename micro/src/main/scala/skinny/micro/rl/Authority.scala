@@ -8,7 +8,10 @@ object UserInfo {
 
   def apply(userInfo: String): Option[UserInfo] = {
     userInfo.blankOption map { uif =>
-      val Array(user, secret) = if (uif.indexOf(":") > -1) (uif.toString split ':') else Array(uif, "")
+      val Array(user, secret) = {
+        if (uif.indexOf(":") > -1) (uif.toString split ':')
+        else Array(uif, "")
+      }
       UserInfo(user, secret)
     }
   }
@@ -85,12 +88,14 @@ case class IPv4Address(value: String) extends UriHost {
 
   val bytes = value.split("\\.").map(_.toByte).toArray
 
-  override def normalize(stripCommonPrefix: Boolean) = new IPv4Address(value) with UriHostDomains {
-    protected val parsed = {
-      try {
-        DomainParser(InetAddress.getByAddress(bytes).getCanonicalHostName)
-      } catch {
-        case e: UnknownHostException => (value, "", "")
+  override def normalize(stripCommonPrefix: Boolean) = {
+    new IPv4Address(value) with UriHostDomains {
+      protected val parsed = {
+        try {
+          DomainParser(InetAddress.getByAddress(bytes).getCanonicalHostName)
+        } catch {
+          case e: UnknownHostException => (value, "", "")
+        }
       }
     }
   }
@@ -100,8 +105,10 @@ case class IPv4Address(value: String) extends UriHost {
 case class IPv6Address(value: String) extends UriHost {
 
   val uriPart = "[" + value + "]"
-  def normalize(stripCommonPrefix: Boolean): UriHost with UriHostDomains = new IPv6Address(value) with UriHostDomains {
-    protected val parsed = (value, "", "")
+  def normalize(stripCommonPrefix: Boolean): UriHost with UriHostDomains = {
+    new IPv6Address(value) with UriHostDomains {
+      protected val parsed = (value, "", "")
+    }
   }
 
 }
@@ -109,13 +116,19 @@ case class IPv6Address(value: String) extends UriHost {
 case class IPvFutureAddress(value: String) extends UriHost {
 
   val uriPart = "[" + value + "]"
-  def normalize(stripCommonPrefix: Boolean): UriHost with UriHostDomains = new IPvFutureAddress(value) with UriHostDomains {
-    protected val parsed = (value, "", "")
+  def normalize(stripCommonPrefix: Boolean): UriHost with UriHostDomains = {
+    new IPvFutureAddress(value) with UriHostDomains {
+      protected val parsed = (value, "", "")
+    }
   }
 
 }
 
-case class Authority(userInfo: Option[UserInfo], host: UriHost, port: Option[Int]) extends UriNode {
+case class Authority(
+    userInfo: Option[UserInfo],
+    host: UriHost,
+    port: Option[Int]
+) extends UriNode {
 
   def normalize = normalize(false)
   def normalize(stripCommonPrefix: Boolean) = {

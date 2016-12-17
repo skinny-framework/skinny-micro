@@ -56,11 +56,13 @@ trait I18nSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
   /*
   * Resolve Locale based on HTTP request parameter or Cookie
   */
-  private def resolveLocale(implicit ctx: SkinnyContext): Locale = resolveHttpLocale(ctx) getOrElse defaultLocale
+  private def resolveLocale(implicit ctx: SkinnyContext): Locale = {
+    resolveHttpLocale(ctx).getOrElse(defaultLocale)
+  }
 
   /*
    * Get locale either from HTTP param, Cookie or Accept-Language header.
-   * 
+   *
    * If locale string is found in HTTP param, it will be set
    * in cookie. Later requests will read locale string directly from this
    *
@@ -68,12 +70,17 @@ trait I18nSupport { this: SkinnyMicroBase with BeforeAfterDsl =>
    * Locale strings are transformed to [[java.util.Locale]]
    */
   private def resolveHttpLocale(implicit ctx: SkinnyContext): Option[Locale] = {
-    (params(ctx).get(LocaleKey) match {
-      case Some(localeValue) =>
-        cookies(ctx).set(LocaleKey, localeValue)
-        Some(localeValue)
-      case _ => cookies(ctx).get(LocaleKey)
-    }).map(localeFromString(_)(ctx)) orElse resolveHttpLocaleFromUserAgent(ctx)
+    val maybeLocaleValue: Option[String] = {
+      (params(ctx).get(LocaleKey) match {
+        case Some(localeValue) =>
+          cookies(ctx).set(LocaleKey, localeValue)
+          Some(localeValue)
+        case _ => cookies(ctx).get(LocaleKey)
+      })
+    }
+    maybeLocaleValue
+      .map(localeValue => localeFromString(localeValue)(ctx))
+      .orElse(resolveHttpLocaleFromUserAgent(ctx))
   }
 
   /**

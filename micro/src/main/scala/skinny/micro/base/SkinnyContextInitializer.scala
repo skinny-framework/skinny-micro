@@ -89,11 +89,8 @@ trait SkinnyContextInitializer {
    * method.
    */
   protected def withRequest[A](request: HttpServletRequest)(f: => A): A = {
-    mainThreadDynamicRequest.withValue(
-      Some(HttpServletRequestHolder(request, currentThreadId))
-    ) {
-        f
-      }
+    mainThreadDynamicRequest
+      .withValue(Some(HttpServletRequestHolder(request, currentThreadId))) { f }
   }
 
   /**
@@ -101,11 +98,8 @@ trait SkinnyContextInitializer {
    * method.
    */
   protected def withResponse[A](response: HttpServletResponse)(f: => A) = {
-    mainThreadDynamicResponse.withValue(
-      Some(HttpServletResponseHolder(response, currentThreadId))
-    ) {
-        f
-      }
+    mainThreadDynamicResponse
+      .withValue(Some(HttpServletResponseHolder(response, currentThreadId))) { f }
   }
 
 }

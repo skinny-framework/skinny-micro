@@ -131,9 +131,11 @@ trait FileUploadSupport
 
   private def getParts(req: HttpServletRequest): Iterable[Part] = {
     try {
-      if (isMultipartRequest(req)) req.getParts.asScala else Seq.empty[Part]
+      if (isMultipartRequest(req)) req.getParts.asScala
+      else Seq.empty[Part]
     } catch {
-      case e: Exception if isSizeConstraintException(e) => throw new SizeConstraintExceededException("Too large request or file", e)
+      case e: Exception if isSizeConstraintException(e) =>
+        throw new SizeConstraintExceededException("Too large request or file", e)
     }
   }
 
@@ -141,7 +143,10 @@ trait FileUploadSupport
     new String(item.get().map(_.toChar))
   }
 
-  private def mergeFormParamsWithQueryString(req: HttpServletRequest, bodyParams: BodyParams): Map[String, List[String]] = {
+  private def mergeFormParamsWithQueryString(
+    req: HttpServletRequest,
+    bodyParams: BodyParams
+  ): Map[String, List[String]] = {
     var mergedParams = bodyParams.formParams
     req.getParameterMap.asScala foreach {
       case (name, values) =>
@@ -152,22 +157,17 @@ trait FileUploadSupport
     mergedParams
   }
 
-  private def wrapRequest(req: HttpServletRequest, formMap: Map[String, Seq[String]]): HttpServletRequestWrapper = {
+  private def wrapRequest(
+    req: HttpServletRequest,
+    formMap: Map[String, Seq[String]]
+  ): HttpServletRequestWrapper = {
     val wrapped = new HttpServletRequestWrapper(req) {
-      override def getParameter(name: String): String = formMap.get(name) map {
-        _.head
-      } getOrElse null
-
+      override def getParameter(name: String): String = formMap.get(name).map(_.head).orNull[String]
       override def getParameterNames: java.util.Enumeration[String] = formMap.keysIterator.asJavaEnumeration
-
-      override def getParameterValues(name: String): Array[String] = formMap.get(name) map {
-        _.toArray
-      } getOrElse null
+      override def getParameterValues(name: String): Array[String] = formMap.get(name).map(_.toArray).getOrElse(null)
 
       override def getParameterMap: JMap[String, Array[String]] = {
-        (new JHashMap[String, Array[String]].asScala ++ (formMap transform {
-          (k, v) => v.toArray
-        })).asJava
+        (new JHashMap[String, Array[String]].asScala ++ (formMap.transform { (k, v) => v.toArray })).asJava
       }
     }
     wrapped

@@ -10,6 +10,4 @@ case class HaltException(
   reason: Option[String],
   headers: Map[String, String],
   body: Any
-)
-    extends Throwable
-    with NoStackTrace
+) extends Throwable with NoStackTrace

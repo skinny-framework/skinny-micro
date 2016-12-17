@@ -8,7 +8,10 @@ import scala.util.matching.Regex
  * A path pattern optionally matches a request path and extracts path
  * parameters.
  */
-case class PathPattern(regex: Regex, captureGroupNames: List[String] = Nil) {
+case class PathPattern(
+    regex: Regex,
+    captureGroupNames: List[String] = Nil
+) {
 
   def apply(path: String): Option[MultiParams] = {
     // This is a performance hotspot.  Hideous mutatations ahead.

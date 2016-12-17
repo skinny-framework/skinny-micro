@@ -113,7 +113,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     } else if (classOf[Filter].isAssignableFrom(handlerClass)) {
       mountFilter(handlerClass.asInstanceOf[Class[Filter]], pathMap, name)
     } else {
-      sys.error("Don't know how to mount this service to a servletContext: " + handlerClass)
+      sys.error(s"Don't know how to mount this service to a servletContext: ${handlerClass}")
     }
   }
 
@@ -229,4 +229,3 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
   def contextPath: String = sc.getContextPath
 
 }
-

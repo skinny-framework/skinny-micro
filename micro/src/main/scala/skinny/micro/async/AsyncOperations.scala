@@ -22,10 +22,9 @@ trait AsyncOperations {
    * @return response value
    */
   @deprecated("Use FutureWithContext { implicit ctx => ... } instead", since = "1.0.0")
-  def futureWithRequest[A](op: (HttpServletRequest) => A)(
-    implicit
-    ec: ExecutionContext, ctx: SkinnyContext
-  ): Future[A] = {
+  def futureWithRequest[A](op: (HttpServletRequest) => A)(implicit
+    ec: ExecutionContext,
+    ctx: SkinnyContext): Future[A] = {
     Future { op(ctx.request) }
   }
 
@@ -38,10 +37,9 @@ trait AsyncOperations {
    * @tparam A response type
    * @return response value
    */
-  def FutureWithContext[A](op: (SkinnyContext) => A)(
-    implicit
-    ec: ExecutionContext, context: SkinnyContext
-  ): Future[A] = {
+  def FutureWithContext[A](op: (SkinnyContext) => A)(implicit
+    ec: ExecutionContext,
+    context: SkinnyContext): Future[A] = {
     Future { op(context) }
   }
 

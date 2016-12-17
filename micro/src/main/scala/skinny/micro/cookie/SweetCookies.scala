@@ -10,10 +10,9 @@ import scala.collection.mutable
  * Extended cookie object.
  */
 class SweetCookies(
-  private[this] val request: HttpServletRequest,
-  private[this] val response: HttpServletResponse
-)
-    extends ServletApiImplicits {
+    private[this] val request: HttpServletRequest,
+    private[this] val response: HttpServletResponse
+) extends ServletApiImplicits {
 
   private[this] lazy val cookies = mutable.HashMap[String, String]() ++ request.cookies
 
@@ -31,10 +30,7 @@ class SweetCookies(
     addCookie(name, value, cookieOptions)
   }
 
-  def set(name: String, value: String)(
-    implicit
-    cookieOptions: CookieOptions = CookieOptions.default
-  ): Cookie = {
+  def set(name: String, value: String)(implicit cookieOptions: CookieOptions = CookieOptions.default): Cookie = {
     this.update(name, value)(cookieOptions)
   }
 
@@ -43,10 +39,7 @@ class SweetCookies(
     addCookie(name, "", cookieOptions.copy(maxAge = 0))
   }
 
-  def +=(keyValuePair: (String, String))(
-    implicit
-    cookieOptions: CookieOptions = CookieOptions.default
-  ): Unit = {
+  def +=(keyValuePair: (String, String))(implicit cookieOptions: CookieOptions = CookieOptions.default): Unit = {
     this.update(keyValuePair._1, keyValuePair._2)(cookieOptions)
   }
 

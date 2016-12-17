@@ -18,10 +18,14 @@ private[skinny] class EncodedServletResponse(
     enc: ContentEncoding
 ) extends HttpServletResponseWrapper(res) {
 
-  // Object to flush when complete, if any.
-  // Note that while this is essentially a mutable shared state, it's not really an issue here - or rather, if multiple
-  // threads are accessing your output stream at the same time, you have other, more important issues to deal with.
-  private var toFlush: Option[Flushable] = None
+  /** Ensures that whatever byte- or char-stream we have open is properly flushed. */
+  override def flushBuffer(): Unit = {
+    toFlush.foreach(_.flush())
+    super.flushBuffer()
+  }
+
+  // Encoded responses do not have a content length.
+  override def setContentLength(i: Int) = {}
 
   override lazy val getOutputStream: EncodedOutputStream = {
     val raw = super.getOutputStream
@@ -38,23 +42,22 @@ private[skinny] class EncodedServletResponse(
     writer
   }
 
+  // Object to flush when complete, if any.
+  // Note that while this is essentially a mutable shared state,
+  // it's not really an issue here - or rather, if multiple
+  // threads are accessing your output stream at the same time,
+  // you have other, more important issues to deal with.
+  private[this] var toFlush: Option[Flushable] = None
+
   /** Returns the charset with which to encode the response. */
-  private def getCharset: Charset = (for {
+  private[this] def getCharset: Charset = (for {
     name <- Option(getCharacterEncoding)
     charset <- Try(Charset.forName(name)).toOption
   } yield charset).getOrElse {
-    // The charset is either not known or not supported, defaults to ISO 8859 1, as per RFC and servlet documentation.
+    // The charset is either not known or not supported,
+    // defaults to ISO 8859 1, as per RFC and servlet documentation.
     setCharacterEncoding("ISO-8859-1")
     Charset.forName("ISO-8859-1")
   }
-
-  /** Ensures that whatever byte- or char-stream we have open is properly flushed. */
-  override def flushBuffer(): Unit = {
-    toFlush.foreach(_.flush())
-    super.flushBuffer()
-  }
-
-  // Encoded responses do not have a content length.
-  override def setContentLength(i: Int) = {}
 
 }

@@ -7,10 +7,9 @@ import skinny.micro.data.{ MapWithIndifferentAccess, MultiMapHeadView, MultiMap 
 import skinny.micro.routing.Route
 import skinny.util.LoanPattern.Closable
 
-package object micro
-    extends HaltPassControl // make halt and pass visible to helpers outside the DSL
-    //  with DefaultValues // make defaults visible
-    {
+package object micro extends HaltPassControl {
+  // make halt and pass visible to helpers outside the DSL
+  //  with DefaultValues // make defaults visible
 
   def using[R <: Closable, A](resource: R)(f: R => A): A = {
     skinny.util.LoanPattern.using[R, A](resource)(f)
