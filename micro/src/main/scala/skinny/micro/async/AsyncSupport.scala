@@ -6,8 +6,7 @@ import scala.concurrent.Future
 /**
  * Async operations provider.
  */
-trait AsyncSupport
-    extends AsyncOperations { self: SkinnyMicroBase =>
+trait AsyncSupport extends AsyncOperations { self: SkinnyMicroBase =>
 
   /**
    * true if async supported

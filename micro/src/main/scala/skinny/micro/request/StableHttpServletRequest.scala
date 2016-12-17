@@ -24,10 +24,9 @@ import scala.util.Try
  * see also: https://bugs.eclipse.org/bugs/show_bug.cgi?id=433321
  */
 class StableHttpServletRequest(
-  private val underlying: HttpServletRequest,
-  private val unstableAccessValidation: UnstableAccessValidation
-)
-    extends HttpServletRequestWrapper(underlying) with LoggerProvider {
+    private val underlying: HttpServletRequest,
+    private val unstableAccessValidation: UnstableAccessValidation
+) extends HttpServletRequestWrapper(underlying) with LoggerProvider {
 
   private[this] var stableHttpSession: Option[HttpSession] = {
     Option(underlying.getSession(false)) match {
@@ -63,7 +62,10 @@ class StableHttpServletRequest(
     ensureStableAccessStrictly("startAsync")
     underlying.startAsync()
   }
-  override def startAsync(servletRequest: ServletRequest, servletResponse: ServletResponse): AsyncContext = {
+  override def startAsync(
+    servletRequest: ServletRequest,
+    servletResponse: ServletResponse
+  ): AsyncContext = {
     ensureStableAccessStrictly("startAsync")
     underlying.startAsync(servletRequest, servletResponse)
   }

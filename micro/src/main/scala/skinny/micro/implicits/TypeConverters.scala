@@ -10,6 +10,7 @@ import java.util.Date
 object TypeConverters extends DefaultImplicits {
 
   private type StringTypeConverter[T] = TypeConverter[String, T]
+
   class ValConversion(source: String) {
     def as[T: StringTypeConverter]: Option[T] = implicitly[TypeConverter[String, T]].apply(source)
   }
@@ -19,10 +20,11 @@ object TypeConverters extends DefaultImplicits {
   }
 
   class SeqConversion(source: String) {
-
-    def asSeq[T](separator: String)(implicit mf: Manifest[T], tc: TypeConverter[String, T]): Option[Seq[T]] =
+    def asSeq[T](separator: String)(implicit
+      mf: Manifest[T],
+      tc: TypeConverter[String, T]): Option[Seq[T]] = {
       stringToSeq[T](tc, separator).apply(source)
-
+    }
   }
 
   implicit def stringToValTypeConversion(source: String) = new ValConversion(source)

@@ -8,7 +8,15 @@ import Imports._
 
 object QueryString {
 
-  val DEFAULT_EXCLUSIONS = List("utm_source", "utm_medium", "utm_term", "utm_content", "utm_campaign", "sms_ss", "awesm")
+  val DEFAULT_EXCLUSIONS = List(
+    "utm_source",
+    "utm_medium",
+    "utm_term",
+    "utm_content",
+    "utm_campaign",
+    "sms_ss",
+    "awesm"
+  )
 
   def apply(rawValue: String) = {
     rawValue.blankOption map { v =>
@@ -78,18 +86,25 @@ object MapQueryString {
     semiColon ++ ampersand
   }
 
-  private def readQsPair(pair: String, current: Map[String, List[String]] = Map.empty) = {
+  private def readQsPair(
+    pair: String,
+    current: Map[String, List[String]] = Map.empty
+  ) = {
     (pair split '=' toList) map { _.urlDecode } match {
       case item :: Nil => current + (item -> List[String]())
       case item :: rest =>
-        if (!current.contains(item)) current + (item -> rest) else (current + (item -> (rest ::: current(item)).distinct))
+        if (!current.contains(item)) current + (item -> rest)
+        else (current + (item -> (rest ::: current(item)).distinct))
       case _ => current
     }
   }
 
   def apply(rawValue: String): MapQueryString = new MapQueryString(parseString(rawValue).toSeq, rawValue)
 }
-case class MapQueryString(initialValues: Seq[(String, Seq[String])], rawValue: String) extends QueryString {
+case class MapQueryString(
+    initialValues: Seq[(String, Seq[String])],
+    rawValue: String
+) extends QueryString {
 
   val uriPart = {
     "?" + mkString()

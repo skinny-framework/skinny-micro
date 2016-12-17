@@ -7,6 +7,7 @@ import skinny.micro.context.SkinnyContext
 import skinny.micro.contrib.flash.FlashMap
 import skinny.micro.implicits.{ ServletApiImplicits, SessionImplicits }
 import skinny.micro.{ Handler, SkinnyMicroBase, UnstableAccessValidation }
+import scala.util.Try
 
 /**
  * Allows an action to set key-value pairs in a transient state that is accessible only to the next action and is expired immediately after that.
@@ -79,15 +80,16 @@ trait FlashMapSupport
     }
   }
 
-  private[this] def getFlash(implicit ctx: SkinnyContext): FlashMap =
+  private[this] def getFlash(implicit ctx: SkinnyContext): FlashMap = {
     ctx.request.get(SessionKey).map(_.asInstanceOf[FlashMap]).getOrElse {
-      val map = session(ctx).get(SessionKey).map {
-        _.asInstanceOf[FlashMap]
-      }.getOrElse(new FlashMap)
+      val flashMap = session(ctx).get(SessionKey)
+        .flatMap(obj => Try(obj.asInstanceOf[FlashMap]).toOption)
+        .getOrElse(new FlashMap)
 
-      ctx.request.setAttribute(SessionKey, map)
-      map
+      ctx.request.setAttribute(SessionKey, flashMap)
+      flashMap
     }
+  }
 
   /**
    * Returns the [[FlashMap]] instance for the current request.
