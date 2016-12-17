@@ -8,7 +8,7 @@ import java.util.Date
 object TypeExtractors extends DefaultImplicits {
 
   sealed abstract class TypeExtractorImpl[T](implicit val converter: TypeConverter[String, T])
-      extends TypeExtractor[T]
+    extends TypeExtractor[T]
 
   sealed case class DateExtractor(format: String) extends TypeExtractor[Date] {
     val converter = TypeConverters.stringToDate(format)
