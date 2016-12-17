@@ -6,13 +6,13 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.0"
+lazy val currentVersion = "1.2.1-SNAPSHOT"
 
 lazy val json4SVersion = "3.5.0"
 lazy val mockitoVersion = "1.10.19"
 lazy val jettyVersion = "9.3.14.v20161028"
 lazy val logbackVersion = "1.1.8"
-lazy val slf4jApiVersion = "1.7.21"
+lazy val slf4jApiVersion = "1.7.22"
 lazy val jacksonVersion = "2.8.5"
 lazy val jacksonScalaVersion = "2.8.4"
 lazy val scalaTestVersion = "3.0.1"
@@ -38,11 +38,8 @@ lazy val baseSettings = Seq(
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v <= 11 =>
-        Nil
-      case _ =>
-        // https://issues.scala-lang.org/browse/SI-10020
-        Seq("-no-java-comments")
+      case Some((2, v)) if v <= 11 => Nil
+      case _ => Seq("-no-java-comments") // https://issues.scala-lang.org/browse/SI-10020
     }
   },
   publishArtifact in Test := false,
@@ -135,7 +132,7 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.5"                         % Compile,
+    "joda-time"         %  "joda-time"          % "2.9.6"                         % Compile,
     "org.joda"          %  "joda-convert"       % "1.8.1"                         % Compile,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
@@ -191,7 +188,8 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
 
 lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
   libraryDependencies ++= Seq(
-    // "com.typesafe.slick" %% "slick"            % "3.1.1",
+    // Slick dropped Scala 2.10 support
+    //"com.typesafe.slick" %% "slick"            % "3.2.0-M2",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
     "com.h2database"     %  "h2"               % "1.4.193",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
