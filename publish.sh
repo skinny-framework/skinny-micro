@@ -32,4 +32,5 @@ sbt ++2.12.1 \
   microScalate/publishSigned \
   microServer/publishSigned \
   microTest/publishSigned \
-  scalatraTest/publishSigned
+  scalatraTest/publishSigned \
+  sonatypeRelease
