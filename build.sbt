@@ -6,15 +6,15 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.2"
+lazy val currentVersion = "1.2.3"
 
 lazy val json4SVersion = "3.5.0"
 lazy val mockitoVersion = "1.10.19"
-lazy val jettyVersion = "9.3.15.v20161220"
-lazy val logbackVersion = "1.1.8"
+lazy val jettyVersion = "9.3.16.v20170120"
+lazy val logbackVersion = "1.1.9"
 lazy val slf4jApiVersion = "1.7.22"
-lazy val jacksonVersion = "2.8.5"
-lazy val jacksonScalaVersion = "2.8.4"
+lazy val jacksonVersion = "2.8.6"
+lazy val jacksonScalaVersion = "2.8.6"
 lazy val scalaTestVersion = "3.0.1"
 
 def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.16"
@@ -166,10 +166,10 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
-    "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.3"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.3"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
-    "org.specs2"         %% "specs2-core"      % "3.8.6"          % Compile
+    "org.specs2"         %% "specs2-core"      % "3.8.7"          % Compile
   )
 ))
 
@@ -179,8 +179,8 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.2"          % Compile,
-    "org.apache.httpcomponents" % "httpmime"   % "4.5.2"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.3"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.3"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
   )
