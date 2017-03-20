@@ -8,13 +8,13 @@ import scala.language.postfixOps
 
 lazy val currentVersion = "1.2.4"
 
-lazy val json4SVersion = "3.5.0"
-lazy val mockitoVersion = "1.10.19"
+lazy val json4SVersion = "3.5.1"
+lazy val mockitoVersion = "2.7.19"
 lazy val jettyVersion = "9.3.16.v20170120"
-lazy val logbackVersion = "1.1.10"
-lazy val slf4jApiVersion = "1.7.23"
-lazy val jacksonVersion = "2.8.6"
-lazy val jacksonScalaVersion = "2.8.6"
+lazy val logbackVersion = "1.2.2"
+lazy val slf4jApiVersion = "1.7.25"
+lazy val jacksonVersion = "2.8.7"
+lazy val jacksonScalaVersion = "2.8.7"
 lazy val scalaTestVersion = "3.0.1"
 
 def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.17"
@@ -162,7 +162,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.testng"         %  "testng"           % "6.10"           % Compile,
+    "org.testng"         %  "testng"           % "6.11"           % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
@@ -191,7 +191,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
     // Slick dropped Scala 2.10 support
     //"com.typesafe.slick" %% "slick"            % "3.2.0-M2",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.193",
+    "com.h2database"     %  "h2"               % "1.4.194",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
