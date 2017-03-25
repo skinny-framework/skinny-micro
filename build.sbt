@@ -6,11 +6,11 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.4"
+lazy val currentVersion = "1.2.5-SNAPSHOT"
 
 lazy val json4SVersion = "3.5.1"
 lazy val mockitoVersion = "2.7.19"
-lazy val jettyVersion = "9.3.16.v20170120"
+lazy val jettyVersion = "9.3.17.v20170317"
 lazy val logbackVersion = "1.2.2"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.8.7"
@@ -132,7 +132,7 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.7"                         % Compile,
+    "joda-time"         %  "joda-time"          % "2.9.9"                         % Compile,
     "org.joda"          %  "joda-convert"       % "1.8.1"                         % Compile,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
@@ -169,7 +169,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.apache.httpcomponents" % "httpclient" % "4.5.3"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.3"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
-    "org.specs2"         %% "specs2-core"      % "3.8.8"          % Compile
+    "org.specs2"         %% "specs2-core"      % "3.8.9"          % Compile
   )
 ))
 
