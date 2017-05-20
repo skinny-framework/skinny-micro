@@ -6,18 +6,18 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.5"
+lazy val currentVersion = "1.2.6"
 
-lazy val json4SVersion = "3.5.1"
-lazy val mockitoVersion = "2.7.19"
-lazy val jettyVersion = "9.3.17.v20170317"
-lazy val logbackVersion = "1.2.2"
+lazy val json4SVersion = "3.5.2"
+lazy val mockitoVersion = "2.7.22"
+lazy val jettyVersion = "9.3.19.v20170502"
+lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.8.7"
-lazy val jacksonScalaVersion = "2.8.7"
-lazy val scalaTestVersion = "3.0.1"
+lazy val jacksonScalaVersion = "2.8.8"
+lazy val scalaTestVersion = "3.0.3"
 
-def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.17"
+def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.18"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -33,7 +33,7 @@ lazy val baseSettings = Seq(
   ),
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.12.1",
+  scalaVersion := "2.12.2",
   ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   scalacOptions in (Compile, doc) ++= {
@@ -105,7 +105,7 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
     ) ++ (scalaVersion.value match {
       case v if v.startsWith("2.11.")
              || v.startsWith("2.12.") =>
-        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.5" % Compile)
+        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6" % Compile)
       case _ => Nil
     })
   }
@@ -191,7 +191,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
     // Slick dropped Scala 2.10 support
     //"com.typesafe.slick" %% "slick"            % "3.2.0-M2",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.194",
+    "com.h2database"     %  "h2"               % "1.4.195",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
