@@ -6,18 +6,17 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.2.6"
+lazy val currentVersion = "1.3.0-SNAPSHOT"
 
 lazy val json4SVersion = "3.5.2"
 lazy val mockitoVersion = "2.7.22"
-lazy val jettyVersion = "9.3.19.v20170502"
+lazy val jettyVersion = "9.4.5.v20170502"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.8.7"
 lazy val jacksonScalaVersion = "2.8.8"
 lazy val scalaTestVersion = "3.0.3"
-
-def akkaVersion(sv: String) = if (sv.startsWith("2.10")) "2.3.16" else "2.4.18"
+lazy val akkaVersion = "2.5.1"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -99,9 +98,9 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
   name := "skinny-micro",
   libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-      "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3"        % Compile,
-      "ch.qos.logback"    %  "logback-classic" % logbackVersion                  % Test,
-      "com.typesafe.akka" %% "akka-actor"      % akkaVersion(scalaVersion.value) % Test
+      "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3" % Compile,
+      "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test,
+      "com.typesafe.akka" %% "akka-actor"      % akkaVersion              % Test
     ) ++ (scalaVersion.value match {
       case v if v.startsWith("2.11.")
              || v.startsWith("2.12.") =>
@@ -114,37 +113,37 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
 lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
-    "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
+    "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
+    "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 
 lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson-xml",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion                  % Compile,
-    "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"                         % Compile,
-    "com.typesafe.akka"                %% "akka-actor"             % akkaVersion(scalaVersion.value) % Test,
-    "ch.qos.logback"                   %  "logback-classic"        % logbackVersion                  % Test
+    "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion % Compile,
+    "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"        % Compile,
+    "com.typesafe.akka"                %% "akka-actor"             % akkaVersion    % Test,
+    "ch.qos.logback"                   %  "logback-classic"        % logbackVersion % Test
   )
 )).dependsOn(micro, microJackson, scalatraTest % Test)
 
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.9"                         % Compile,
-    "org.joda"          %  "joda-convert"       % "1.8.1"                         % Compile,
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
-    "ch.qos.logback"    %  "logback-classic"    % logbackVersion                  % Test
+    "joda-time"         %  "joda-time"          % "2.9.9"        % Compile,
+    "org.joda"          %  "joda-convert"       % "1.8.1"        % Compile,
+    "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
+    "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0"                         % Compile excludeAll(fullExclusionRules: _*),
-    "com.typesafe.akka"     %% "akka-actor"         % akkaVersion(scalaVersion.value) % Test,
-    "ch.qos.logback"        %  "logback-classic"    % logbackVersion                  % Test
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0"        % Compile excludeAll(fullExclusionRules: _*),
+    "com.typesafe.akka"     %% "akka-actor"         % akkaVersion    % Test,
+    "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
 

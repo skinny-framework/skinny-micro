@@ -53,7 +53,7 @@ class FutureSupportAfterFilterFilter extends SkinnyMicroFilter {
 
   override def destroy() {
     super.destroy()
-    system.shutdown()
+    system.terminate()
   }
 }
 
