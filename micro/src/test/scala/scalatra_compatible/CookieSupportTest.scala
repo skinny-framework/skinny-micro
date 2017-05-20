@@ -62,26 +62,26 @@ class CookieSupportTest extends ScalatraFunSuite {
     }
   }
 
-  test("POST /setcookie with a value should return the value") {
-    post("/foo/setcookie", "cookieval" -> "The value") {
+  test("POST /setcookie with a value should return The+Value") {
+    post("/foo/setcookie", "cookieval" -> "The+Value") {
       val cookie = HttpCookie.parse(response.getHeader("Set-Cookie")).get(0)
-      cookie.getValue should be("The value")
+      cookie.getValue should be("The+Value")
     }
   }
 
   test("GET /getcookie with a cookie should set return the cookie value") {
     session {
-      post("/foo/setcookie", "cookieval" -> "The value") {
+      post("/foo/setcookie", "cookieval" -> "The+Value") {
         body should equal("OK")
       }
       get("/foo/getcookie") {
-        body should equal("The value")
+        body should equal("The+Value")
       }
     }
   }
 
   test("POST /setexpiringcookie should set the max age of the cookie") {
-    post("/foo/setexpiringcookie", "cookieval" -> "The value", "maxAge" -> oneWeek.toString) {
+    post("/foo/setexpiringcookie", "cookieval" -> "The+Value", "maxAge" -> oneWeek.toString) {
       val cookie = HttpCookie.parse(response.getHeader("Set-Cookie")).get(0)
 
       // Allow some slop, since it's a new call to currentTimeMillis
@@ -113,12 +113,12 @@ class CookieSupportTest extends ScalatraFunSuite {
   // http://github.com/scalatra/scalatra/issue/84
   test("handles multiple cookies") {
     session {
-      post("/foo/setcookie", Map("cookieval" -> "The value", "anothercookieval" -> "Another Cookie")) {
+      post("/foo/setcookie", Map("cookieval" -> "The+Value", "anothercookieval" -> "Another+Cookie")) {
         body should equal("OK")
       }
       get("/foo/getcookie") {
-        body should equal("The value")
-        header("X-Another-Cookie") should equal("Another Cookie")
+        body should equal("The+Value")
+        header("X-Another-Cookie") should equal("Another+Cookie")
       }
     }
   }
