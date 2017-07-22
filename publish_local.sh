@@ -10,6 +10,7 @@ sbt ++2.12.1 \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal \
+  scalatraTest/publishLocal \
   ++2.11.8 \
   clean \
   microCommon/publishLocal \
@@ -20,6 +21,7 @@ sbt ++2.12.1 \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal \
+  scalatraTest/publishLocal \
   ++2.10.6 \
   clean \
   microCommon/publishLocal \
@@ -29,4 +31,5 @@ sbt ++2.12.1 \
   microJacksonXml/publishLocal \
   microScalate/publishLocal \
   microServer/publishLocal \
-  microTest/publishLocal
+  microTest/publishLocal \
+  scalatraTest/publishLocal
