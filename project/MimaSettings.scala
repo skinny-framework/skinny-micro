@@ -12,7 +12,7 @@ object MimaSettings {
   // [error]    filter with: ProblemFilters.exclude[MissingClassProblem]("skinny.micro.rl.Benchmark")
   // [error]    filter with: ProblemFilters.exclude[MissingClassProblem]("skinny.micro.rl.Benchmark$")
   //val previousVersions = (0 to 4).map(patch => s"1.2.$patch").toSet
-  val previousVersions = (1 to 5).map(patch => s"1.2.$patch").toSet
+  val previousVersions = (1 to 7).map(patch => s"1.2.$patch").toSet
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
     mimaPreviousArtifacts := {
