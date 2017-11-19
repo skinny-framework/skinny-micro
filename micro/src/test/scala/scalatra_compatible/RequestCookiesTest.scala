@@ -24,7 +24,7 @@ class RequestCookiesTest extends ScalatraFunSuite {
     get("/multi-cookies", headers = Map("Cookie" -> "one=uno; one=eins; two=zwei")) {
       header("one") should be("uno:eins")
       header("two") should be("zwei")
-      header("three") should be(null)
+      header("three") should be("")
     }
   }
 
