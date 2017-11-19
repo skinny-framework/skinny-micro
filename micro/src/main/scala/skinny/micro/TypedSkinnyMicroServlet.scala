@@ -15,8 +15,8 @@ import javax.servlet.http._
  * @see SkinnyMicroFilter
  */
 trait TypedSkinnyMicroServlet
-    extends HttpServlet
-    with SkinnyMicroServletBase
-    with TypedThreadLocalFeatures {
+  extends HttpServlet
+  with SkinnyMicroServletBase
+  with TypedThreadLocalFeatures {
 
 }

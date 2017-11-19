@@ -66,8 +66,7 @@ class AboutAbsoluteUris extends Specification {
           EmptyPath,
           EmptyQueryString,
           EmptyFragment,
-          "http://www.example.org:8080"
-        )
+          "http://www.example.org:8080")
       } ^
       "returns the hostname" ! {
         Uri("http://www.example.org/") must_== AbsoluteUri(
@@ -76,8 +75,7 @@ class AboutAbsoluteUris extends Specification {
           EmptyPath,
           EmptyQueryString,
           EmptyFragment,
-          "http://www.example.org/"
-        )
+          "http://www.example.org/")
       } ^
       "can handle internationalized domain names" ! {
         Uri("http://www.詹姆斯.org/") must_== AbsoluteUri(
@@ -86,8 +84,7 @@ class AboutAbsoluteUris extends Specification {
           EmptyPath,
           EmptyQueryString,
           EmptyFragment,
-          "http://www.詹姆斯.org/"
-        )
+          "http://www.詹姆斯.org/")
       } ^
       "returns the path split into fragments" ! {
         Uri("http://www.example.org/hello/world.txt") must_== AbsoluteUri(
@@ -96,8 +93,7 @@ class AboutAbsoluteUris extends Specification {
           AbsolutePath("hello" :: "world.txt" :: Nil),
           EmptyQueryString,
           EmptyFragment,
-          "http://www.example.org/hello/world.txt"
-        )
+          "http://www.example.org/hello/world.txt")
       } ^
       "returns query string" ! {
         Uri("http://www.example.org/hello/world.txt/?id=5&part=three") must_== AbsoluteUri(
@@ -106,8 +102,7 @@ class AboutAbsoluteUris extends Specification {
           AbsolutePath("hello" :: "world.txt" :: Nil),
           MapQueryString("id=5&part=three"),
           EmptyFragment,
-          "http://www.example.org/hello/world.txt/?id=5&part=three"
-        )
+          "http://www.example.org/hello/world.txt/?id=5&part=three")
       } ^
       "returns query string and fragment" ! {
         Uri("http://www.example.org/hello/world.txt/?id=5&part=three#there-you-go") must_== AbsoluteUri(
@@ -116,8 +111,7 @@ class AboutAbsoluteUris extends Specification {
           AbsolutePath("hello" :: "world.txt" :: Nil),
           MapQueryString("id=5&part=three"),
           StringFragment("there-you-go"),
-          "http://www.example.org/hello/world.txt/?id=5&part=three#there-you-go"
-        )
+          "http://www.example.org/hello/world.txt/?id=5&part=three#there-you-go")
       } ^
       "returns fragment when URI has no query string" ! {
         Uri("http://www.example.org/hello/world.txt/#here-we-are") must_== AbsoluteUri(
@@ -126,8 +120,7 @@ class AboutAbsoluteUris extends Specification {
           AbsolutePath("hello" :: "world.txt" :: Nil),
           EmptyQueryString,
           StringFragment("here-we-are"),
-          "http://www.example.org/hello/world.txt/#here-we-are"
-        )
+          "http://www.example.org/hello/world.txt/#here-we-are")
       } ^
       end
 }

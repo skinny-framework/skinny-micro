@@ -106,8 +106,7 @@ trait JSONStringOps {
    */
   def fromJSONString[A: TypeTag](json: String, underscoreKeys: Boolean = useUnderscoreKeysForJSON)(
     implicit
-    tag: ClassTag[A]
-  ): Try[A] = {
+    tag: ClassTag[A]): Try[A] = {
 
     val pureJson = if (useJSONVulnerabilityProtection &&
       json.startsWith(prefixForJSONVulnerabilityProtection)) {
@@ -123,8 +122,7 @@ trait JSONStringOps {
         // val typeArgClass = mirror.runtimeClass(typeOf[A].typeArgs.head)
         val typeArgClass = mirror.runtimeClass(typeOf[A].asInstanceOf[TypeRefApi].args.head)
         val colType: CollectionType = plainJSONObjectMapper.getTypeFactory.constructCollectionType(
-          classOf[java.util.List[_]], typeArgClass
-        )
+          classOf[java.util.List[_]], typeArgClass)
 
         val arrayValue = {
           if (underscoreKeys) snakeCasedKeyJSONObjectMapper.readValue[A](pureJson, colType)
@@ -150,8 +148,7 @@ trait JSONStringOps {
     ClassTag(classOf[BufferedIterator[_]]),
     ClassTag(classOf[List[_]]),
     ClassTag(classOf[Stream[_]]),
-    ClassTag(classOf[Vector[_]])
-  )
+    ClassTag(classOf[Vector[_]]))
 
 }
 

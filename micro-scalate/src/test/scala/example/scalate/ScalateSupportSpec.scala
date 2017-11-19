@@ -149,8 +149,7 @@ class ScalateSupportSpec extends ScalatraSpec {
       "/WEB-INF/scalate/layouts/default.mustache",
       "/WEB-INF/scalate/layouts/default.ssp",
       "/WEB-INF/scalate/layouts/default.scaml",
-      "/WEB-INF/scalate/layouts/default.jade"
-    ) mkString ";")
+      "/WEB-INF/scalate/layouts/default.jade") mkString ";")
   }
 
   def e8 = get("/jade-template") {

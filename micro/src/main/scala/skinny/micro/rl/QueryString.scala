@@ -15,8 +15,7 @@ object QueryString {
     "utm_content",
     "utm_campaign",
     "sms_ss",
-    "awesm"
-  )
+    "awesm")
 
   def apply(rawValue: String) = {
     rawValue.blankOption map { v =>
@@ -88,8 +87,7 @@ object MapQueryString {
 
   private def readQsPair(
     pair: String,
-    current: Map[String, List[String]] = Map.empty
-  ) = {
+    current: Map[String, List[String]] = Map.empty) = {
     (pair split '=' toList) map { _.urlDecode } match {
       case item :: Nil => current + (item -> List[String]())
       case item :: rest =>
@@ -102,9 +100,8 @@ object MapQueryString {
   def apply(rawValue: String): MapQueryString = new MapQueryString(parseString(rawValue).toSeq, rawValue)
 }
 case class MapQueryString(
-    initialValues: Seq[(String, Seq[String])],
-    rawValue: String
-) extends QueryString {
+  initialValues: Seq[(String, Seq[String])],
+  rawValue: String) extends QueryString {
 
   val uriPart = {
     "?" + mkString()

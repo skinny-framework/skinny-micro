@@ -26,8 +26,7 @@ trait RedirectionDsl { self: UrlGenerator with SkinnyContextInitializer =>
    */
   def redirect301(
     location: String,
-    headers: Map[String, String] = Map.empty
-  )(implicit ctx: SkinnyContext = context): ActionResult = {
+    headers: Map[String, String] = Map.empty)(implicit ctx: SkinnyContext = context): ActionResult = {
     val result = MovedPermanently(fullUrl(location, includeServletPath = false), headers)
     if (skipHaltingWhenRedirection) result else halt(result)
   }
@@ -39,8 +38,7 @@ trait RedirectionDsl { self: UrlGenerator with SkinnyContextInitializer =>
    */
   def redirect302(
     location: String,
-    headers: Map[String, String] = Map.empty
-  )(implicit ctx: SkinnyContext = context): ActionResult = {
+    headers: Map[String, String] = Map.empty)(implicit ctx: SkinnyContext = context): ActionResult = {
     val result = Found(fullUrl(location, includeServletPath = false), headers)
     if (skipHaltingWhenRedirection) result else halt(result)
   }
@@ -52,8 +50,7 @@ trait RedirectionDsl { self: UrlGenerator with SkinnyContextInitializer =>
    */
   def redirect303(
     location: String,
-    headers: Map[String, String] = Map.empty
-  )(implicit ctx: SkinnyContext = context): ActionResult = {
+    headers: Map[String, String] = Map.empty)(implicit ctx: SkinnyContext = context): ActionResult = {
     val result = SeeOther(fullUrl(location, includeServletPath = false), headers)
     if (skipHaltingWhenRedirection) result else halt(result)
   }

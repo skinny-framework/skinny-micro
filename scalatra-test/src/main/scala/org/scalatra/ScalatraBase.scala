@@ -701,8 +701,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
   private[this] def buildBaseUrl(implicit request: HttpServletRequest) = {
     "%s://%s".format(
       if (needsHttps || isHttps) "https" else "http",
-      serverAuthority
-    )
+      serverAuthority)
   }
 
   private[this] def serverAuthority(implicit request: HttpServletRequest) = {
@@ -761,8 +760,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
   def multiParams(implicit request: HttpServletRequest): MultiParams = {
     val read = request.contains("MultiParamsRead")
     val found = request.get(MultiParamsKey) map (
-      _.asInstanceOf[MultiParams] ++ (if (read) Map.empty else request.multiParameters)
-    )
+      _.asInstanceOf[MultiParams] ++ (if (read) Map.empty else request.multiParameters))
     val multi = found getOrElse request.multiParameters
     request("MultiParamsRead") = new {}
     request(MultiParamsKey) = multi

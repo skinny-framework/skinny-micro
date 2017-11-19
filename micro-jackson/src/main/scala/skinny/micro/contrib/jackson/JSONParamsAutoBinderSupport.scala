@@ -12,10 +12,10 @@ import skinny.micro.{ ApiFormats, Params, SkinnyMicroBase, SkinnyMicroParams }
  * When you'd like to avoid merging JSON request body into params in some actions, please separate controllers.
  */
 trait JSONParamsAutoBinderSupport
-    extends SkinnyMicroBase
-    with JSONStringOps
-    with ApiFormats
-    with LoggerProvider {
+  extends SkinnyMicroBase
+  with JSONStringOps
+  with ApiFormats
+  with LoggerProvider {
 
   /**
    * Merge parsedBody (JValue) into params if possible.
@@ -39,8 +39,7 @@ trait JSONParamsAutoBinderSupport
 
   protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
-    params2: Map[String, Seq[String]]
-  ): Map[String, Seq[String]] = {
+    params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
   }
 

@@ -40,18 +40,17 @@ object FormData {
  * @param fileInput body from a file
  */
 case class FormData(
-    var name: String,
-    var bytes: Option[Array[Byte]] = None,
-    var textInput: TextInput = NoTextInput,
-    var fileInput: FileInput = NoFileInput
-) {
+  var name: String,
+  var bytes: Option[Array[Byte]] = None,
+  var textInput: TextInput = NoTextInput,
+  var fileInput: FileInput = NoFileInput) {
 
   private[this] def returningThis(f: => Any): FormData = {
     f
     this
   }
 
-  def name(name: String): FormData = returningThis(this.name = name)
+  def name(name: String): FormData = returningThis(this.name= name)
 
   private[this] def toBytes(textInput: TextInput): Option[Array[Byte]] = {
     if (textInput != NoTextInput) {

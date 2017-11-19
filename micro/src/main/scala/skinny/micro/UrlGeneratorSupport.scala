@@ -56,8 +56,7 @@ trait UrlGeneratorSupport {
   def url(
     route: Route,
     params: Map[String, String],
-    splats: Iterable[String]
-  )(implicit ctx: SkinnyContext): String = {
+    splats: Iterable[String])(implicit ctx: SkinnyContext): String = {
 
     try {
       route.reversibleMatcher match {

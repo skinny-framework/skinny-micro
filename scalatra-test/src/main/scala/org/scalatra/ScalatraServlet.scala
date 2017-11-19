@@ -47,9 +47,9 @@ object ScalatraServlet {
  * @see ScalatraFilter
  */
 abstract class ScalatraServlet
-    extends HttpServlet
-    with ServletBase
-    with Initializable {
+  extends HttpServlet
+  with ServletBase
+  with Initializable {
   override def service(request: HttpServletRequest, response: HttpServletResponse) {
     handle(request, response)
   }
@@ -105,8 +105,7 @@ abstract class ScalatraServlet
         request.getMethod,
         Option(request.getPathInfo) getOrElse "/",
         request.getServletPath,
-        routes.entryPoints.mkString("<ul><li>", "</li><li>", "</li></ul>")
-      )
+        routes.entryPoints.mkString("<ul><li>", "</li><li>", "</li></ul>"))
     }
   }
 

@@ -23,7 +23,7 @@ import scala.util.control.NonFatal
  * If you expect read-only stable session in Future threads, this implementation works fine as you expected.
  */
 case class MostlyStableHttpSession(request: HttpServletRequest)
-    extends HttpSession with LoggerProvider {
+  extends HttpSession with LoggerProvider {
 
   private[this] val attributes: TrieMap[String, Any] = new TrieMap[String, Any]()
 

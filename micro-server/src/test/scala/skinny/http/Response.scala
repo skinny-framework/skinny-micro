@@ -20,13 +20,12 @@ package skinny.http
  * HTTP/1.1 Response.
  */
 case class Response(
-    status: Int,
-    headers: Map[String, String] = Map(),
-    headerFields: Map[String, Seq[String]] = Map(),
-    rawCookies: Map[String, String] = Map(),
-    charset: Option[String] = None,
-    body: Array[Byte] = Array()
-) {
+  status: Int,
+  headers: Map[String, String] = Map(),
+  headerFields: Map[String, Seq[String]] = Map(),
+  rawCookies: Map[String, String] = Map(),
+  charset: Option[String] = None,
+  body: Array[Byte] = Array()) {
 
   def header(name: String): Option[String] = headers.get(name)
   def headerField(name: String): Seq[String] = headerFields.get(name).getOrElse(Nil)

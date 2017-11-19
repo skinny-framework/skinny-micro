@@ -11,8 +11,7 @@ trait ContentEncodingSupport extends Handler { self: SkinnyMicroBase =>
 
   abstract override def handle(
     req: HttpServletRequest,
-    res: HttpServletResponse
-  ): Unit = {
+    res: HttpServletResponse): Unit = {
     withRequestResponse(req, res) {
       super.handle(decodedRequest(req), encodedResponse(req, res))
     }
@@ -21,8 +20,7 @@ trait ContentEncodingSupport extends Handler { self: SkinnyMicroBase =>
   /** Encodes the response if necessary. */
   private def encodedResponse(
     req: HttpServletRequest,
-    res: HttpServletResponse
-  ): HttpServletResponse = {
+    res: HttpServletResponse): HttpServletResponse = {
     ContentNegotiation.preferredEncoding(req).map { encoding =>
       val encoded = encoding(res)
       SkinnyMicroBase.onRenderedCompleted { _ => encoded.end() }(context)

@@ -8,8 +8,8 @@ import skinny.micro.routing.RoutingDsl
  * These traits should not be mixed in SkinnyMicroBase.
  */
 trait ThreadLocalFeatures
-    extends MainThreadLocalEverywhere
-    with RoutingDsl
-    with BeforeAfterDsl { self: SkinnyMicroBase =>
+  extends MainThreadLocalEverywhere
+  with RoutingDsl
+  with BeforeAfterDsl { self: SkinnyMicroBase =>
 
 }

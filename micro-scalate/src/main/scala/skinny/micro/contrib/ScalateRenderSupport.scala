@@ -21,8 +21,7 @@ trait ScalateRenderSupport { self: SkinnyMicroBase with ScalateSupport =>
     params: Map[String, Any] = Map(),
     responseContentType: String = "text/html",
     cacheMaxAge: Int = none,
-    statusCode: Int = 200
-  )(implicit ctx: SkinnyContext): Unit = {
+    statusCode: Int = 200)(implicit ctx: SkinnyContext): Unit = {
     val response = ctx.response
 
     (contentType = responseContentType)(ctx)

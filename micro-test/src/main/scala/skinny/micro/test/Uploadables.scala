@@ -9,9 +9,8 @@ import scala.annotation.tailrec
  */
 case class FilePart(
   file: File,
-  contentType: String = "application/octet-stream"
-)
-    extends Uploadable {
+  contentType: String = "application/octet-stream")
+  extends Uploadable {
 
   lazy val content = {
     val fin = new FileInputStream(file)
@@ -47,9 +46,8 @@ case class FilePart(
 case class BytesPart(
   fileName: String,
   content: Array[Byte],
-  contentType: String = "application/octet-stream"
-)
-    extends Uploadable {
+  contentType: String = "application/octet-stream")
+  extends Uploadable {
 
   def contentLength = content.length.toLong
 

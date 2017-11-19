@@ -10,9 +10,9 @@ import skinny.micro.contrib.{ ScalateSupport, FlashMapSupport }
 import scala.concurrent.{ ExecutionContext, Future }
 
 class ScalateFuturesSupportServlet(exec: ExecutorService)
-    extends SkinnyMicroServlet
-    with ScalateSupport
-    with FlashMapSupport {
+  extends SkinnyMicroServlet
+  with ScalateSupport
+  with FlashMapSupport {
 
   protected override implicit val executionContext = ExecutionContext.fromExecutorService(exec)
 

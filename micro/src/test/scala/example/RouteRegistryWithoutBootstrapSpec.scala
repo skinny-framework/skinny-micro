@@ -32,8 +32,7 @@ class RouteRegistryWithoutBootstrapSpec extends FlatSpec with Matchers {
         |GET	/echo
         |POST	/echo
         |GET	/routes
-        |""".stripMargin
-    )
+        |""".stripMargin)
   }
 
   it should "show all routes" in {
@@ -44,8 +43,7 @@ class RouteRegistryWithoutBootstrapSpec extends FlatSpec with Matchers {
           |POST	/good-bye/:name
           |GET	/hello/:name
           |GET	/routes
-          |""".stripMargin
-    )
+          |""".stripMargin)
   }
 
 }

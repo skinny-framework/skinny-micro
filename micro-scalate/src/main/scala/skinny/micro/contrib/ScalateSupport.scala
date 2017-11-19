@@ -92,8 +92,7 @@ trait ScalateSupport extends SkinnyMicroBase {
       name = "context",
       className = s"_root_.${classOf[SkinnyScalateRenderContext].getName}",
       importMembers = true,
-      isImplicit = true
-    )
+      isImplicit = true)
 
     importStatements ::= s"import ${classOf[skinny.micro.implicits.ServletApiImplicits].getName}._"
 
@@ -162,8 +161,7 @@ trait ScalateSupport extends SkinnyMicroBase {
     List(
       "/WEB-INF/templates/views",
       "/WEB-INF/views",
-      "/WEB-INF/scalate/templates"
-    )
+      "/WEB-INF/scalate/templates")
 
   /**
    * The default path to search for templates.  Left as a def so it can be
@@ -216,8 +214,7 @@ trait ScalateSupport extends SkinnyMicroBase {
    */
   protected def layoutTemplateAs(ext: Set[String])(path: String, attributes: (String, Any)*)(
     implicit
-    ctx: SkinnyContext
-  ): String = {
+    ctx: SkinnyContext): String = {
     val uri = findTemplate(path, ext).getOrElse(path)
     using(new StringWriter()) { buffer =>
       using(new PrintWriter(buffer)) { out =>
@@ -279,8 +276,7 @@ object ScalateSupport {
   val DefaultLayouts = Seq(
     "/WEB-INF/templates/layouts/default",
     "/WEB-INF/layouts/default",
-    "/WEB-INF/scalate/layouts/default"
-  )
+    "/WEB-INF/scalate/layouts/default")
 
   private def setLayoutStrategy(engine: TemplateEngine) = {
     val layouts = for {
