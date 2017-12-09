@@ -1,11 +1,11 @@
 #!/usr/bin/env scalas
 // or ./scalas AsyncMessages.scala
 /***
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.4"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
 libraryDependencies ++= Seq(
-  "org.skinny-framework" %% "skinny-micro-server"  % "1.0.+",
-  "org.skinny-framework" %% "skinny-micro-jackson" % "1.0.+"
+  "org.skinny-framework" %% "skinny-micro-server"  % "1.3.+",
+  "org.skinny-framework" %% "skinny-micro-jackson" % "1.3.+"
 ) 
 */
 import skinny.micro._

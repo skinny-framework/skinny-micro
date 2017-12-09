@@ -32,7 +32,7 @@ lazy val baseSettings = Seq(
   ),
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.12.2",
+  scalaVersion := "2.12.4",
   ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   scalacOptions in (Compile, doc) ++= {
