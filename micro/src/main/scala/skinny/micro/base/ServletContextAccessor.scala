@@ -16,9 +16,9 @@ import scala.collection.JavaConverters._
  * Provides accessor for ServletContext.
  */
 trait ServletContextAccessor
-    extends Initializable
-    with ServletApiImplicits
-    with RicherStringImplicits {
+  extends Initializable
+  with ServletApiImplicits
+  with RicherStringImplicits {
 
   import SkinnyMicroBase._
 

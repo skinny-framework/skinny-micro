@@ -7,15 +7,14 @@ import annotation.implicitNotFound
  * All credit for the code in this file is a minimized version of scalaz' Zero
  * in scalaz 7 the Zero type class has been removed and zero's only exist on a monoid.
  * Because we were abusing the Zero typeclass as a way to provide default values this
- * retains that functionality without the abuse of the identity value 
+ * retains that functionality without the abuse of the identity value
  */
 
 /**
  * A DefaultValue in type Z provides a default value for a given type Z
  */
 @implicitNotFound(
-  "No default value found for type ${Z}. Try to implement an implicit org.scalatra.DefaultValue for this type."
-)
+  "No default value found for type ${Z}. Try to implement an implicit org.scalatra.DefaultValue for this type.")
 trait DefaultValue[Z] {
   val default: Z
 }

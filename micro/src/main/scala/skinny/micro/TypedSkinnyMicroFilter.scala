@@ -19,8 +19,8 @@ import javax.servlet._
  * @see SkinnyMicroServlet
  */
 trait TypedSkinnyMicroFilter
-    extends Filter
-    with SkinnyMicroFilterBase
-    with TypedThreadLocalFeatures {
+  extends Filter
+  with SkinnyMicroFilterBase
+  with TypedThreadLocalFeatures {
 
 }

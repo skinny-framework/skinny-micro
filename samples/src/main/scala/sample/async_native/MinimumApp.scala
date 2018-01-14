@@ -41,8 +41,7 @@ class MinimumApp extends AsyncWebApp {
     Future {
       Ok(
         body = "Hello, World!",
-        headers = Map("Set-Cookie" -> "theme=light")
-      )
+        headers = Map("Set-Cookie" -> "theme=light"))
     }
   }
 

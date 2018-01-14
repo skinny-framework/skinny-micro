@@ -49,8 +49,7 @@ trait ApiFormats extends ScalatraBase {
     "txt" -> "text/plain",
     "xhtml" -> "application/xhtml+xml",
     "xml" -> "application/xml",
-    "xslt" -> "application/xslt+xml"
-  ).asJava).asScala
+    "xslt" -> "application/xslt+xml").asJava).asScala
 
   /**
    * A map of content types to suffixes.  Not strictly a reverse of `formats`.
@@ -74,8 +73,7 @@ trait ApiFormats extends ScalatraBase {
     "text/javascript" -> "json",
     "text/plain" -> "txt",
     "text/css" -> "css",
-    "video/x-flv" -> "flv"
-  ).asJava).asScala
+    "video/x-flv" -> "flv").asJava).asScala
 
   protected def addMimeMapping(mime: String, extension: String) {
     mimeTypes += mime -> extension

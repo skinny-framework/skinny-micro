@@ -19,15 +19,13 @@ class SkinnyScalateRenderContext(
   base: SkinnyMicroBase,
   context: SkinnyContext,
   engine: TemplateEngine,
-  out: PrintWriter
-)
-    extends ServletRenderContext(
-      engine,
-      out,
-      context.request,
-      context.response,
-      base.servletContext
-    ) {
+  out: PrintWriter)
+  extends ServletRenderContext(
+    engine,
+    out,
+    context.request,
+    context.response,
+    base.servletContext) {
 
   def flash: scala.collection.Map[String, Any] = base match {
     case flashMapSupport: FlashMapSupport => flashMapSupport.flash(context)
@@ -119,8 +117,7 @@ class SkinnyScalateRenderContext(
   def url(
     route: Route,
     params: Map[String, String],
-    splats: Iterable[String]
-  ): String = {
+    splats: Iterable[String]): String = {
     UrlGenerator.url(route, params, splats)(context)
   }
 }

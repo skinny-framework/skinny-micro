@@ -9,11 +9,11 @@ import scala.annotation.tailrec
 import scala.collection.JavaConverters._
 
 class HttpComponentsClientSpec
-    extends WordSpec
-    with Matchers
-    with BeforeAndAfter
-    with HttpComponentsClient
-    with EmbeddedJettyContainer {
+  extends WordSpec
+  with Matchers
+  with BeforeAndAfter
+  with HttpComponentsClient
+  with EmbeddedJettyContainer {
 
   before { start() }
   after { stop() }

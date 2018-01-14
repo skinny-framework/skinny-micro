@@ -8,8 +8,8 @@ import skinny.micro.routing.TypedAsyncRoutingDsl
  * These traits should not be mixed in SkinnyMicroBase.
  */
 trait TypedAsyncFeatures
-    extends AsyncSupport
-    with TypedAsyncRoutingDsl
-    with AsyncBeforeAfterDsl { self: SkinnyMicroBase =>
+  extends AsyncSupport
+  with TypedAsyncRoutingDsl
+  with AsyncBeforeAfterDsl { self: SkinnyMicroBase =>
 
 }

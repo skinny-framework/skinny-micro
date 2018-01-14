@@ -11,12 +11,12 @@ import skinny.micro.implicits.ServletApiImplicits
  * The core SkinnyMicro DSL.
  */
 trait RoutingDslBase
-    extends HaltPassControl
-    with RouteRegistryAccessor
-    with SkinnyContextInitializer
-    with UnstableAccessValidationConfig
-    with ServletContextAccessor
-    with ServletApiImplicits {
+  extends HaltPassControl
+  with RouteRegistryAccessor
+  with SkinnyContextInitializer
+  with UnstableAccessValidationConfig
+  with ServletContextAccessor
+  with ServletApiImplicits {
 
   /**
    * The base path for URL generation

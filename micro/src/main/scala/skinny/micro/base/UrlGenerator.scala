@@ -23,8 +23,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
     path: String,
     params: Iterable[(String, Any)] = Iterable.empty,
     includeContextPath: Boolean = true,
-    includeServletPath: Boolean = true
-  )(implicit ctx: SkinnyContext): String = {
+    includeServletPath: Boolean = true)(implicit ctx: SkinnyContext): String = {
     url(path, params, includeContextPath, includeServletPath, absolutize = false)(ctx)
   }
 
@@ -46,8 +45,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
     params: Iterable[(String, Any)] = Iterable.empty,
     includeContextPath: Boolean = true,
     includeServletPath: Boolean = true,
-    absolutize: Boolean = true
-  )(implicit ctx: SkinnyContext): String = {
+    absolutize: Boolean = true)(implicit ctx: SkinnyContext): String = {
     try {
       val newPath = path match {
         case x if x.startsWith("/") && includeContextPath && includeServletPath =>
@@ -88,8 +86,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
     params: Iterable[(String, Any)] = Iterable.empty,
     includeContextPath: Boolean = true,
     includeServletPath: Boolean = true,
-    withSessionId: Boolean = true
-  )(implicit ctx: SkinnyContext): String = {
+    withSessionId: Boolean = true)(implicit ctx: SkinnyContext): String = {
     if (path.startsWith("http")) path
     else {
       val p = url(path, params, includeContextPath, includeServletPath, withSessionId)(ctx)
@@ -100,8 +97,7 @@ trait UrlGenerator extends RicherStringImplicits { self: SkinnyMicroBase =>
   private[this] def buildBaseUrl(implicit ctx: SkinnyContext): String = {
     "%s://%s".format(
       if (needHttps || ctx.request.isHttps) "https" else "http",
-      serverAuthority(ctx)
-    )
+      serverAuthority(ctx))
   }
 
   private[this] def ensureContextPathsStripped(path: String)(implicit ctx: SkinnyContext): String = {

@@ -11,8 +11,7 @@ case class CookieOptions(
   comment: String = "",
   httpOnly: Boolean = false,
   version: Int = 0,
-  encoding: String = "UTF-8"
-)
+  encoding: String = "UTF-8")
 
 object CookieOptions {
 

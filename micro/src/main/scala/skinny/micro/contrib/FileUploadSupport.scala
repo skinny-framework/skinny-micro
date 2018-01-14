@@ -60,8 +60,8 @@ import scala.collection.JavaConverters._
  * of Jetty.
  */
 trait FileUploadSupport
-    extends SkinnyMicroBase
-    with HasMultipartConfig { self: SkinnyMicroServletBase =>
+  extends SkinnyMicroBase
+  with HasMultipartConfig { self: SkinnyMicroServletBase =>
 
   import FileUploadSupport._
 
@@ -116,8 +116,7 @@ trait FileUploadSupport
 
             if (!(item.isFormField)) {
               BodyParams(params.fileParams + ((
-                item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]())
-              )), params.formParams)
+                item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]()))), params.formParams)
             } else {
               BodyParams(params.fileParams, params.formParams)
             }
@@ -145,8 +144,7 @@ trait FileUploadSupport
 
   private def mergeFormParamsWithQueryString(
     req: HttpServletRequest,
-    bodyParams: BodyParams
-  ): Map[String, List[String]] = {
+    bodyParams: BodyParams): Map[String, List[String]] = {
     var mergedParams = bodyParams.formParams
     req.getParameterMap.asScala foreach {
       case (name, values) =>
@@ -159,8 +157,7 @@ trait FileUploadSupport
 
   private def wrapRequest(
     req: HttpServletRequest,
-    formMap: Map[String, Seq[String]]
-  ): HttpServletRequestWrapper = {
+    formMap: Map[String, Seq[String]]): HttpServletRequestWrapper = {
     val wrapped = new HttpServletRequestWrapper(req) {
       override def getParameter(name: String): String = formMap.get(name).map(_.head).orNull[String]
       override def getParameterNames: java.util.Enumeration[String] = formMap.keysIterator.asJavaEnumeration
@@ -202,7 +199,6 @@ object FileUploadSupport {
 
   case class BodyParams(
     fileParams: FileMultiParams,
-    formParams: Map[String, List[String]]
-  )
+    formParams: Map[String, List[String]])
 
 }

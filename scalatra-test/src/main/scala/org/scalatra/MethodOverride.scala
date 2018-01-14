@@ -7,8 +7,7 @@ import servlet.ServletApiImplicits
 object MethodOverride {
   val ParamName = "_method"
   val HeaderName = SortedSet(
-    "X-HTTP-METHOD-OVERRIDE", "X-HTTP-METHOD", "X-METHOD-OVERRIDE"
-  )
+    "X-HTTP-METHOD-OVERRIDE", "X-HTTP-METHOD", "X-METHOD-OVERRIDE")
 }
 
 /**

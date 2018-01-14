@@ -130,16 +130,14 @@ object Uri {
           pth,
           QueryString(u.getRawQuery),
           UriFragment(u.getRawFragment),
-          originalUri getOrElse u.toString
-        )
+          originalUri getOrElse u.toString)
       } else {
         RelativeUri(
           u.getRawAuthority.blankOption.map(a => Authority(IDN.toASCII(a))),
           pth,
           QueryString(u.getRawQuery),
           UriFragment(u.getRawFragment),
-          originalUri getOrElse u.toString
-        )
+          originalUri getOrElse u.toString)
       }
     } catch {
       case e: NullPointerException => {

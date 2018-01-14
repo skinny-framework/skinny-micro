@@ -7,5 +7,4 @@ import skinny.micro.{ MultiParams, Action }
  */
 case class MatchedRoute(
   action: Action,
-  multiParams: MultiParams
-)
+  multiParams: MultiParams)

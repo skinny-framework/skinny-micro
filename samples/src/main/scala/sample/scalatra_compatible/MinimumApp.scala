@@ -28,8 +28,7 @@ class MinimumApp extends WebApp {
   get("/hello-with-cookie-2") {
     Ok(
       body = "Hello, World!",
-      headers = Map("Set-Cookie" -> "theme=light")
-    )
+      headers = Map("Set-Cookie" -> "theme=light"))
   }
 
 }

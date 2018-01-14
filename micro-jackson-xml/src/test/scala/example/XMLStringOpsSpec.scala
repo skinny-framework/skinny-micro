@@ -12,8 +12,7 @@ class XMLStringOpsSpec extends FunSpec with Matchers with XMLStringOps {
     Member(1, Some("Alice")),
     Member(2, Some("Bob")),
     Member(3, None),
-    Member(4, Some("Denis"))
-  )
+    Member(4, Some("Denis")))
 
   describe("JSONStringOps") {
     it("should serialize normal data") {

@@ -4,9 +4,8 @@ package skinny.micro.response
  * Response status.
  */
 case class ResponseStatus(
-    code: Int,
-    message: String
-) extends Ordered[ResponseStatus] {
+  code: Int,
+  message: String) extends Ordered[ResponseStatus] {
 
   def compare(that: ResponseStatus): Int = code.compareTo(that.code)
 
@@ -84,6 +83,5 @@ object ResponseStatus {
     507 -> "Insufficient Storage",
     508 -> "Loop Detected",
     510 -> "Not Extended",
-    511 -> "Network Authentication Required"
-  )
+    511 -> "Network Authentication Required")
 }

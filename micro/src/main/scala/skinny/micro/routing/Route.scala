@@ -12,11 +12,10 @@ import skinny.micro.data.MultiMap
  * available to the action.
  */
 case class Route(
-    routeMatchers: Seq[RouteMatcher] = Seq.empty,
-    action: Action,
-    contextPath: HttpServletRequest => String = _ => "",
-    metadata: Map[Symbol, Any] = Map.empty
-) {
+  routeMatchers: Seq[RouteMatcher] = Seq.empty,
+  action: Action,
+  contextPath: HttpServletRequest => String = _ => "",
+  metadata: Map[Symbol, Any] = Map.empty) {
   /**
    * Optionally returns this route's action and the multi-map of route
    * parameters extracted from the matchers.  Each matcher's returned params
@@ -60,8 +59,7 @@ object Route {
   def apply(
     transformers: Seq[RouteTransformer],
     action: Action,
-    contextPath: HttpServletRequest => String
-  ): Route = {
+    contextPath: HttpServletRequest => String): Route = {
     val route = Route(action = action, contextPath = contextPath)
     transformers.foldLeft(route) { (route, transformer) => transformer(route) }
   }

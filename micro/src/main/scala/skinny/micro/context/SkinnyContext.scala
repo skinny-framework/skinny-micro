@@ -11,9 +11,9 @@ import skinny.micro.request.StableHttpServletRequest
  * SkinnyMicro's context for each request.
  */
 trait SkinnyContext
-    extends ServletApiImplicits
-    with SessionImplicits
-    with CookiesImplicits {
+  extends ServletApiImplicits
+  with SessionImplicits
+  with CookiesImplicits {
 
   val request: HttpServletRequest
 
@@ -39,53 +39,45 @@ object SkinnyContext {
 
   def surelyStable(
     ctx: SkinnyContext,
-    validation: UnstableAccessValidation
-  ): SkinnyContext = {
+    validation: UnstableAccessValidation): SkinnyContext = {
     new StableSkinnyContext()(
       StableHttpServletRequest(ctx.request, validation),
       ctx.response,
       ctx.servletContext,
-      validation
-    )
+      validation)
   }
 
   def build(
     ctx: ServletContext,
     req: HttpServletRequest,
     resp: HttpServletResponse,
-    validation: UnstableAccessValidation
-  ): SkinnyContext = {
+    validation: UnstableAccessValidation): SkinnyContext = {
     new StableSkinnyContext()(
       StableHttpServletRequest(req, validation),
       resp,
       ctx,
-      validation
-    )
+      validation)
   }
 
   def buildWithRequest(
     req: HttpServletRequest,
-    validation: UnstableAccessValidation
-  ): SkinnyContext = {
+    validation: UnstableAccessValidation): SkinnyContext = {
     new StableSkinnyContext()(
       StableHttpServletRequest(req, validation),
       null,
       null,
-      validation
-    )
+      validation)
   }
 
   def buildWithoutResponse(
     req: HttpServletRequest,
     ctx: ServletContext,
-    validation: UnstableAccessValidation
-  ): SkinnyContext = {
+    validation: UnstableAccessValidation): SkinnyContext = {
     new StableSkinnyContext()(
       StableHttpServletRequest(req, validation),
       null,
       ctx,
-      validation
-    )
+      validation)
   }
 
 }

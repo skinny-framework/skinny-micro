@@ -65,8 +65,7 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
    */
   protected def serveStaticResource()(
     implicit
-    ctx: SkinnyContext
-  ): Option[Any] = {
+    ctx: SkinnyContext): Option[Any] = {
     servletContext.resource(ctx.request) map { _ =>
       servletContext.getNamedDispatcher("default").forward(ctx.request, ctx.response)
     }
@@ -77,8 +76,7 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
    */
   protected def resourceNotFound()(
     implicit
-    ctx: SkinnyContext
-  ): Any = {
+    ctx: SkinnyContext): Any = {
     ctx.response.setStatus(404)
     if (isDevelopment()) {
       val error = "Requesting \"%s %s\" on servlet \"%s\" but only have: %s"
@@ -86,8 +84,7 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
         ctx.request.getMethod,
         Option(ctx.request.getPathInfo) getOrElse "/",
         ctx.request.getServletPath,
-        routes.entryPoints.mkString("<ul><li>", "</li><li>", "</li></ul>")
-      )
+        routes.entryPoints.mkString("<ul><li>", "</li><li>", "</li></ul>"))
     }
   }
 

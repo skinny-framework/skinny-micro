@@ -12,10 +12,10 @@ import skinny.micro.test.SkinnyMicroTests
  */
 @RunWith(classOf[JUnitRunner])
 trait SkinnyMicroSuite
-    extends Suite
-    with SkinnyMicroTests
-    with BeforeAndAfterAll
-    with Matchers {
+  extends Suite
+  with SkinnyMicroTests
+  with BeforeAndAfterAll
+  with Matchers {
 
   override protected def beforeAll(): Unit = start()
 

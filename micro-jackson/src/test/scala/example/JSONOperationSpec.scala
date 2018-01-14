@@ -14,8 +14,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
   val persons = Seq(
     Person("Alice", Some("Cooper")),
     Person("Bob", Some("Marley")),
-    Person("Chris", None)
-  )
+    Person("Chris", None))
 
   object App extends SkinnyMicroFilter with JSONSupport {
     def name = params.getAs[String]("name").getOrElse("Anonymous")
@@ -69,8 +68,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
       status should equal(200)
       header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
-        """[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]"""
-      )
+        """[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]""")
     }
   }
 
@@ -79,8 +77,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
       status should equal(200)
       header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
-        """[{"first_name":"Alice","last_name":"Cooper"},{"first_name":"Bob","last_name":"Marley"},{"first_name":"Chris","last_name":null}]"""
-      )
+        """[{"first_name":"Alice","last_name":"Cooper"},{"first_name":"Bob","last_name":"Marley"},{"first_name":"Chris","last_name":null}]""")
     }
   }
 
@@ -98,8 +95,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
           |}, {
           |  "firstName" : "Chris",
           |  "lastName" : null
-          |} ]""".stripMargin
-      )
+          |} ]""".stripMargin)
       val responsePersons = fromJSONString[Seq[Person]](body, false)
       responsePersons should equal(Success(persons))
     }
@@ -119,8 +115,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
           |}, {
           |  "first_name" : "Chris",
           |  "last_name" : null
-          |} ]""".stripMargin
-      )
+          |} ]""".stripMargin)
       val responsePersons = fromJSONString[Seq[Person]](body, true)
       responsePersons should equal(Success(persons))
     }
@@ -132,8 +127,7 @@ class JSONOperationSpec extends ScalatraFlatSpec with JSONStringOps {
       header("Content-Type") should equal("application/json;charset=utf-8")
       body should equal(
         """)]}',
-          |[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]""".stripMargin
-      )
+          |[{"firstName":"Alice","lastName":"Cooper"},{"firstName":"Bob","lastName":"Marley"},{"firstName":"Chris","lastName":null}]""".stripMargin)
     }
   }
 

@@ -4,7 +4,7 @@ package skinny.micro
  * Represents concurrency issue access multiple threads on the Servlet.
  */
 class ServletConcurrencyException(message: Option[String] = None)
-    extends RuntimeException(message.getOrElse(ServletConcurrencyException.message)) {
+  extends RuntimeException(message.getOrElse(ServletConcurrencyException.message)) {
 
 }
 

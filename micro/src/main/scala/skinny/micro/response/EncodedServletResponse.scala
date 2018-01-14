@@ -14,9 +14,8 @@ import scala.util.Try
  * Encodes any output written to a servlet response.
  */
 private[skinny] class EncodedServletResponse(
-    res: HttpServletResponse,
-    enc: ContentEncoding
-) extends HttpServletResponseWrapper(res) {
+  res: HttpServletResponse,
+  enc: ContentEncoding) extends HttpServletResponseWrapper(res) {
 
   /** Ensures that whatever byte- or char-stream we have open is properly flushed. */
   override def flushBuffer(): Unit = {

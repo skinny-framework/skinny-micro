@@ -27,8 +27,8 @@ import scala.util.DynamicVariable
  * @see SkinnyMicroServlet
  */
 trait SkinnyMicroFilter
-    extends Filter
-    with SkinnyMicroFilterBase
-    with ThreadLocalFeatures {
+  extends Filter
+  with SkinnyMicroFilterBase
+  with ThreadLocalFeatures {
 
 }

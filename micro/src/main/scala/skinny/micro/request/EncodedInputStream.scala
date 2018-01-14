@@ -8,9 +8,8 @@ import javax.servlet.ReadListener
  * Encoded input stream in a Servlet request.
  */
 private[skinny] class EncodedInputStream(
-    encoded: InputStream,
-    raw: ServletInputStream
-) extends ServletInputStream {
+  encoded: InputStream,
+  raw: ServletInputStream) extends ServletInputStream {
 
   override def read(): Int = encoded.read()
   override def read(b: Array[Byte]): Int = read(b, 0, b.length)
