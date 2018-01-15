@@ -4,7 +4,7 @@ package skinny.micro
  * Represents unstable access to servlet objects managed by containers from unmanaged threads.
  */
 class UnstableAccessException(attribute: String)
-    extends RuntimeException(UnstableAccessException.message(attribute)) {
+  extends RuntimeException(UnstableAccessException.message(attribute)) {
 
 }
 

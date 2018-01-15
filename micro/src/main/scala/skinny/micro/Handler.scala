@@ -12,12 +12,12 @@ import skinny.logging.LoggerProvider
  * A `Handler` is the SkinnyMicro abstraction for an object that operates on a request/response pair.
  */
 trait Handler
-    extends Initializable
-    with SkinnyContextInitializer
-    with UnstableAccessValidationConfig
-    with RouteRegistryAccessor
-    with ServletContextAccessor
-    with LoggerProvider {
+  extends Initializable
+  with SkinnyContextInitializer
+  with UnstableAccessValidationConfig
+  with RouteRegistryAccessor
+  with ServletContextAccessor
+  with LoggerProvider {
 
   /**
    * Handles a request and writes to the response.
@@ -39,8 +39,7 @@ trait Handler
           }
           if (registration != null) {
             registration.addMappingForUrlPatterns(
-              java.util.EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC), true, toNormalizedRoutePath(path)
-            )
+              java.util.EnumSet.of(DispatcherType.REQUEST, DispatcherType.ASYNC), true, toNormalizedRoutePath(path))
           } else {
             logger.info("FilterRegistration is empty. Skipped.")
           }

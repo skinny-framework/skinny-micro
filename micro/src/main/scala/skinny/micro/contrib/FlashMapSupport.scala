@@ -26,12 +26,12 @@ import scala.util.Try
  * @see FlashMap
  */
 trait FlashMapSupport
-    extends Handler
-    with ServletContextAccessor
-    with SkinnyContextInitializer
-    with UnstableAccessValidationConfig
-    with ServletApiImplicits
-    with SessionImplicits {
+  extends Handler
+  with ServletContextAccessor
+  with SkinnyContextInitializer
+  with UnstableAccessValidationConfig
+  with ServletApiImplicits
+  with SessionImplicits {
 
   import FlashMapSupport._
 

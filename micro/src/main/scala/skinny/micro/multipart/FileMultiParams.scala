@@ -4,8 +4,7 @@ package skinny.micro.multipart
  * Multi parmas in a file.
  */
 class FileMultiParams(
-    wrapped: Map[String, Seq[FileItem]] = Map.empty
-) extends Map[String, Seq[FileItem]] {
+  wrapped: Map[String, Seq[FileItem]] = Map.empty) extends Map[String, Seq[FileItem]] {
 
   def get(key: String): Option[Seq[FileItem]] = {
     (wrapped.get(key) orElse wrapped.get(key + "[]"))

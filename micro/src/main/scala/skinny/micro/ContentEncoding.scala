@@ -36,8 +36,7 @@ object ContentEncoding {
   private def create(
     id: String,
     e: OutputStream => OutputStream,
-    d: InputStream => InputStream
-  ): ContentEncoding = {
+    d: InputStream => InputStream): ContentEncoding = {
     new ContentEncoding {
       override def name: String = id
       override def encode(out: OutputStream): OutputStream = e(out)

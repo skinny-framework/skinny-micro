@@ -21,7 +21,6 @@ class RouteRegistryTest extends ScalatraFunSuite {
       "POST\t/foo/:bar",
       "GET\t/nothing [Boolean Guard]",
       "GET\t[Boolean Guard]",
-      "PUT\t^/foo.../bar$"
-    ).mkString("\n") + "\n")
+      "PUT\t^/foo.../bar$").mkString("\n") + "\n")
   }
 }

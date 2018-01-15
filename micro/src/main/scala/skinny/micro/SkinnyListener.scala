@@ -89,8 +89,7 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
         | NOTE: If you're using only skinny.micro, inherit skinny.micro.LifeCycle instead.
         |
         |----------------
-        |""".stripMargin
-    )
+        |""".stripMargin)
     logger.debug(s"Loaded lifecycle class: ${cycleClass}")
 
     if (cycleClass.getName == OldDefaultLifeCycle) {

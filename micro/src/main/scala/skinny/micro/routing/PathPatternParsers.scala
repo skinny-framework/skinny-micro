@@ -14,8 +14,7 @@ trait RegexPathPatternParser extends PathPatternParser with RegexParsers {
 
     def +(other: PartialPathPattern): PartialPathPattern = PartialPathPattern(
       this.regex + other.regex,
-      this.captureGroupNames ::: other.captureGroupNames
-    )
+      this.captureGroupNames ::: other.captureGroupNames)
   }
 }
 

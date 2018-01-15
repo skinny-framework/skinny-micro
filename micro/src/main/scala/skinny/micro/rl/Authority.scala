@@ -125,10 +125,9 @@ case class IPvFutureAddress(value: String) extends UriHost {
 }
 
 case class Authority(
-    userInfo: Option[UserInfo],
-    host: UriHost,
-    port: Option[Int]
-) extends UriNode {
+  userInfo: Option[UserInfo],
+  host: UriHost,
+  port: Option[Int]) extends UriNode {
 
   def normalize = normalize(false)
   def normalize(stripCommonPrefix: Boolean) = {

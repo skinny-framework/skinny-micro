@@ -21,8 +21,7 @@ trait XMLSupport extends XMLStringOps { self: SkinnyMicroBase =>
     entity: Any,
     charset: Option[String] = Some("utf-8"),
     prettify: Boolean = false,
-    underscoreKeys: Boolean = self.useUnderscoreKeysForXML
-  )(implicit ctx: SkinnyContext): String = {
+    underscoreKeys: Boolean = self.useUnderscoreKeysForXML)(implicit ctx: SkinnyContext): String = {
 
     // If Content-Type is already set, never overwrite it.
     if (contentType(ctx) == null) {

@@ -5,10 +5,10 @@ import javax.servlet.http._
 import org.scalatest._
 
 class EmbeddedJettyContainerSpec extends WordSpec
-    with Matchers
-    with BeforeAndAfter
-    with EmbeddedJettyContainer
-    with HttpComponentsClient {
+  with Matchers
+  with BeforeAndAfter
+  with EmbeddedJettyContainer
+  with HttpComponentsClient {
 
   before { start() }
   after { stop() }

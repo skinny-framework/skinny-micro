@@ -6,9 +6,9 @@ import scalatra.util.{ MapWithIndifferentAccess, MultiMapHeadView }
 import scala.language.implicitConversions
 
 package object scalatra
-    extends Control // make halt and pass visible to helpers outside the DSL
-    //  with DefaultValues // make defaults visible
-    {
+  extends Control // make halt and pass visible to helpers outside the DSL
+  //  with DefaultValues // make defaults visible
+  {
   import util.MultiMap
 
   object RouteTransformer {
@@ -65,7 +65,7 @@ package object scalatra
   //	   * </pre>
   //	   */
   //	  def unary_~(implicit z: DefaultValue[T]): T = value getOrElse z.default
-  //	
+  //
   //	  def orDefault(implicit z: DefaultValue[T]): T = value getOrElse z.default
   //	}
   //  implicit def option2optionWithDefault[T](opt: Option[T]) = new OptionDefaults(opt)

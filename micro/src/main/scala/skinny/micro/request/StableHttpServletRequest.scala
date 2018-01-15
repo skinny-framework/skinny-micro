@@ -24,9 +24,8 @@ import scala.util.Try
  * see also: https://bugs.eclipse.org/bugs/show_bug.cgi?id=433321
  */
 class StableHttpServletRequest(
-    private val underlying: HttpServletRequest,
-    private val unstableAccessValidation: UnstableAccessValidation
-) extends HttpServletRequestWrapper(underlying) with LoggerProvider {
+  private val underlying: HttpServletRequest,
+  private val unstableAccessValidation: UnstableAccessValidation) extends HttpServletRequestWrapper(underlying) with LoggerProvider {
 
   private[this] var stableHttpSession: Option[HttpSession] = {
     Option(underlying.getSession(false)) match {
@@ -64,8 +63,7 @@ class StableHttpServletRequest(
   }
   override def startAsync(
     servletRequest: ServletRequest,
-    servletResponse: ServletResponse
-  ): AsyncContext = {
+    servletResponse: ServletResponse): AsyncContext = {
     ensureStableAccessStrictly("startAsync")
     underlying.startAsync(servletRequest, servletResponse)
   }
@@ -356,8 +354,7 @@ class StableHttpServletRequest(
   private[this] def dateHeaderFormats: Array[DateFormat] = Array(
     new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US), // RFC1123
     new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
-    new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
-  )
+    new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US))
 
   private[this] def parseDateHeader(headerValue: String): Option[Long] = {
     if (headerValue == null) {

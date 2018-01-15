@@ -100,8 +100,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     handlerClass: Class[T],
     urlPattern: String,
     name: String,
-    loadOnStartup: Int = 1
-  ): Unit = {
+    loadOnStartup: Int = 1): Unit = {
     val pathMap = urlPattern match {
       case s if s.endsWith("/*") => s
       case s if s.endsWith("/") => s + "*"
@@ -127,8 +126,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     servlet: HttpServlet,
     urlPattern: String,
     name: String,
-    loadOnStartup: Int
-  ): Unit = {
+    loadOnStartup: Int): Unit = {
     val reg: ServletRegistration = Option(sc.getServletRegistration(name)) getOrElse {
       val r = sc.addServlet(name, servlet)
       servlet match {
@@ -149,8 +147,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     servletClass: Class[HttpServlet],
     urlPattern: String,
     name: String,
-    loadOnStartup: Int
-  ): Unit = {
+    loadOnStartup: Int): Unit = {
     val reg = Option(sc.getServletRegistration(name)) getOrElse {
       val r = sc.addServlet(name, servletClass)
       // since we only have a Class[_] here, we can't access the MultipartConfig value

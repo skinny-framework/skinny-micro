@@ -9,9 +9,8 @@ import scala.util.matching.Regex
  * parameters.
  */
 case class PathPattern(
-    regex: Regex,
-    captureGroupNames: List[String] = Nil
-) {
+  regex: Regex,
+  captureGroupNames: List[String] = Nil) {
 
   def apply(path: String): Option[MultiParams] = {
     // This is a performance hotspot.  Hideous mutatations ahead.
@@ -33,7 +32,6 @@ case class PathPattern(
 
   def +(pathPattern: PathPattern): PathPattern = PathPattern(
     new Regex(this.regex.toString + pathPattern.regex.toString),
-    this.captureGroupNames ::: pathPattern.captureGroupNames
-  )
+    this.captureGroupNames ::: pathPattern.captureGroupNames)
 
 }

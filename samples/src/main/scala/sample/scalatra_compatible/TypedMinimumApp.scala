@@ -25,15 +25,13 @@ class TypedMinimumApp extends TypedWebApp {
     cookies += "theme" -> "light"
     Ok(
       body = "Hello, World!",
-      cookies = Seq(Cookie("theme", "light"))
-    )
+      cookies = Seq(Cookie("theme", "light")))
   }
 
   get("/hello-with-cookie-2") {
     Ok(
       body = "Hello, World!",
-      headers = Map("Set-Cookie" -> "theme=light")
-    )
+      headers = Map("Set-Cookie" -> "theme=light"))
   }
 
 }

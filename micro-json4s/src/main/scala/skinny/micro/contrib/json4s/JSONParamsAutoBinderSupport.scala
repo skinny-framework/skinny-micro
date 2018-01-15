@@ -18,10 +18,10 @@ import skinny.micro.{ ApiFormats, Params, SkinnyMicroBase, SkinnyMicroParams }
  * NOTICE: Avoid extending JacksonJsonSupport due to render method conflict
  */
 trait JSONParamsAutoBinderSupport
-    extends SkinnyMicroBase
-    with JSONStringOps
-    with ApiFormats
-    with LoggerProvider {
+  extends SkinnyMicroBase
+  with JSONStringOps
+  with ApiFormats
+  with LoggerProvider {
 
   /**
    * Merge parsedBody (JValue) into params if possible.
@@ -73,8 +73,7 @@ trait JSONParamsAutoBinderSupport
         } else {
           readJsonFromStreamWithCharset(
             ctx.request.inputStream,
-            ctx.request.characterEncoding.getOrElse(defaultCharacterEncoding)
-          )
+            ctx.request.characterEncoding.getOrElse(defaultCharacterEncoding))
         }
       }
       transformRequestBody(bd)
@@ -98,8 +97,7 @@ trait JSONParamsAutoBinderSupport
 
   protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
-    params2: Map[String, Seq[String]]
-  ): Map[String, Seq[String]] = {
+    params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
     (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
   }
 

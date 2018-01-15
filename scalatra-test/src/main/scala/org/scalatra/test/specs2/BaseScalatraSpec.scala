@@ -11,8 +11,8 @@ import org.specs2.specification.BeforeAfterAll
  * ScalatraSpec or MutableScalatraSpec.
  */
 trait BaseScalatraSpec
-    extends BeforeAfterAll
-    with ScalatraTests {
+  extends BeforeAfterAll
+  with ScalatraTests {
 
   override def beforeAll = start()
   override def afterAll = stop()

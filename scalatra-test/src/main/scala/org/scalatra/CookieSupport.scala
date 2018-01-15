@@ -15,8 +15,7 @@ case class CookieOptions(
   comment: String = "",
   httpOnly: Boolean = false,
   version: Int = 0,
-  encoding: String = "UTF-8"
-)
+  encoding: String = "UTF-8")
 
 object Cookie {
   @volatile private[this] var _currentTimeMillis: Option[Long] = None
@@ -38,8 +37,7 @@ case class Cookie(name: String, value: String)(implicit cookieOptions: CookieOpt
 
     if (cookieOptions.domain.nonBlank && cookieOptions.domain != "localhost")
       sb.append("; Domain=").append(
-        (if (!cookieOptions.domain.startsWith(".")) "." + cookieOptions.domain else cookieOptions.domain).toLowerCase(Locale.ENGLISH)
-      )
+        (if (!cookieOptions.domain.startsWith(".")) "." + cookieOptions.domain else cookieOptions.domain).toLowerCase(Locale.ENGLISH))
 
     val pth = cookieOptions.path
     if (pth.nonBlank) sb append "; Path=" append (if (!pth.startsWith("/")) {

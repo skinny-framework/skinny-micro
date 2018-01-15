@@ -22,13 +22,11 @@ trait SkinnyContextInitializer {
 
   private[this] case class HttpServletRequestHolder(
     value: HttpServletRequest,
-    threadId: Long
-  )
+    threadId: Long)
 
   private[this] case class HttpServletResponseHolder(
     value: HttpServletResponse,
-    threadId: Long
-  )
+    threadId: Long)
 
   private[this] def currentThreadId: Long = Thread.currentThread.getId
 
@@ -61,9 +59,7 @@ trait SkinnyContextInitializer {
           resp.value,
           UnstableAccessValidation(
             unstableAccessValidationEnabled,
-            useMostlyStableHttpSession
-          )
-        )
+            useMostlyStableHttpSession))
       case _ =>
         // If the dynamic variables are None, this code is running on another thread
         throw new ServletConcurrencyException

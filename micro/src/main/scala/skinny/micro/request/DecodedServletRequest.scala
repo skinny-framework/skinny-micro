@@ -9,9 +9,8 @@ import skinny.micro.ContentEncoding
  * Decoded servlet request.
  */
 private[skinny] class DecodedServletRequest(
-    req: HttpServletRequest,
-    enc: ContentEncoding
-) extends HttpServletRequestWrapper(req) {
+  req: HttpServletRequest,
+  enc: ContentEncoding) extends HttpServletRequestWrapper(req) {
 
   override lazy val getInputStream: EncodedInputStream = {
     val raw = req.getInputStream

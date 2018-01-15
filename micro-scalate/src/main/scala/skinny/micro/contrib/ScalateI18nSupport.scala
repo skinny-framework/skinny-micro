@@ -9,8 +9,8 @@ import skinny.micro.contrib.i18n.Messages
 import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
 trait ScalateI18nSupport
-    extends ScalateSupport
-    with I18nSupport { self: BeforeAfterDsl =>
+  extends ScalateSupport
+  with I18nSupport { self: BeforeAfterDsl =>
 
   /*
    * Binding done here seems to work all the time.
@@ -28,8 +28,7 @@ trait ScalateI18nSupport
    */
   override protected def createRenderContext(out: PrintWriter)(
     implicit
-    ctx: SkinnyContext
-  ): SkinnyScalateRenderContext = {
+    ctx: SkinnyContext): SkinnyScalateRenderContext = {
     val context = super.createRenderContext(out)(ctx)
     context.attributes("messages") = messages(ctx)
     context

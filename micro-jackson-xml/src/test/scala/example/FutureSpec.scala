@@ -36,8 +36,7 @@ class FutureSpec extends ScalatraFlatSpec {
     get("/?foo=bar") {
       status should equal(200)
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>"""
-      )
+        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>""")
     }
   }
   it should "fail with simple Future" in {
@@ -59,8 +58,7 @@ class FutureSpec extends ScalatraFlatSpec {
     get("/future?foo=bar") {
       status should equal(200)
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>"""
-      )
+        """<?xml version="1.0" encoding="UTF-8"?><response><foo>bar</foo></response>""")
     }
   }
 

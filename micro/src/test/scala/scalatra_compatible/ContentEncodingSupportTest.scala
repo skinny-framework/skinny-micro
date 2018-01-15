@@ -16,8 +16,8 @@ import scala.concurrent.{ ExecutionContext, Future }
  * Test servlet using ContentEncodingSupport.
  */
 class ContentEncodingSupportTestServlet extends SkinnyMicroServlet
-    with RoutingDsl
-    with ContentEncodingSupport {
+  with RoutingDsl
+  with ContentEncodingSupport {
 
   override implicit protected def executionContext: ExecutionContext = ExecutionContextFactory.create(3)
 

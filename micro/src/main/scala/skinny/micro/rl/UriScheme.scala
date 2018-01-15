@@ -45,8 +45,7 @@ object Scheme {
     "pop3" -> 110,
     "pop3s" -> 995,
     "redis" -> 6379,
-    "mongo" -> 27017
-  )
+    "mongo" -> 27017)
 
 }
 

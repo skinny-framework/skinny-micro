@@ -29,29 +29,29 @@ import skinny.micro.util.UriDecoder
  * Intended to be portable to all supported backends.
  */
 trait SkinnyMicroBase
-    extends Handler
-    with AsyncSupported // can mix async and thread-based model
-    with UnstableAccessValidationConfig
-    with RedirectionDsl
-    with RouteRegistryAccessor
-    with ErrorHandlerAccessor
-    with ServletContextAccessor
-    with EnvAccessor
-    with ParamsAccessor
-    with QueryParamsAccessor
-    with FormParamsAccessor
-    with RequestFormatAccessor
-    with ResponseContentTypeAccessor
-    with ResponseStatusAccessor
-    with UrlGenerator
-    with HaltPassControl
-    with ServletApiImplicits
-    with RouteMatcherImplicits
-    with CookiesImplicits
-    with SkinnyMicroParamsImplicits
-    with DefaultImplicits
-    with RicherStringImplicits
-    with SessionImplicits {
+  extends Handler
+  with AsyncSupported // can mix async and thread-based model
+  with UnstableAccessValidationConfig
+  with RedirectionDsl
+  with RouteRegistryAccessor
+  with ErrorHandlerAccessor
+  with ServletContextAccessor
+  with EnvAccessor
+  with ParamsAccessor
+  with QueryParamsAccessor
+  with FormParamsAccessor
+  with RequestFormatAccessor
+  with ResponseContentTypeAccessor
+  with ResponseStatusAccessor
+  with UrlGenerator
+  with HaltPassControl
+  with ServletApiImplicits
+  with RouteMatcherImplicits
+  with CookiesImplicits
+  with SkinnyMicroParamsImplicits
+  with DefaultImplicits
+  with RicherStringImplicits
+  with SessionImplicits {
 
   import SkinnyMicroBase._
 
@@ -238,26 +238,24 @@ trait SkinnyMicroBase
 
     cradleHalt(
       body = {
-      result = runActions(request, response)
-    },
-      errorHandler = { error =>
-      cradleHalt(
-        body = {
-        result = currentErrorHandler.apply(error)
-        rendered = false
+        result = runActions(request, response)
       },
-        errorHandler =
-        e => {
-          SkinnyMicroBase.runCallbacks(Failure(e))(skinnyContext)
-          try {
-            renderUncaughtException(e)(skinnyContext)
-          } finally {
-            SkinnyMicroBase.runRenderCallbacks(Failure(e))(context)
-          }
-        }
-      )
-    }
-    )
+      errorHandler = { error =>
+        cradleHalt(
+          body = {
+            result = currentErrorHandler.apply(error)
+            rendered = false
+          },
+          errorHandler =
+            e => {
+              SkinnyMicroBase.runCallbacks(Failure(e))(skinnyContext)
+              try {
+                renderUncaughtException(e)(skinnyContext)
+              } finally {
+                SkinnyMicroBase.runRenderCallbacks(Failure(e))(context)
+              }
+            })
+      })
     if (!rendered) {
       renderResponse(result)(context)
     }
@@ -344,8 +342,7 @@ trait SkinnyMicroBase
 
   protected def setMultiparams[S](matchedRoute: Option[MatchedRoute], originalParams: MultiParams)(
     implicit
-    ctx: SkinnyContext
-  ): Unit = {
+    ctx: SkinnyContext): Unit = {
     val routeParams = matchedRoute.map(_.multiParams).getOrElse(Map.empty).map {
       case (key, values) =>
         key -> values.map(s => if (s.nonBlank) UriDecoder.secondStep(s) else s)

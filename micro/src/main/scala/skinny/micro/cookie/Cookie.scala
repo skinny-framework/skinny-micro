@@ -4,9 +4,8 @@ import java.util.{ Date, Locale }
 import skinny.micro.implicits.RicherStringImplicits
 
 case class Cookie(
-    name: String,
-    value: String
-)(implicit cookieOptions: CookieOptions = CookieOptions.default) {
+  name: String,
+  value: String)(implicit cookieOptions: CookieOptions = CookieOptions.default) {
 
   import Cookie._
   import RicherStringImplicits._
@@ -23,8 +22,7 @@ case class Cookie(
     comment: String = CookieOptions.default.comment,
     httpOnly: Boolean = CookieOptions.default.httpOnly,
     version: Int = CookieOptions.default.version,
-    encoding: String = CookieOptions.default.encoding
-  ): Cookie = {
+    encoding: String = CookieOptions.default.encoding): Cookie = {
     val newOptions = CookieOptions(
       domain = domain,
       path = path,
@@ -33,8 +31,7 @@ case class Cookie(
       comment = comment,
       httpOnly = httpOnly,
       version = version,
-      encoding = encoding
-    )
+      encoding = encoding)
     new Cookie(name, value)(newOptions)
   }
 
@@ -119,8 +116,7 @@ object Cookie {
       date: Date,
       format: String,
       timeZone: TimeZone = TimeZone.getTimeZone("GMT"),
-      locale: Locale = Locale.ENGLISH
-    ): String = {
+      locale: Locale = Locale.ENGLISH): String = {
       val df = new SimpleDateFormat(format, locale)
       df.setTimeZone(timeZone)
       df.format(date)
