@@ -8,7 +8,6 @@ jdk:
 cache:
   directories:
     - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
 script: 
   - travis_retry "./travis.sh"
   - find $HOME/.sbt -name "*.lock" | xargs rm
