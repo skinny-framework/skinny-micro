@@ -6,17 +6,17 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.3.0-RC1"
+lazy val currentVersion = "1.3.0-RC2"
 
-lazy val json4SVersion = "3.5.2"
-lazy val mockitoVersion = "2.7.22"
+lazy val json4SVersion = "3.5.3"
+lazy val mockitoVersion = "2.13.0"
 lazy val jettyVersion = "9.4.8.v20171121"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
-lazy val jacksonVersion = "2.8.7"
-lazy val jacksonScalaVersion = "2.8.8"
-lazy val scalaTestVersion = "3.0.3"
-lazy val akkaVersion = "2.5.1"
+lazy val jacksonVersion = "2.8.11"
+lazy val jacksonScalaVersion = "2.8.11"
+lazy val scalaTestVersion = "3.0.4"
+lazy val akkaVersion = "2.5.9"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -132,7 +132,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
     "joda-time"         %  "joda-time"          % "2.9.9"        % Compile,
-    "org.joda"          %  "joda-convert"       % "1.8.1"        % Compile,
+    "org.joda"          %  "joda-convert"       % "1.9.2"        % Compile,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
@@ -161,14 +161,14 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.testng"         %  "testng"           % "6.11"           % Compile,
+    "org.testng"         %  "testng"           % "6.13.1"         % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.7"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.3"          % Compile,
-    "org.apache.httpcomponents" % "httpmime"   % "4.5.3"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.5"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.5"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
-    "org.specs2"         %% "specs2-core"      % "3.8.9"          % Compile
+    "org.specs2"         %% "specs2-core"      % "3.9.5"          % Compile
   )
 ))
 
