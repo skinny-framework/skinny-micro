@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sbt ++2.12.2 \
+sbt ++2.12.4 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \
@@ -11,7 +11,7 @@ sbt ++2.12.2 \
   microServer/publishSigned \
   microTest/publishSigned \
   scalatraTest/publishSigned \
-  ++2.11.8 \
+  ++2.11.11 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \
