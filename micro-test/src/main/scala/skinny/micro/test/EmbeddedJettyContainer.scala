@@ -1,12 +1,16 @@
 package skinny.micro.test
 
+import org.eclipse.jetty.server.session.DefaultSessionIdManager
 import org.eclipse.jetty.server.{ Server, ServerConnector }
 import org.eclipse.jetty.servlet.ServletContextHandler
+import org.slf4j.LoggerFactory
 
 /**
- * Embedeed Jetty Servlet container.
+ * Embedded Jetty Servlet container.
  */
 trait EmbeddedJettyContainer extends JettyContainer {
+
+  private[this] val logger = LoggerFactory.getLogger(classOf[EmbeddedJettyContainer])
 
   /**
    * Sets the port to listen on.  0 means listen on any available port.
@@ -30,6 +34,7 @@ trait EmbeddedJettyContainer extends JettyContainer {
     val handler = new ServletContextHandler(ServletContextHandler.SESSIONS)
     handler.setContextPath(contextPath)
     handler.setResourceBase(resourceBasePath)
+    configureSessionIdManager(handler, server)
     handler
   }
 
@@ -51,5 +56,20 @@ trait EmbeddedJettyContainer extends JettyContainer {
       sys.error("can't calculate base URL: no connector")
     }
   }
-}
 
+  protected def configureSessionIdManager(servletContextHandler: ServletContextHandler, server: Server): Unit = {
+    val sessionHandler = servletContextHandler.getSessionHandler
+    sessionHandler.getSessionIdManager match {
+      case null =>
+        val sessionIdManger = new DefaultSessionIdManager(server)
+        sessionIdManger.setWorkerName(null)
+        sessionHandler.setSessionIdManager(sessionIdManger)
+      case defaultSessionIdManager: DefaultSessionIdManager =>
+        defaultSessionIdManager.setWorkerName(null)
+      case manager =>
+        val className = manager.getClass.getCanonicalName
+        logger.warn(s"Skipped to configure SessionIdManager (unexpected implementation: ${className})")
+    }
+  }
+
+}
