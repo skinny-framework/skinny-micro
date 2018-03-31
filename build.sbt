@@ -6,17 +6,17 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.3.0-SNAPSHOT"
+lazy val currentVersion = "1.3.0-RC3"
 
 lazy val json4SVersion = "3.5.3"
 lazy val mockitoVersion = "2.13.0"
-lazy val jettyVersion = "9.4.8.v20171121"
+lazy val jettyVersion = "9.4.9.v20180320"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.8.11"
 lazy val jacksonScalaVersion = "2.8.11"
-lazy val scalaTestVersion = "3.0.4"
-lazy val akkaVersion = "2.5.9"
+lazy val scalaTestVersion = "3.0.5"
+lazy val akkaVersion = "2.5.11"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
