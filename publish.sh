@@ -11,7 +11,7 @@ sbt ++2.12.4 \
   microServer/publishSigned \
   microTest/publishSigned \
   scalatraTest/publishSigned \
-  ++2.11.11 \
+  ++2.11.12 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \
