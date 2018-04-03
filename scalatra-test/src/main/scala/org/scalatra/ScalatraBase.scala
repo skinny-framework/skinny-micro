@@ -173,7 +173,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
       }
     }
 
-    cradleHalt(result = runActions, e => {
+    cradleHalt({ result = runActions }, e => {
       cradleHalt({
         result = errorHandler(e)
         rendered = false
