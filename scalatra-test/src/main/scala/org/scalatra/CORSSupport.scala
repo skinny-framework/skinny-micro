@@ -72,7 +72,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
 
   private[this] lazy val logger = LoggerFactory.getLogger(getClass)
 
-  abstract override def initialize(config: ConfigT) {
+  abstract override def initialize(config: ConfigT): Unit = {
     super.initialize(config)
     def createDefault = CORSConfig(
       Option(config.context.getInitParameter(AllowedOriginsKey)).getOrElse(AnyOrigin).split(",").map(_.trim),
@@ -89,7 +89,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
       allowedHeaders mkString ", ")
   }
 
-  protected def handlePreflightRequest() {
+  protected def handlePreflightRequest(): Unit = {
     logger debug "handling preflight request"
     // 5.2.7
     augmentSimpleRequest()
@@ -104,7 +104,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
 
   }
 
-  protected def augmentSimpleRequest() {
+  protected def augmentSimpleRequest(): Unit = {
     val anyOriginAllowed: Boolean = corsConfig.allowedOrigins.contains(AnyOrigin)
     val hdr = if (anyOriginAllowed && !corsConfig.allowCredentials)
       AnyOrigin
@@ -185,7 +185,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
     requestedHeaders.forall(h => isSimpleHeader(h) || allowedHeaders.contains(h))
   }
 
-  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     withRequestResponse(req, res) {
       //      logger debug "the headers are: %s".format(req.getHeaderNames.mkString(", "))
       request.requestMethod match {

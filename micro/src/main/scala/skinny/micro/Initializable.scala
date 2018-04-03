@@ -26,7 +26,7 @@ trait Initializable {
    * Not called init because GenericServlet doesn't override it, and then
    * we get into https://lampsvn.epfl.ch/trac/scala/ticket/2497.
    */
-  def initialize(config: ConfigT)
+  def initialize(config: ConfigT): Unit
 
   /**
    * A hook to shutdown the class.  Bridges the gap between servlet's

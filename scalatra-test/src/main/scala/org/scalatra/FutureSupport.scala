@@ -38,7 +38,7 @@ trait FutureSupport extends AsyncSupport {
     classOf[Future[_]].isAssignableFrom(result.getClass) ||
       classOf[AsyncResult].isAssignableFrom(result.getClass)
 
-  override protected def renderResponse(actionResult: Any) {
+  override protected def renderResponse(actionResult: Any): Unit = {
     actionResult match {
       case r: AsyncResult ⇒ handleFuture(r.is, r.timeout)
       case f: Future[_] ⇒ handleFuture(f, asyncTimeout)
@@ -46,12 +46,12 @@ trait FutureSupport extends AsyncSupport {
     }
   }
 
-  private[this] def handleFuture(f: Future[_], timeout: Duration) {
+  private[this] def handleFuture(f: Future[_], timeout: Duration): Unit = {
     val gotResponseAlready = new AtomicBoolean(false)
     val context = request.startAsync(request, response)
     if (timeout.isFinite()) context.setTimeout(timeout.toMillis) else context.setTimeout(-1)
 
-    def renderFutureResult(f: Future[_]) {
+    def renderFutureResult(f: Future[_]): Unit = {
       f onComplete {
         // Loop until we have a non-future result
         case Success(f2: Future[_]) => renderFutureResult(f2)
@@ -86,7 +86,7 @@ trait FutureSupport extends AsyncSupport {
     }
 
     context addListener new AsyncListener {
-      def onTimeout(event: AsyncEvent) {
+      def onTimeout(event: AsyncEvent): Unit = {
         onAsyncEvent(event) {
           if (gotResponseAlready.compareAndSet(false, true)) {
             renderHaltException(HaltException(Some(504), None, Map.empty, "Gateway timeout"))
@@ -94,8 +94,8 @@ trait FutureSupport extends AsyncSupport {
           }
         }
       }
-      def onComplete(event: AsyncEvent) {}
-      def onError(event: AsyncEvent) {
+      def onComplete(event: AsyncEvent): Unit = {}
+      def onError(event: AsyncEvent): Unit = {
         onAsyncEvent(event) {
           if (gotResponseAlready.compareAndSet(false, true)) {
             event.getThrowable match {
@@ -113,7 +113,7 @@ trait FutureSupport extends AsyncSupport {
           }
         }
       }
-      def onStartAsync(event: AsyncEvent) {}
+      def onStartAsync(event: AsyncEvent): Unit = {}
     }
 
     renderFutureResult(f)

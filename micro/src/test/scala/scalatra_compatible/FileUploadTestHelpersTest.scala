@@ -11,7 +11,7 @@ import scala.collection.JavaConverters._
 
 class FileUploadTestHelpersTestServlet extends SkinnyMicroServlet with FileUploadSupport with LoggerProvider {
 
-  def handleRequest() {
+  def handleRequest(): Unit = {
     response.setHeader("Request-Method", request.getMethod)
     params.foreach(p => response.setHeader("Param-" + p._1, p._2))
 

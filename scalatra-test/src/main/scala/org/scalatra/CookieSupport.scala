@@ -88,7 +88,7 @@ class SweetCookies(private[this] val reqCookies: Map[String, String], private[th
     this.update(name, value)(cookieOptions)
   }
 
-  def delete(name: String)(implicit cookieOptions: CookieOptions = CookieOptions()) {
+  def delete(name: String)(implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
     cookies -= name
     addCookie(name, "", cookieOptions.copy(maxAge = 0))
   }
@@ -97,7 +97,7 @@ class SweetCookies(private[this] val reqCookies: Map[String, String], private[th
     this.update(keyValuePair._1, keyValuePair._2)(cookieOptions)
   }
 
-  def -=(key: String)(implicit cookieOptions: CookieOptions = CookieOptions()) {
+  def -=(key: String)(implicit cookieOptions: CookieOptions = CookieOptions()): Unit = {
     delete(key)(cookieOptions)
   }
 

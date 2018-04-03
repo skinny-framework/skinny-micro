@@ -17,7 +17,7 @@ class ScalatraListener extends ServletContextListener {
 
   private[this] var servletContext: ServletContext = _
 
-  override def contextInitialized(sce: ServletContextEvent) {
+  override def contextInitialized(sce: ServletContextEvent): Unit = {
     try {
       configureServletContext(sce)
       configureCycleClass(Thread.currentThread.getContextClassLoader)
@@ -28,14 +28,14 @@ class ScalatraListener extends ServletContextListener {
     }
   }
 
-  def contextDestroyed(sce: ServletContextEvent) {
+  def contextDestroyed(sce: ServletContextEvent): Unit = {
     if (cycle != null) {
       logger.info("Destroying life cycle class: %s".format(cycle.getClass.getName))
       cycle.destroy(servletContext)
     }
   }
 
-  protected def configureExecutionContext(sce: ServletContextEvent) {
+  protected def configureExecutionContext(sce: ServletContextEvent): Unit = {
   }
 
   protected def probeForCycleClass(classLoader: ClassLoader) = {
@@ -56,11 +56,11 @@ class ScalatraListener extends ServletContextListener {
     (cycleClass.getSimpleName, cycleClass.newInstance.asInstanceOf[LifeCycle])
   }
 
-  protected def configureServletContext(sce: ServletContextEvent) {
+  protected def configureServletContext(sce: ServletContextEvent): Unit = {
     servletContext = sce.getServletContext
   }
 
-  protected def configureCycleClass(classLoader: ClassLoader) {
+  protected def configureCycleClass(classLoader: ClassLoader): Unit = {
     val (cycleClassName, cycleClass) = probeForCycleClass(classLoader)
     cycle = cycleClass
     logger.info("Initializing life cycle class: %s".format(cycleClassName))

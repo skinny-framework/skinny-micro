@@ -17,7 +17,7 @@ trait UriHostDomains { self: UriHost =>
 
 object DomainParser {
 
-  type Closable = { def close() }
+  type Closable = { def close(): Unit }
 
   /**
    * Closes the resource finally.

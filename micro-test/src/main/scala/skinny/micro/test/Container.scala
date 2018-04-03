@@ -5,7 +5,7 @@ package skinny.micro.test
  */
 trait Container {
 
-  protected def ensureSessionIsSerializable()
+  protected def ensureSessionIsSerializable(): Unit
 
   /**
    * Starts this Servlet container.

@@ -31,12 +31,12 @@ trait ScalateSupport extends SkinnyMicroBase {
    */
   protected[this] var templateEngine: TemplateEngine = _
 
-  abstract override def initialize(config: ConfigT) {
+  abstract override def initialize(config: ConfigT): Unit = {
     super.initialize(config)
     templateEngine = createTemplateEngine(config)
   }
 
-  abstract override def shutdown() {
+  abstract override def shutdown(): Unit = {
     if (templateEngine != null) {
       templateEngine.compiler.shutdown()
     }
@@ -119,7 +119,7 @@ trait ScalateSupport extends SkinnyMicroBase {
    */
   protected def isScalateErrorPageEnabled = true
 
-  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     super.handle(req, res)
   }
 

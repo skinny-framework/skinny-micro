@@ -124,7 +124,7 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
   def characterEncoding: Option[String] =
     Option(r.getCharacterEncoding)
 
-  def characterEncoding_=(encoding: Option[String]) {
+  def characterEncoding_=(encoding: Option[String]): Unit = {
     r.setCharacterEncoding(encoding getOrElse null)
   }
 

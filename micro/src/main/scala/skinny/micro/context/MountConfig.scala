@@ -7,6 +7,6 @@ import javax.servlet.ServletContext
  */
 trait MountConfig {
 
-  def apply(ctx: ServletContext)
+  def apply(ctx: ServletContext): Unit
 
 }

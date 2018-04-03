@@ -105,7 +105,7 @@ trait HttpComponentsClient extends Client {
     builder.build()
   }
 
-  private def attachHeaders(req: HttpRequestBase, headers: Iterable[(String, String)]) {
+  private def attachHeaders(req: HttpRequestBase, headers: Iterable[(String, String)]): Unit = {
     headers.foreach { case (name, value) => req.addHeader(name, value) }
   }
 
@@ -126,7 +126,7 @@ trait HttpComponentsClient extends Client {
     req
   }
 
-  private def attachBody(req: HttpRequestBase, body: Array[Byte]) {
+  private def attachBody(req: HttpRequestBase, body: Array[Byte]): Unit = {
     if (body == null) return
 
     req match {
@@ -146,7 +146,7 @@ trait HttpComponentsClient extends Client {
   private def attachMultipartBody(
     req: HttpRequestBase,
     params: Iterable[(String, String)],
-    files: Iterable[(String, Any)]) {
+    files: Iterable[(String, Any)]): Unit = {
 
     if (params.isEmpty && files.isEmpty) {
       return

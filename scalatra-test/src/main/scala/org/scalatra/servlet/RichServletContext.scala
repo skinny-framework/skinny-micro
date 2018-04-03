@@ -61,7 +61,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
    *
    * @param name the name of the handler
    */
-  def mount(handler: Handler, urlPattern: String, name: String) {
+  def mount(handler: Handler, urlPattern: String, name: String): Unit = {
     mount(handler, urlPattern, name, 1)
   }
 
@@ -77,7 +77,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
    *
    * @param name the name of the handler
    */
-  def mount(handler: Handler, urlPattern: String, name: String, loadOnStartup: Int) {
+  def mount(handler: Handler, urlPattern: String, name: String, loadOnStartup: Int): Unit = {
     val pathMap = pathMapping(urlPattern)
 
     handler match {
@@ -91,7 +91,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
   def mount(handler: Handler, urlPattern: String, loadOnStartup: Int): Unit =
     mount(handler, urlPattern, handler.getClass.getName, loadOnStartup)
 
-  def mount[T](handlerClass: Class[T], urlPattern: String, name: String, loadOnStartup: Int = 1) {
+  def mount[T](handlerClass: Class[T], urlPattern: String, name: String, loadOnStartup: Int = 1): Unit = {
     val pathMap = urlPattern match {
       case s if s.endsWith("/*") => s
       case s if s.endsWith("/") => s + "*"
@@ -111,7 +111,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
   def mount[T](handlerClass: Class[T], urlPattern: String, loadOnStartup: Int): Unit =
     mount(handlerClass, urlPattern, handlerClass.getName, loadOnStartup)
 
-  private def mountServlet(servlet: HttpServlet, urlPattern: String, name: String, loadOnStartup: Int) {
+  private def mountServlet(servlet: HttpServlet, urlPattern: String, name: String, loadOnStartup: Int): Unit = {
     val reg = Option(sc.getServletRegistration(name)) getOrElse {
       val r = sc.addServlet(name, servlet)
       servlet match {
@@ -128,7 +128,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     reg.addMapping(urlPattern)
   }
 
-  private def mountServlet(servletClass: Class[HttpServlet], urlPattern: String, name: String, loadOnStartup: Int) {
+  private def mountServlet(servletClass: Class[HttpServlet], urlPattern: String, name: String, loadOnStartup: Int): Unit = {
     val reg = Option(sc.getServletRegistration(name)) getOrElse {
       val r = sc.addServlet(name, servletClass)
       // since we only have a Class[_] here, we can't access the MultipartConfig value
@@ -142,7 +142,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     reg.addMapping(urlPattern)
   }
 
-  private def mountFilter(filter: Filter, urlPattern: String, name: String) {
+  private def mountFilter(filter: Filter, urlPattern: String, name: String): Unit = {
     val reg = Option(sc.getFilterRegistration(name)) getOrElse {
       val r = sc.addFilter(name, filter)
       if (filter.isInstanceOf[ScalatraAsyncSupport])
@@ -155,7 +155,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     reg.addMappingForUrlPatterns(dispatchers, true, urlPattern)
   }
 
-  private def mountFilter(filterClass: Class[Filter], urlPattern: String, name: String) {
+  private def mountFilter(filterClass: Class[Filter], urlPattern: String, name: String): Unit = {
     val reg = Option(sc.getFilterRegistration(name)) getOrElse {
       val r = sc.addFilter(name, filterClass)
       if (classOf[ScalatraAsyncSupport].isAssignableFrom(filterClass)) {

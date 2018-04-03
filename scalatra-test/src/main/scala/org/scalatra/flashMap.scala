@@ -64,28 +64,28 @@ class FlashMap extends MutableMapWithIndifferentAccess[Any] with Serializable {
   /**
    * Removes all flagged entries.
    */
-  def sweep() {
+  def sweep(): Unit = {
     flagged foreach { key => m -= key }
   }
 
   /**
    * Clears all flags so no entries are removed on the next sweep.
    */
-  def keep() {
+  def keep(): Unit = {
     flagged.clear()
   }
 
   /**
    * Clears the flag for the specified key so its entry is not removed on the next sweep.
    */
-  def keep(key: String) {
+  def keep(key: String): Unit = {
     flagged -= key
   }
 
   /**
    * Flags all current keys so the entire map is cleared on the next sweep.
    */
-  def flag() {
+  def flag(): Unit = {
     flagged ++= m.keys
   }
 
@@ -132,7 +132,7 @@ trait FlashMapSupport extends Handler {
 
   import FlashMapSupport._
 
-  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     withRequest(req) {
       val f = flash
       val isOutermost = !request.contains(LockKey)
@@ -166,7 +166,7 @@ trait FlashMapSupport extends Handler {
    * Override to implement custom session retriever, or sanity checks if session is still active
    * @param f
    */
-  def flashMapSetSession(f: FlashMap) {
+  def flashMapSetSession(f: FlashMap): Unit = {
     try {
       // Save flashMap to Session after (a session could stop existing during a request, so catch exception)
       session(SessionKey) = f

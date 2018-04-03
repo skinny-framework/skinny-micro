@@ -8,7 +8,7 @@ import servlet.ServletApiImplicits
  * Redirects unsecured requests to the corresponding secure URL.
  */
 trait SslRequirement extends Handler with ServletApiImplicits {
-  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     if (!req.isSecure) {
       val oldUri = req.uri
       val port = securePortMap.lift(oldUri.getPort) getOrElse 443
