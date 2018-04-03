@@ -19,7 +19,7 @@ object Mimes {
    * set. Since the supported encodings is stored as a static Set we
    * synchronize access.
    */
-  private def registerEncodingsIfNotSet() {
+  private def registerEncodingsIfNotSet(): Unit = {
     synchronized {
       if (EncodingGuesser.getSupportedEncodings.isEmpty) {
         val enc = Set("UTF-8", "ISO-8859-1", "windows-1252", "MacRoman", EncodingGuesser.getDefaultEncoding)

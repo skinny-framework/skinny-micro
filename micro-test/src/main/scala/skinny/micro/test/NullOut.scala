@@ -7,6 +7,6 @@ import java.io.OutputStream
  */
 object NullOut extends OutputStream {
 
-  def write(b: Int) {}
+  def write(b: Int): Unit = {}
 
 }

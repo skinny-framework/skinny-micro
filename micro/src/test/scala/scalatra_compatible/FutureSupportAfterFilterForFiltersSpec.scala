@@ -45,13 +45,13 @@ class FutureSupportAfterFilterFilter extends SkinnyMicroFilter {
     afterTime = System.nanoTime()
   }
 
-  def reset() {
+  def reset(): Unit = {
     actionTime = 0L
     afterTime = 0L
     afterCount = 0L
   }
 
-  override def destroy() {
+  override def destroy(): Unit = {
     super.destroy()
     system.terminate()
   }

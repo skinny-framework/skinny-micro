@@ -57,7 +57,7 @@ trait CsrfTokenSupport { this: ScalatraBase =>
    * Take an action when a forgery is detected. The default action
    * halts further request processing and returns a 403 HTTP status code.
    */
-  protected def handleForgery() {
+  protected def handleForgery(): Unit = {
     halt(403, "Request tampering detected!")
   }
 
@@ -100,7 +100,7 @@ trait XsrfTokenSupport { this: ScalatraBase =>
   def xsrfToken(implicit request: HttpServletRequest): String =
     request.getSession.getAttribute(xsrfKey).asInstanceOf[String]
 
-  def xsrfGuard(only: RouteTransformer*) {
+  def xsrfGuard(only: RouteTransformer*): Unit = {
     before((only.toSeq ++ Seq[RouteTransformer](isForged)): _*) { handleForgery() }
   }
 
@@ -123,7 +123,7 @@ trait XsrfTokenSupport { this: ScalatraBase =>
    * Take an action when a forgery is detected. The default action
    * halts further request processing and returns a 403 HTTP status code.
    */
-  protected def handleForgery() {
+  protected def handleForgery(): Unit = {
     halt(403, "Request tampering detected!")
   }
 

@@ -10,19 +10,19 @@ object SessionSerializingListener extends HttpSessionAttributeListener {
 
   val oos = new ObjectOutputStream(NullOut)
 
-  def attributeAdded(event: HttpSessionBindingEvent) {
+  def attributeAdded(event: HttpSessionBindingEvent): Unit = {
     serializeSession(event)
   }
 
-  def attributeRemoved(event: HttpSessionBindingEvent) {
+  def attributeRemoved(event: HttpSessionBindingEvent): Unit = {
     serializeSession(event)
   }
 
-  def attributeReplaced(event: HttpSessionBindingEvent) {
+  def attributeReplaced(event: HttpSessionBindingEvent): Unit = {
     serializeSession(event)
   }
 
-  def serializeSession(event: HttpSessionBindingEvent) {
+  def serializeSession(event: HttpSessionBindingEvent): Unit = {
     try {
       oos.writeObject(event.getValue)
     } catch {

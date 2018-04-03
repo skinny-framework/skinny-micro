@@ -76,7 +76,7 @@ trait FileUploadSupport extends ServletBase with HasMultipartConfig {
     case _ => false
   }
 
-  override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     val req2 = try {
       if (isMultipartRequest(req)) {
         val bodyParams = extractMultipartParams(req)
@@ -232,13 +232,13 @@ case class FileItem(part: Part) {
 
   def getCharset = charset.orElse(null)
 
-  def write(file: File) {
+  def write(file: File): Unit = {
     using(new FileOutputStream(file)) { out =>
       io.copy(getInputStream, out)
     }
   }
 
-  def write(fileName: String) {
+  def write(fileName: String): Unit = {
     part.write(fileName)
   }
 

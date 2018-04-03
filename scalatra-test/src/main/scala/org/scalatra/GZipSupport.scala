@@ -14,7 +14,7 @@ import java.nio.charset.Charset
 trait GZipSupport extends Handler {
   self: ScalatraBase =>
 
-  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse) {
+  abstract override def handle(req: HttpServletRequest, res: HttpServletResponse): Unit = {
     withRequestResponse(req, res) {
       if (isGzip) {
         val gzos = new GZIPOutputStream(res.getOutputStream)

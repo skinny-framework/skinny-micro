@@ -75,7 +75,7 @@ trait ApiFormats extends ScalatraBase {
     "text/css" -> "css",
     "video/x-flv" -> "flv").asJava).asScala
 
-  protected def addMimeMapping(mime: String, extension: String) {
+  protected def addMimeMapping(mime: String, extension: String): Unit = {
     mimeTypes += mime -> extension
     formats += extension -> mime
   }

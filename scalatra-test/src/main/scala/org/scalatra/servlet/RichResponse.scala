@@ -15,7 +15,7 @@ case class RichResponse(res: HttpServletResponse) {
    */
   def status: ResponseStatus = ResponseStatus(res.getStatus)
 
-  def status_=(statusLine: ResponseStatus) {
+  def status_=(statusLine: ResponseStatus): Unit = {
     res.setStatus(statusLine.code, statusLine.message)
   }
 
@@ -41,7 +41,7 @@ case class RichResponse(res: HttpServletResponse) {
     }
   }
 
-  def addCookie(cookie: Cookie) {
+  def addCookie(cookie: Cookie): Unit = {
     import cookie._
 
     val sCookie = new ServletCookie(name, value)
@@ -58,18 +58,18 @@ case class RichResponse(res: HttpServletResponse) {
   def characterEncoding: Option[String] =
     Option(res.getCharacterEncoding)
 
-  def characterEncoding_=(encoding: Option[String]) {
+  def characterEncoding_=(encoding: Option[String]): Unit = {
     res.setCharacterEncoding(encoding getOrElse null)
   }
 
   def contentType: Option[String] =
     Option(res.getContentType)
 
-  def contentType_=(contentType: Option[String]) {
+  def contentType_=(contentType: Option[String]): Unit = {
     res.setContentType(contentType getOrElse null)
   }
 
-  def redirect(uri: String) {
+  def redirect(uri: String): Unit = {
     res.sendRedirect(uri)
   }
 
@@ -79,7 +79,7 @@ case class RichResponse(res: HttpServletResponse) {
   def writer: PrintWriter =
     res.getWriter
 
-  def end() {
+  def end(): Unit = {
     res.flushBuffer()
     res.getOutputStream.close()
   }

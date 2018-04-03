@@ -34,7 +34,7 @@ lazy val baseSettings = Seq(
   sbtPlugin := false,
   scalaVersion := "2.12.4",
   ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
-  scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
+  scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, v)) if v <= 11 => Nil

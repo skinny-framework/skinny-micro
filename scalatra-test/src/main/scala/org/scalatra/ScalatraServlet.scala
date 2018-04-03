@@ -50,7 +50,7 @@ abstract class ScalatraServlet
   extends HttpServlet
   with ServletBase
   with Initializable {
-  override def service(request: HttpServletRequest, response: HttpServletResponse) {
+  override def service(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     handle(request, response)
   }
 
@@ -111,16 +111,16 @@ abstract class ScalatraServlet
 
   type ConfigT = ServletConfig
 
-  override def init(config: ServletConfig) {
+  override def init(config: ServletConfig): Unit = {
     super.init(config)
     initialize(config) // see Initializable.initialize for why
   }
 
-  override def initialize(config: ServletConfig) {
+  override def initialize(config: ServletConfig): Unit = {
     super.initialize(config)
   }
 
-  override def destroy() {
+  override def destroy(): Unit = {
     shutdown()
     super.destroy()
   }

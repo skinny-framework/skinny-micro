@@ -53,7 +53,7 @@ object ScalatraBase {
   def callbacks(implicit request: HttpServletRequest) =
     request.getOrElse(Callbacks, List.empty[Try[Any] => Unit]).asInstanceOf[List[Try[Any] => Unit]]
 
-  def addCallback(callback: Try[Any] => Unit)(implicit request: HttpServletRequest) {
+  def addCallback(callback: Try[Any] => Unit)(implicit request: HttpServletRequest): Unit = {
     request(Callbacks) = callback :: callbacks
   }
 
@@ -61,7 +61,7 @@ object ScalatraBase {
   def renderCallbacks(implicit request: HttpServletRequest) =
     request.getOrElse(RenderCallbacks, List.empty[Try[Any] => Unit]).asInstanceOf[List[Try[Any] => Unit]]
 
-  def addRenderCallback(callback: Try[Any] => Unit)(implicit request: HttpServletRequest) {
+  def addRenderCallback(callback: Try[Any] => Unit)(implicit request: HttpServletRequest): Unit = {
     request(RenderCallbacks) = callback :: renderCallbacks
   }
 
@@ -105,7 +105,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * $ 3. Binds the current `request`, `response`, and `multiParams`, and calls
    * `executeRoutes()`.
    */
-  override def handle(request: HttpServletRequest, response: HttpServletResponse) {
+  override def handle(request: HttpServletRequest, response: HttpServletResponse): Unit = {
     //    val realMultiParams = request.multiParameters
     request(CookieSupport.SweetCookiesKey) = new SweetCookies(request.cookies, response)
     response.characterEncoding = Some(defaultCharacterEncoding)
@@ -139,7 +139,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * $ 4. Executes the after filters with `runFilters`.
    * $ 5. The action result is passed to `renderResponse`.
    */
-  protected def executeRoutes() {
+  protected def executeRoutes(): Unit = {
     var result: Any = null
     var rendered = true
 
@@ -208,7 +208,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
     }
   }
 
-  protected def renderUncaughtException(e: Throwable)(implicit request: HttpServletRequest, response: HttpServletResponse) {
+  protected def renderUncaughtException(e: Throwable)(implicit request: HttpServletRequest, response: HttpServletResponse): Unit = {
     status = 500
     if (isDevelopmentMode) {
       contentType = "text/plain"
@@ -222,7 +222,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * Invokes each filters with `invoke`.  The results of the filters
    * are discarded.
    */
-  protected def runFilters(filters: Traversable[Route]) {
+  protected def runFilters(filters: Traversable[Route]): Unit = {
     for {
       route <- filters
       matchedRoute <- route(requestPath)
@@ -273,11 +273,11 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
       case e: PassException => None
     }
 
-  def before(transformers: RouteTransformer*)(fun: => Any) {
+  def before(transformers: RouteTransformer*)(fun: => Any): Unit = {
     routes.appendBeforeFilter(Route(transformers, () => fun))
   }
 
-  def after(transformers: RouteTransformer*)(fun: => Any) {
+  def after(transformers: RouteTransformer*)(fun: => Any): Unit = {
     routes.appendAfterFilter(Route(transformers, () => fun))
   }
 
@@ -287,7 +287,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    */
   protected var doNotFound: Action
 
-  def notFound(fun: => Any) {
+  def notFound(fun: => Any): Unit = {
     doNotFound = {
       () => fun
     }
@@ -305,7 +305,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
       response.headers("Allow") = allow.mkString(", ")
   }
 
-  def methodNotAllowed(f: Set[HttpMethod] => Any) {
+  def methodNotAllowed(f: Set[HttpMethod] => Any): Unit = {
     doMethodNotAllowed = f
   }
 
@@ -329,7 +329,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
     case t => throw t
   }
 
-  def error(handler: ErrorHandler) {
+  def error(handler: ErrorHandler): Unit = {
     errorHandler = handler orElse errorHandler
   }
 
@@ -343,7 +343,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
     }
   }
 
-  protected def setMultiparams[S](matchedRoute: Option[MatchedRoute], originalParams: MultiParams)(implicit request: HttpServletRequest) {
+  protected def setMultiparams[S](matchedRoute: Option[MatchedRoute], originalParams: MultiParams)(implicit request: HttpServletRequest): Unit = {
     val routeParams = matchedRoute.map(_.multiParams).getOrElse(Map.empty).map {
       case (key, values) =>
         key -> values.map(s => if (s.nonBlank) UriDecoder.secondStep(s) else s)
@@ -356,7 +356,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * $ - If the content type is still null, call the contentTypeInferrer.
    * $ - Call the render pipeline on the result.
    */
-  protected def renderResponse(actionResult: Any) {
+  protected def renderResponse(actionResult: Any): Unit = {
     if (contentType == null)
       contentTypeInferrer.lift(actionResult) foreach {
         contentType = _
@@ -391,7 +391,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    *
    * @see #renderPipeline
    */
-  protected def renderResponseBody(actionResult: Any) {
+  protected def renderResponseBody(actionResult: Any): Unit = {
     @tailrec def loop(ar: Any): Any = ar match {
       case _: Unit | Unit => runRenderCallbacks(Success(actionResult))
       case a => loop(renderPipeline.lift(a) getOrElse ((): Unit))
@@ -492,7 +492,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
   protected implicit def booleanBlock2RouteMatcher(block: => Boolean): RouteMatcher =
     new BooleanBlockRouteMatcher(block)
 
-  protected def renderHaltException(e: HaltException) {
+  protected def renderHaltException(e: HaltException): Unit = {
     try {
       var rendered = false
       e match {
@@ -530,7 +530,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
 
   def delete(transformers: RouteTransformer*)(action: => Any) = addRoute(Delete, transformers, action)
 
-  def trap(codes: Range)(block: => Any) {
+  def trap(codes: Range)(block: => Any): Unit = {
     addStatusRoute(codes, block)
   }
 
@@ -565,15 +565,15 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    *
    * @see org.scalatra.ScalatraKernel#addRoute
    */
-  protected def removeRoute(method: HttpMethod, route: Route) {
+  protected def removeRoute(method: HttpMethod, route: Route): Unit = {
     routes.removeRoute(method, route)
   }
 
-  protected def removeRoute(method: String, route: Route) {
+  protected def removeRoute(method: String, route: Route): Unit = {
     removeRoute(HttpMethod(method), route)
   }
 
-  protected[scalatra] def addStatusRoute(codes: Range, action: => Any) {
+  protected[scalatra] def addStatusRoute(codes: Range, action: => Any): Unit = {
     val route = Route(Seq.empty, () => action, (req: HttpServletRequest) => routeBasePath(req))
     routes.addStatusRoute(codes, route)
   }
@@ -590,7 +590,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    *
    * @param config the configuration.
    */
-  def initialize(config: ConfigT) {
+  def initialize(config: ConfigT): Unit = {
     this.config = config
     val path = contextPath match {
       case "" => "/" // The root servlet is "", but the root cookie path is "/"
