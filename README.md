@@ -115,7 +115,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 #!/usr/bin/env scalas
 // or ./scalas app.scala
 /***
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.6"
 libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.3.+"
 */
 import skinny.micro._
