@@ -3,7 +3,7 @@
 /***
 scalaVersion := "2.12.6"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.3.+"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.4.+"
 */
 import skinny.micro._
 object HelloApp extends WebApp {

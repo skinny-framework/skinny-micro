@@ -1,4 +1,4 @@
-# Skinny Micro [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.11)
+# Skinny Micro [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12)
 
 Skinny Micro is at once a micro Web framework to build Servlet applications in Scala and the core part of [Skinny Framework](http://skinny-framework.org/) 2.
 
@@ -15,7 +15,7 @@ Taking a look at [skinny-micro-heroku-example](https://github.com/skinny-framewo
 When you start new sbt project, add the following dependencies:
 
 ```scala
-lazy val skinnyMicroVersion = "1.3.+"
+lazy val skinnyMicroVersion = "1.4.+"
 
 libraryDependencies ++= Seq(
   // micro Web framework
@@ -116,7 +116,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 // or ./scalas app.scala
 /***
 scalaVersion := "2.12.6"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.3.+"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.4.+"
 */
 import skinny.micro._
 object HelloApp extends WebApp {

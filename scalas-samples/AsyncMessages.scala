@@ -4,8 +4,8 @@
 scalaVersion := "2.12.6"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
 libraryDependencies ++= Seq(
-  "org.skinny-framework" %% "skinny-micro-server"  % "1.3.+",
-  "org.skinny-framework" %% "skinny-micro-jackson" % "1.3.+"
+  "org.skinny-framework" %% "skinny-micro-server"  % "1.4.+",
+  "org.skinny-framework" %% "skinny-micro-jackson" % "1.4.+"
 ) 
 */
 import skinny.micro._

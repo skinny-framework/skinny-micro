@@ -33,6 +33,7 @@ lazy val baseSettings = Seq(
   publishMavenStyle := true,
   sbtPlugin := false,
   scalaVersion := "2.12.6",
+  crossScalaVersions := Seq("2.12.6", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
