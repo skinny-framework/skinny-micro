@@ -6,17 +6,17 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.3.1-SNAPSHOT"
+lazy val currentVersion = "1.4.0-M1"
 
-lazy val json4SVersion = "3.5.3"
-lazy val mockitoVersion = "2.13.0"
-lazy val jettyVersion = "9.4.9.v20180320"
+lazy val json4SVersion = "3.6.0-M4"
+lazy val mockitoVersion = "2.19.1"
+lazy val jettyVersion = "9.4.11.v20180605"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
-lazy val jacksonVersion = "2.8.11"
-lazy val jacksonScalaVersion = "2.8.11"
+lazy val jacksonVersion = "2.9.6"
+lazy val jacksonScalaVersion = "2.9.6"
 lazy val scalaTestVersion = "3.0.5"
-lazy val akkaVersion = "2.5.11"
+lazy val akkaVersion = "2.5.14"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -25,7 +25,7 @@ lazy val baseSettings = Seq(
     "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases"
     //, "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   ),
-  dependencyOverrides := Set(
+  dependencyOverrides := Seq(
     "org.scala-lang" %  "scala-library"  % scalaVersion.value,
     "org.scala-lang" %  "scala-reflect"  % scalaVersion.value,
     "org.scala-lang" %  "scala-compiler" % scalaVersion.value
@@ -33,7 +33,6 @@ lazy val baseSettings = Seq(
   publishMavenStyle := true,
   sbtPlugin := false,
   scalaVersion := "2.12.6",
-  ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -44,7 +43,6 @@ lazy val baseSettings = Seq(
   publishArtifact in Test := false,
   pomIncludeRepository := { x => false },
   transitiveClassifiers in Global := Seq(Artifact.SourceClassifier),
-  incOptions := incOptions.value.withNameHashing(true),
   logBuffered in Test := false,
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
@@ -104,7 +102,7 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
     ) ++ (scalaVersion.value match {
       case v if v.startsWith("2.11.")
              || v.startsWith("2.12.") =>
-        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6" % Compile)
+        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1" % Compile)
       case _ => Nil
     })
   }
@@ -131,8 +129,8 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.9.9"        % Compile,
-    "org.joda"          %  "joda-convert"       % "1.9.2"        % Compile,
+    "joda-time"         %  "joda-time"          % "2.10"         % Compile,
+    "org.joda"          %  "joda-convert"       % "2.1.1"        % Compile,
     "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
@@ -141,7 +139,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.8.0"        % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.0-RC2"    % Compile excludeAll(fullExclusionRules: _*),
     "com.typesafe.akka"     %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
@@ -161,14 +159,14 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.testng"         %  "testng"           % "6.13.1"         % Compile,
+    "org.testng"         %  "testng"           % "6.14.3"         % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.7"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.5"          % Compile,
-    "org.apache.httpcomponents" % "httpmime"   % "4.5.5"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
-    "org.specs2"         %% "specs2-core"      % "3.9.5"          % Compile
+    "org.specs2"         %% "specs2-core"      % "4.3.2"          % Compile
   )
 ))
 
@@ -176,10 +174,10 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
   name := "skinny-micro-test",
   libraryDependencies ++= servletApiDependencies ++ Seq(
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.5"            % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.7"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.3"          % Compile,
-    "org.apache.httpcomponents" % "httpmime"   % "4.5.3"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
+    "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
   )
@@ -190,7 +188,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
     // Slick dropped Scala 2.10 support
     //"com.typesafe.slick" %% "slick"            % "3.2.0-M2",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.195",
+    "com.h2database"     %  "h2"               % "1.4.197",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
@@ -217,6 +215,7 @@ lazy val jacksonDependencies = Seq(
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
   "org.json4s"    %% "json4s-native"      % json4SVersion    % Provided excludeAll(fullExclusionRules: _*),
+  "org.json4s"    %% "json4s-xml"         % json4SVersion    % Provided excludeAll(fullExclusionRules: _*),
   "org.json4s"    %% "json4s-ext"         % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*)
 )
 lazy val jettyDependencies = Seq(

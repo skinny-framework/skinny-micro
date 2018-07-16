@@ -3,7 +3,7 @@ resolvers += "sonatype releases"  at "https://oss.sonatype.org/content/repositor
 
 addSbtPlugin("io.get-coursier"      % "sbt-coursier"            % "1.0.3")
 addSbtPlugin("com.typesafe"         % "sbt-mima-plugin"         % "0.3.0")
-addSbtPlugin("org.skinny-framework" % "sbt-servlet-plugin"      % "2.2.5")
+addSbtPlugin("org.skinny-framework" % "sbt-servlet-plugin"      % "3.0.0-M1")
 addSbtPlugin("org.scalariform"      % "sbt-scalariform"         % "1.8.2")
 addSbtPlugin("com.jsuereth"         % "sbt-pgp"                 % "1.1.1")
 addSbtPlugin("org.xerial.sbt"       % "sbt-sonatype"            % "2.3")
