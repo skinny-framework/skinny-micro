@@ -6,9 +6,9 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "1.4.0-M1"
+lazy val currentVersion = "1.4.0-RC1"
 
-lazy val json4SVersion = "3.6.0-M4"
+lazy val json4SVersion = "3.6.0-RC1"
 lazy val mockitoVersion = "2.19.1"
 lazy val jettyVersion = "9.4.11.v20180605"
 lazy val logbackVersion = "1.2.3"
@@ -140,7 +140,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.0-RC2"    % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.0"        % Compile excludeAll(fullExclusionRules: _*),
     "com.typesafe.akka"     %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
