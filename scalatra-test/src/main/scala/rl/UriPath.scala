@@ -11,7 +11,7 @@ trait UriPath extends UriNode {
   def isAbsolute: Boolean
 
   def collapseDots(): GenSeq[String] = {
-    (Vector.empty[String] /: segments) { (lb, seg) =>
+    segments.foldLeft(Vector.empty[String]) { (lb, seg) =>
       seg match {
         case "." => lb
         case "src/main" => if (!lb.isEmpty) lb.dropRight(1) else lb

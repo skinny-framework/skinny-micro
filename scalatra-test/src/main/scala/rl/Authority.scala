@@ -18,7 +18,7 @@ object UserInfo {
 case class UserInfo(user: String, secret: String) extends UriNode {
 
   val uriPart = toString + "@"
-  override def toString = (user /: secret.blankOption) { _ + ":" + _ }
+  override def toString = secret.blankOption.foldLeft(user) { _ + ":" + _ }
 
   def normalize = this
   def apply() = toString
