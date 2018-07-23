@@ -1,17 +1,15 @@
 package scalatra_compatible
 
-import _root_.akka.actor.ActorSystem
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.SkinnyMicroFilter
 
 import scala.concurrent.Future
 
 class FutureSupportAfterFilterFilter extends SkinnyMicroFilter {
-  val system = ActorSystem()
   var actionTime: Long = _
   var afterTime: Long = _
   var afterCount: Long = _
-  protected override implicit lazy val executionContext = system.dispatcher
+  protected override implicit lazy val executionContext = scala.concurrent.ExecutionContext.global
 
   get("/async") {
     Thread.sleep(2000)
@@ -49,11 +47,6 @@ class FutureSupportAfterFilterFilter extends SkinnyMicroFilter {
     actionTime = 0L
     afterTime = 0L
     afterCount = 0L
-  }
-
-  override def destroy(): Unit = {
-    super.destroy()
-    system.terminate()
   }
 }
 
