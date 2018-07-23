@@ -17,6 +17,7 @@ lazy val jacksonVersion = "2.9.6"
 lazy val jacksonScalaVersion = "2.9.6"
 lazy val scalaTestVersion = "3.0.5"
 lazy val akkaVersion = "2.5.14"
+lazy val collectionCompatVersion = "0.1.1"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -158,6 +159,7 @@ lazy val microServer = (project in file("micro-server")).settings(baseSettings +
 lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings ++ Seq(
   name := "scalatra-test",
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
+    "org.scala-lang.modules" %% "scala-collection-compat" % collectionCompatVersion,
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.testng"         %  "testng"           % "6.14.3"         % Compile,
