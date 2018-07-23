@@ -1,16 +1,16 @@
 // The MIT License (MIT)　Copyright (c) 2011 Mojolly Ltd.
 package rl
 
-import scala.collection.GenSeq
+import scala.collection.Seq
 import scala.collection.immutable.Vector
 
 trait UriPath extends UriNode {
 
-  def segments: GenSeq[String]
+  def segments: Seq[String]
   def isRelative: Boolean
   def isAbsolute: Boolean
 
-  def collapseDots(): GenSeq[String] = {
+  def collapseDots(): Seq[String] = {
     segments.foldLeft(Vector.empty[String]) { (lb, seg) =>
       seg match {
         case "." => lb
@@ -65,7 +65,7 @@ case object EmptyPath extends EmptyUriPath {
 
 }
 
-case class RelativePath(segments: GenSeq[String]) extends UriPath {
+case class RelativePath(segments: Seq[String]) extends UriPath {
 
   val isAbsolute: Boolean = false
 
@@ -79,7 +79,7 @@ case class RelativePath(segments: GenSeq[String]) extends UriPath {
 
 }
 
-case class AbsolutePath(segments: GenSeq[String]) extends UriPath {
+case class AbsolutePath(segments: Seq[String]) extends UriPath {
 
   val isAbsolute: Boolean = true
 
