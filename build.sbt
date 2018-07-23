@@ -16,7 +16,6 @@ lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.9.6"
 lazy val jacksonScalaVersion = "2.9.6"
 lazy val scalaTestVersion = "3.0.5"
-lazy val akkaVersion = "2.5.14"
 lazy val collectionCompatVersion = "0.1.1"
 
 lazy val baseSettings = Seq(
@@ -100,8 +99,7 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
       "org.scala-lang.modules" %% "scala-parser-combinators"    % "1.1.1" % Compile,
       "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3" % Compile,
-      "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test,
-      "com.typesafe.akka" %% "akka-actor"      % akkaVersion              % Test
+      "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test
     )
   }
 )).dependsOn(microCommon, scalatraTest % Test)
@@ -109,7 +107,6 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
 lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-jackson",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -119,7 +116,6 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
     "com.fasterxml.jackson.dataformat" %  "jackson-dataformat-xml" % jacksonVersion % Compile,
     "org.codehaus.woodstox"            %  "woodstox-core-asl"      % "4.4.1"        % Compile,
-    "com.typesafe.akka"                %% "akka-actor"             % akkaVersion    % Test,
     "ch.qos.logback"                   %  "logback-classic"        % logbackVersion % Test
   )
 )).dependsOn(micro, microJackson, scalatraTest % Test)
@@ -129,7 +125,6 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
     "joda-time"         %  "joda-time"          % "2.10"         % Compile,
     "org.joda"          %  "joda-convert"       % "2.1.1"        % Compile,
-    "com.typesafe.akka" %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -138,7 +133,6 @@ lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
     "org.scalatra.scalate"  %% "scalate-core"       % "1.9.0"        % Compile excludeAll(fullExclusionRules: _*),
-    "com.typesafe.akka"     %% "akka-actor"         % akkaVersion    % Test,
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)

@@ -1,17 +1,15 @@
 package scalatra_compatible
 
-import _root_.akka.actor.ActorSystem
 import org.scalatra.test.specs2.MutableScalatraSpec
 import skinny.micro.SkinnyMicroServlet
 
 import scala.concurrent.Future
 
 class FutureSupportAfterFilterServlet extends SkinnyMicroServlet {
-  val system = ActorSystem()
   var actionTime: Long = _
   var afterTime: Long = _
   var afterCount: Long = _
-  protected override implicit val executionContext = system.dispatcher
+  protected override implicit val executionContext = scala.concurrent.ExecutionContext.global
 
   get("/async") {
     Thread.sleep(2000)
@@ -53,7 +51,6 @@ class FutureSupportAfterFilterServlet extends SkinnyMicroServlet {
 
   override def destroy(): Unit = {
     super.destroy()
-    system.terminate()
   }
 }
 

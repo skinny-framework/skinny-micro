@@ -6,9 +6,6 @@ import scala.language.postfixOps
 
 import java.nio.charset.Charset
 
-import _root_.akka.actor.{ Actor, ActorRef, ActorSystem, Props }
-import _root_.akka.pattern.ask
-import _root_.akka.util.Timeout
 import org.eclipse.jetty.servlet.ServletHolder
 import org.scalatest.BeforeAndAfterAll
 import org.scalatra.test.scalatest.ScalatraFunSuite
@@ -18,7 +15,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.xml.Text
 
-class ContentTypeTestServlet(system: ActorSystem) extends SkinnyMicroServlet {
+class ContentTypeTestServlet extends SkinnyMicroServlet {
   get("/json") {
     contentType = "application/json;charset=utf-8"
     """{msg: "test"}"""
@@ -50,37 +47,6 @@ class ContentTypeTestServlet(system: ActorSystem) extends SkinnyMicroServlet {
     Text("test")
   }
 
-  implicit val timeout: Timeout = 5 seconds
-
-  val conductor = system.actorOf(Props(new Actor {
-
-    var firstSender: ActorRef = _
-
-    def receive = {
-      case 1 =>
-        firstSender = sender
-        context.become(secondReceive)
-    }
-
-    def secondReceive: Receive = {
-      case 2 => firstSender ! 1
-    }
-  }))
-
-  get("/concurrent/1") {
-    contentType = "1"
-    // Wait for second request to complete
-    conductor ? 1
-
-    200
-  }
-
-  get("/concurrent/2") {
-    contentType = "2"
-    // Let first request complete
-    conductor ! 2
-  }
-
   get("/default-charset") {
     contentType = "text/xml"
   }
@@ -91,12 +57,8 @@ class ContentTypeTestServlet(system: ActorSystem) extends SkinnyMicroServlet {
 }
 
 class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
-  val system = ActorSystem()
-  implicit val timeout: Timeout = 5 seconds
 
-  override def afterAll = system.terminate()
-
-  val servletHolder = new ServletHolder(new ContentTypeTestServlet(system))
+  val servletHolder = new ServletHolder(new ContentTypeTestServlet())
   servletHolder.setInitOrder(1) // force load on startup
   servletContextHandler.addServlet(servletHolder, "/*")
 
@@ -138,22 +100,6 @@ class ContentTypeTest extends ScalatraFunSuite with BeforeAndAfterAll {
   test("implicit content type does not overridecharset") {
     get("/implicit/string/iso-8859-1") {
       response.charset should equal(Some("iso-8859-1"))
-    }
-  }
-
-  test("contentType is threadsafe") {
-    class RequestActor extends Actor {
-      def receive = {
-        case i: Int =>
-          val res = get("/concurrent/" + i) { response }
-          sender ! (i, res.mediaType)
-      }
-    }
-
-    val futures = for (i <- 1 to 2) yield { system.actorOf(Props(new RequestActor)) ? i }
-    for (future <- futures) {
-      val (i: Int, mediaType: Option[String]) = Await.result(future.mapTo[(Int, Option[String])], 5 seconds)
-      mediaType should be(Some(i.toString))
     }
   }
 
