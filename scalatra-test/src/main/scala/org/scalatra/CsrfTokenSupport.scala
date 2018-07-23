@@ -8,7 +8,7 @@ object GenerateId {
     generateCsrfToken()
   }
 
-  private[this] def hexEncode(bytes: Array[Byte]) = ((new StringBuilder(bytes.length * 2) /: bytes) { (sb, b) =>
+  private[this] def hexEncode(bytes: Array[Byte]) = (bytes.foldLeft(new StringBuilder(bytes.length * 2)) { (sb, b) =>
     if ((b.toInt & 0xff) < 0x10) sb.append("0")
     sb.append(Integer.toString(b.toInt & 0xff, 16))
   }).toString
