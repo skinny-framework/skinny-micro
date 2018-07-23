@@ -1,6 +1,6 @@
 package org.scalatra
 
-import collection.generic.CanBuildFrom
+import collection.compat._
 import annotation.implicitNotFound
 
 /*
@@ -59,8 +59,8 @@ trait DefaultValueImplicits {
 
   implicit def BigDecimalDefaultValue: DefaultValue[BigDecimal] = default(BigDecimal(0))
 
-  implicit def TraversableDefaultValue[CC <: Traversable[_]](implicit cbf: CanBuildFrom[Nothing, Nothing, CC]): DefaultValue[CC] =
-    default(cbf.apply.result)
+  implicit def TraversableDefaultValue[CC <: Traversable[_]](implicit cbf: Factory[Nothing, CC]): DefaultValue[CC] =
+    default(cbf.newBuilder.result)
 
   // Not implicit to ensure implicitly[DefaultValue[NodeSeq]].default === NodeSeqDefaultValue.default
   def NodeDefaultValue: DefaultValue[Node] = new DefaultValue[Node] {
