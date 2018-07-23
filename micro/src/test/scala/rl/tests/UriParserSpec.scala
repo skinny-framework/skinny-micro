@@ -1,8 +1,6 @@
 package rl
 package tests
 
-import collection.GenSeq
-
 import org.specs2.Specification
 import skinny.micro.rl._
 import Uri._
