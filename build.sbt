@@ -98,15 +98,11 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
   name := "skinny-micro",
   libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
+      "org.scala-lang.modules" %% "scala-parser-combinators"    % "1.1.1" % Compile,
       "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3" % Compile,
       "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test,
       "com.typesafe.akka" %% "akka-actor"      % akkaVersion              % Test
-    ) ++ (scalaVersion.value match {
-      case v if v.startsWith("2.11.")
-             || v.startsWith("2.12.") =>
-        Seq("org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1" % Compile)
-      case _ => Nil
-    })
+    )
   }
 )).dependsOn(microCommon, scalatraTest % Test)
 
