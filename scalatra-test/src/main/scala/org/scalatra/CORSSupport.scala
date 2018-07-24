@@ -98,7 +98,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
     // 5.2.9
     response.headers(AccessControlAllowMethodsHeader) = corsConfig.allowedMethods mkString ","
     // 5.2.10
-    val rh = corsConfig.allowedHeaders ++ request.getHeaders(AccessControlRequestHeadersHeader).asScala.flatMap(_ split (","))
+    val rh = corsConfig.allowedHeaders ++ request.getHeaders(AccessControlRequestHeadersHeader).asScala.toSeq.flatMap(_ split (","))
     response.headers(AccessControlAllowHeadersHeader) = rh mkString ","
     response.end()
 

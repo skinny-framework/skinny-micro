@@ -115,8 +115,10 @@ trait FileUploadSupport
             val item = FileItem(part)
 
             if (!(item.isFormField)) {
-              BodyParams(params.fileParams + ((
-                item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]()))), params.formParams)
+              val fileParams = new FileMultiParams(
+                params.fileParams + ((
+                  item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]()))))
+              BodyParams(fileParams, params.formParams)
             } else {
               BodyParams(params.fileParams, params.formParams)
             }

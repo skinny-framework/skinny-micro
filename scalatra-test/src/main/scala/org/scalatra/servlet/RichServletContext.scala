@@ -1,19 +1,19 @@
-package org.scalatra
-package servlet
+package org.scalatra.servlet
 
 import java.net.{ MalformedURLException, URL }
-import java.util.EnumSet
-import javax.servlet.{ ServletConfig, DispatcherType, Filter, ServletContext }
-import javax.servlet.http.{ HttpServletResponse, HttpServlet, HttpServletRequest }
-import scala.collection.JavaConverters._
-import scala.collection.mutable
+
+import javax.servlet.{ DispatcherType, Filter, ServletContext }
+import javax.servlet.http.{ HttpServlet, HttpServletRequest }
 import java.{ util => jutil }
-import org.scalatra.util
+
+import org.scalatra.Handler
+import org.scalatra.EnvironmentKey
 
 /**
  * Extension methods to the standard ServletContext.
  */
 case class RichServletContext(sc: ServletContext) extends AttributesMap {
+
   protected def attributes = sc
 
   /**
@@ -178,34 +178,9 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     sys.props.get(EnvironmentKey) orElse initParameters.get(EnvironmentKey) getOrElse ("DEVELOPMENT")
   }
 
-  object initParameters extends mutable.Map[String, String] {
-    def get(key: String): Option[String] = Option(sc.getInitParameter(key))
-
-    def iterator: Iterator[(String, String)] = {
-      val theInitParams = sc.getInitParameterNames
-
-      new Iterator[(String, String)] {
-
-        def hasNext: Boolean = theInitParams.hasMoreElements
-
-        def next(): (String, String) = {
-          val nm = theInitParams.nextElement()
-          (nm, sc.getInitParameter(nm))
-        }
-      }
-    }
-
-    def +=(kv: (String, String)): this.type = {
-      sc.setInitParameter(kv._1, kv._2)
-      this
-    }
-
-    def -=(key: String): this.type = {
-      sc.setInitParameter(key, null)
-      this
-    }
-  }
+  def initParameters = new InitParameters(sc)
 
   def contextPath = sc.getContextPath
+
 }
 

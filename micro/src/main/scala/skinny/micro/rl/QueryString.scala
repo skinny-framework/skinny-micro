@@ -36,7 +36,9 @@ trait QueryString extends UriNode {
   def normalize: QueryString
 
   def apply() = rawValue.urlEncode
+
 }
+
 case object EmptyQueryString extends QueryString {
 
   def empty = ""
@@ -72,6 +74,7 @@ case class StringSeqQueryString(rawValue: String) extends QueryString {
 }
 
 object MapQueryString {
+
   def parseString(rw: String) = {
     // this is probably an accident waiting to happen when people do actually mix stuff
     val semiColon = if (rw.indexOf(';') > -1) {
@@ -98,7 +101,9 @@ object MapQueryString {
   }
 
   def apply(rawValue: String): MapQueryString = new MapQueryString(parseString(rawValue).toSeq, rawValue)
+
 }
+
 case class MapQueryString(
   initialValues: Seq[(String, Seq[String])],
   rawValue: String) extends QueryString {
@@ -107,16 +112,22 @@ case class MapQueryString(
     "?" + mkString()
   }
 
-  val empty = Map.empty[String, List[String]]
+  val empty = SortedMap.empty[String, List[String]]
 
-  def value: Value = Map(initialValues: _*)
+  def value: Value = SortedMap(initialValues: _*)
 
-  def normalize = copy(SortedMap(initialValues filter (k => !QueryString.DEFAULT_EXCLUSIONS.contains(k._1)): _*) toSeq)
+  def normalize = {
+    val values = SortedMap(initialValues.filter(k => !QueryString.DEFAULT_EXCLUSIONS.contains(k._1)): _*).toSeq
+    copy(initialValues = values)
+  }
 
-  private def mkString(values: Value = value) = values map {
-    case (k, v) => v.map(s => "%s=%s".format(k.urlEncode, s.urlEncode)).mkString("&")
-  } mkString "&"
+  private def mkString(values: Value = value) = {
+    values.map {
+      case (k: String, vs: Seq[String]) =>
+        vs.map(s => "%s=%s".format(k.urlEncode, s.urlEncode)).mkString("&")
+    }.mkString("&")
+  }
 
-  type Value = Map[String, Seq[String]]
+  type Value = SortedMap[String, Seq[String]]
 
 }

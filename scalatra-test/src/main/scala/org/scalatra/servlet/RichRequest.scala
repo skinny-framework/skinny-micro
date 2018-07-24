@@ -2,7 +2,7 @@ package org.scalatra
 package servlet
 
 import scala.collection.{ Map => CMap }
-import scala.collection.immutable.DefaultMap
+import scala.collection.DefaultMap
 import scala.collection.JavaConverters._
 import scala.io.Source
 import java.net.URI
@@ -250,4 +250,3 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
   def locales = r.getLocales
 
 }
-

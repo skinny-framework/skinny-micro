@@ -43,7 +43,10 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Anonymous</message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?>
+          |<response>
+          |  <message>Hello, Anonymous</message>
+          |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
     }
   }
 
@@ -52,7 +55,10 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, Martin</message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?>
+          |<response>
+          |  <message>Hello, Martin</message>
+          |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
     }
   }
 
@@ -61,7 +67,10 @@ class XMLOperationSpec extends ScalatraFlatSpec {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
       body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><message>Hello, &lt;Map1>foo&lt;/Map1></message></response>""")
+        """<?xml version="1.0" encoding="UTF-8"?>
+          |<response>
+          |  <message>Hello, &lt;Map1>foo&lt;/Map1></message>
+          |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
     }
   }
 
@@ -69,8 +78,40 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     get("/persons") {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
-      body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><item><firstName>Alice</firstName><lastName>Cooper</lastName></item><item><firstName>Bob</firstName><lastName>Marley</lastName></item><item><firstName>Chris</firstName><lastName/></item></response>""")
+      body should (
+        equal(
+          """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<item>
+            |  <firstName>Alice</firstName>
+            |  <lastName>Cooper</lastName>
+            |</item>
+            |<item>
+            |  <firstName>Bob</firstName>
+            |  <lastName>Marley</lastName>
+            |</item>
+            |<item>
+            |  <firstName>Chris</firstName>
+            |  <lastName/>
+            |</item>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
+          or
+          equal(
+            """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<item>
+            |  <lastName>Cooper</lastName>
+            |  <firstName>Alice</firstName>
+            |</item>
+            |<item>
+            |  <lastName>Marley</lastName>
+            |  <firstName>Bob</firstName>
+            |</item>
+            |<item>
+            |  <lastName/>
+            |  <firstName>Chris</firstName>
+            |</item>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", "")))
     }
   }
 
@@ -78,8 +119,40 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     get("/group") {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
-      body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><persons><firstName>Alice</firstName><lastName>Cooper</lastName></persons><persons><firstName>Bob</firstName><lastName>Marley</lastName></persons><persons><firstName>Chris</firstName><lastName/></persons></response>""")
+      body should (
+        equal(
+          """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<persons>
+            |  <firstName>Alice</firstName>
+            |  <lastName>Cooper</lastName>
+            |</persons>
+            |<persons>
+            |  <firstName>Bob</firstName>
+            |  <lastName>Marley</lastName>
+            |</persons>
+            |<persons>
+            |  <firstName>Chris</firstName>
+            |  <lastName/>
+            |</persons>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
+          or
+          equal(
+            """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<persons>
+            |  <lastName>Cooper</lastName>
+            |  <firstName>Alice</firstName>
+            |</persons>
+            |<persons>
+            |  <lastName>Marley</lastName>
+            |  <firstName>Bob</firstName>
+            |</persons>
+            |<persons>
+            |  <lastName/>
+            |  <firstName>Chris</firstName>
+            |</persons>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", "")))
     }
   }
 
@@ -87,8 +160,40 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     get("/snake-cased-persons") {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
-      body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response><item><first_name>Alice</first_name><last_name>Cooper</last_name></item><item><first_name>Bob</first_name><last_name>Marley</last_name></item><item><first_name>Chris</first_name><last_name/></item></response>""")
+      body should (
+        equal(
+          """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<item>
+            |  <first_name>Alice</first_name>
+            |  <last_name>Cooper</last_name>
+            |</item>
+            |<item>
+            |  <first_name>Bob</first_name>
+            |  <last_name>Marley</last_name>
+            |</item>
+            |<item>
+            |  <first_name>Chris</first_name>
+            |  <last_name/>
+            |</item>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", ""))
+          or
+          equal(
+            """<?xml version="1.0" encoding="UTF-8"?>
+            |<response>
+            |<item>
+            |  <last_name>Cooper</last_name>
+            |  <first_name>Alice</first_name>
+            |</item>
+            |<item>
+            |  <last_name>Marley</last_name>
+            |  <first_name>Bob</first_name>
+            |</item>
+            |<item>
+            |  <last_name/>
+            |  <first_name>Chris</first_name>
+            |</item>
+            |</response>""".stripMargin.replace("\n", "").replaceAll("\\s{2}", "")))
     }
   }
 
@@ -96,22 +201,40 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     get("/persons-prettify") {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
-      body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response>
-          |  <item>
-          |    <firstName>Alice</firstName>
-          |    <lastName>Cooper</lastName>
-          |  </item>
-          |  <item>
-          |    <firstName>Bob</firstName>
-          |    <lastName>Marley</lastName>
-          |  </item>
-          |  <item>
-          |    <firstName>Chris</firstName>
-          |    <lastName/>
-          |  </item>
-          |
-          |</response>""".stripMargin)
+      body should (
+        equal(
+          """<?xml version="1.0" encoding="UTF-8"?><response>
+            |  <item>
+            |    <firstName>Alice</firstName>
+            |    <lastName>Cooper</lastName>
+            |  </item>
+            |  <item>
+            |    <firstName>Bob</firstName>
+            |    <lastName>Marley</lastName>
+            |  </item>
+            |  <item>
+            |    <firstName>Chris</firstName>
+            |    <lastName/>
+            |  </item>
+            |
+            |</response>""".stripMargin)
+          or
+          equal(
+            """<?xml version="1.0" encoding="UTF-8"?><response>
+              |  <item>
+              |    <lastName>Cooper</lastName>
+              |    <firstName>Alice</firstName>
+              |  </item>
+              |  <item>
+              |    <lastName>Marley</lastName>
+              |    <firstName>Bob</firstName>
+              |  </item>
+              |  <item>
+              |    <lastName/>
+              |    <firstName>Chris</firstName>
+              |  </item>
+              |
+              |</response>""".stripMargin))
     }
   }
 
@@ -119,22 +242,40 @@ class XMLOperationSpec extends ScalatraFlatSpec {
     get("/snake-cased-persons-prettify") {
       status should equal(200)
       header("Content-Type") should equal("application/xml;charset=utf-8")
-      body should equal(
-        """<?xml version="1.0" encoding="UTF-8"?><response>
-          |  <item>
-          |    <first_name>Alice</first_name>
-          |    <last_name>Cooper</last_name>
-          |  </item>
-          |  <item>
-          |    <first_name>Bob</first_name>
-          |    <last_name>Marley</last_name>
-          |  </item>
-          |  <item>
-          |    <first_name>Chris</first_name>
-          |    <last_name/>
-          |  </item>
-          |
-          |</response>""".stripMargin)
+      body should (
+        equal(
+          """<?xml version="1.0" encoding="UTF-8"?><response>
+            |  <item>
+            |    <first_name>Alice</first_name>
+            |    <last_name>Cooper</last_name>
+            |  </item>
+            |  <item>
+            |    <first_name>Bob</first_name>
+            |    <last_name>Marley</last_name>
+            |  </item>
+            |  <item>
+            |    <first_name>Chris</first_name>
+            |    <last_name/>
+            |  </item>
+            |
+            |</response>""".stripMargin)
+          or
+          equal(
+            """<?xml version="1.0" encoding="UTF-8"?><response>
+              |  <item>
+              |    <last_name>Cooper</last_name>
+              |    <first_name>Alice</first_name>
+              |  </item>
+              |  <item>
+              |    <last_name>Marley</last_name>
+              |    <first_name>Bob</first_name>
+              |  </item>
+              |  <item>
+              |    <last_name/>
+              |    <first_name>Chris</first_name>
+              |  </item>
+              |
+              |</response>""".stripMargin))
     }
   }
 

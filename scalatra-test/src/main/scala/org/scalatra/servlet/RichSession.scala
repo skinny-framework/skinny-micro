@@ -1,5 +1,4 @@
-package org.scalatra
-package servlet
+package org.scalatra.servlet
 
 import javax.servlet.http.HttpSession
 

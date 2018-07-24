@@ -29,7 +29,7 @@ trait JSONParamsAutoBinderSupport
   override def params(implicit ctx: SkinnyContext): Params = {
     if (request(ctx).get(JSONSupport.ParsedBodyKey).isDefined) {
       try {
-        val jsonParams: Map[String, Seq[String]] = parsedBody(ctx).extract[Map[String, String]].mapValues(v => Seq(v))
+        val jsonParams: Map[String, Seq[String]] = parsedBody(ctx).extract[Map[String, String]].mapValues(v => Seq(v)).toMap
         val mergedParams: Map[String, Seq[String]] = getMergedMultiParams(multiParams(ctx), jsonParams)
         new SkinnyMicroParams(mergedParams)
       } catch {
@@ -98,7 +98,7 @@ trait JSONParamsAutoBinderSupport
   protected def getMergedMultiParams(
     params1: Map[String, Seq[String]],
     params2: Map[String, Seq[String]]): Map[String, Seq[String]] = {
-    (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2))
+    (params1.toSeq ++ params2.toSeq).groupBy(_._1).mapValues(_.flatMap(_._2)).toMap
   }
 
   protected def readJsonFromStreamWithCharset(stream: InputStream, charset: String): JValue = {

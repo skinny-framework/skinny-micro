@@ -3,15 +3,14 @@ package skinny.micro.request
 import java.io.InputStream
 import java.net.URI
 import java.util.Locale
-import javax.servlet.http.HttpServletRequest
 
+import javax.servlet.http.HttpServletRequest
 import skinny.micro._
 import skinny.micro.constant._
 import skinny.micro.data.{ AttributesMap, MultiMap, MultiMapHeadView }
 import skinny.micro.implicits.RicherStringImplicits
 
 import scala.collection.JavaConverters._
-import scala.collection.immutable.DefaultMap
 import scala.collection.{ Map => CMap }
 import scala.io.Source
 
@@ -92,7 +91,7 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
       val queryStringParams: Map[String, Seq[String]] = rl.MapQueryString.parseString(r.getQueryString)
       queryStringParams ++ bodyParams
     } else {
-      val paramMap = r.getParameterMap.asScala.toMap.transform { (k, v) => v: Seq[String] }
+      val paramMap = r.getParameterMap.asScala.toMap.transform { (_, v) => v.toIndexedSeq }
       paramMap ++ bodyParams
     }
   }
@@ -107,19 +106,7 @@ case class RichRequest(r: HttpServletRequest) extends AttributesMap {
    * A map of headers.  Multiple header values are separated by a ','
    * character.  The keys of this map are case-insensitive.
    */
-  object headers extends DefaultMap[String, String] {
-
-    def get(name: String): Option[String] = Option(r.getHeader(name))
-
-    private[skinny] def getMulti(key: String): Seq[String] = {
-      get(key).map(_.split(",").toSeq.map(_.trim)).getOrElse(Seq.empty)
-    }
-
-    def iterator: Iterator[(String, String)] = {
-      r.getHeaderNames.asScala map { name => (name, r.getHeader(name)) }
-    }
-
-  }
+  val headers = new RequestHeaders(r)
 
   def header(name: String): Option[String] = Option(r.getHeader(name))
 

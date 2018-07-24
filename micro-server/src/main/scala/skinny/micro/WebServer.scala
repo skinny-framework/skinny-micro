@@ -16,7 +16,7 @@ trait WebServer extends JettyServer {
   }
 
   def mount(handler: Handler): WebServer = {
-    registeredWebAppHandlers.append(handler)
+    registeredWebAppHandlers += handler
     this
   }
 

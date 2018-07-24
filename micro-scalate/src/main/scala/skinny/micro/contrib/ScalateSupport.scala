@@ -1,18 +1,18 @@
 package skinny.micro.contrib
 
 import java.io.{ PrintWriter, StringWriter }
+
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import javax.servlet.{ FilterConfig, ServletConfig }
-
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.support.TemplateFinder
 import org.fusesource.scalate.{ Binding, TemplateEngine }
 import skinny.micro._
-import skinny.micro.context.SkinnyContext
+import skinny.micro.context.{ SkinnyContext, ThinServletBaseConfig }
 import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
-import scala.collection.concurrent.{ Map => CMap, TrieMap }
+import scala.collection.concurrent.{ TrieMap, Map => CMap }
 import scala.collection.mutable
 import scala.language.{ implicitConversions, reflectiveCalls }
 
@@ -31,7 +31,7 @@ trait ScalateSupport extends SkinnyMicroBase {
    */
   protected[this] var templateEngine: TemplateEngine = _
 
-  abstract override def initialize(config: ConfigT): Unit = {
+  abstract override def initialize(config: ThinServletBaseConfig): Unit = {
     super.initialize(config)
     templateEngine = createTemplateEngine(config)
   }
@@ -52,7 +52,7 @@ trait ScalateSupport extends SkinnyMicroBase {
    * override this unless you have created a ServletBase extension outside
    * an HttpServlet or Filter.
    */
-  protected def createTemplateEngine(config: ConfigT): TemplateEngine = {
+  protected def createTemplateEngine(config: ThinServletBaseConfig): TemplateEngine = {
     val contextPath = config.getServletContext.getContextPath match {
       case "" => "ROOT"
       case path => path.substring(1)

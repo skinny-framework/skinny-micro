@@ -2,8 +2,7 @@ package skinny.micro
 
 import javax.servlet.http.{ HttpServlet, HttpServletRequest, HttpServletResponse }
 import javax.servlet._
-
-import skinny.micro.context.SkinnyContext
+import skinny.micro.context.{ SkinnyContext, ThinServletBaseConfig }
 import skinny.micro.implicits.{ RicherStringImplicits, ServletApiImplicits }
 import skinny.micro.util.UriDecoder
 
@@ -92,10 +91,14 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
 
   override def init(config: ServletConfig): Unit = {
     super.init(config)
-    initialize(config) // see Initializable.initialize for why
+    initialize(new ThinServletBaseConfig {
+      override def getServletContext(): ServletContext = config.getServletContext
+      override def getInitParameter(name: String): String = config.getInitParameter(name)
+      override def getInitParameterNames(): java.util.Enumeration[String] = config.getInitParameterNames
+    }) // see Initializable.initialize for why
   }
 
-  override def initialize(config: ServletConfig): Unit = {
+  override def initialize(config: ThinServletBaseConfig): Unit = {
     super.initialize(config)
   }
 

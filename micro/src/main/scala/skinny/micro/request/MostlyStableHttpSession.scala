@@ -80,7 +80,7 @@ case class MostlyStableHttpSession(request: HttpServletRequest)
   override def getValueNames: Array[String] = {
     val names: Array[String] = Option(attributes.keys).map(_.toArray).getOrElse(Array.empty)
     if (isUnderlyingAvailable) {
-      (Option(underlying.getAttributeNames).map(_.asScala ++ names).getOrElse(Seq.empty)).toArray.distinct
+      (Option(underlying.getAttributeNames).map(_.asScala ++ names).getOrElse(Iterator.empty)).toArray.distinct
     } else {
       names
     }

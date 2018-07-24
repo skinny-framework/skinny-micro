@@ -19,27 +19,7 @@ case class RichResponse(res: HttpServletResponse) {
     res.setStatus(statusLine.code, statusLine.message)
   }
 
-  object headers extends Map[String, String] {
-    def get(key: String): Option[String] =
-      res.getHeaders(key) match {
-        case xs if xs.isEmpty => None
-        case xs => Some(xs.asScala mkString ",")
-      }
-
-    def iterator: Iterator[(String, String)] =
-      for (name <- res.getHeaderNames.asScala.iterator)
-        yield (name, res.getHeaders(name).asScala mkString ", ")
-
-    def +=(kv: (String, String)): this.type = {
-      res.setHeader(kv._1, kv._2)
-      this
-    }
-
-    def -=(key: String): this.type = {
-      res.setHeader(key, "")
-      this
-    }
-  }
+  val headers = new ResponseHeaders(res)
 
   def addCookie(cookie: Cookie): Unit = {
     import cookie._
