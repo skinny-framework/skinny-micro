@@ -222,7 +222,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * Invokes each filters with `invoke`.  The results of the filters
    * are discarded.
    */
-  protected def runFilters(filters: Traversable[Route]): Unit = {
+  protected def runFilters(filters: Iterable[Route]): Unit = {
     for {
       route <- filters
       matchedRoute <- route(requestPath)
@@ -233,7 +233,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    * Lazily invokes routes with `invoke`.  The results of the routes
    * are returned as a stream.
    */
-  protected def runRoutes(routes: Traversable[Route]) = {
+  protected def runRoutes(routes: Iterable[Route]) = {
     for {
       route <- routes.toStream // toStream makes it lazy so we stop after match
       matchedRoute <- route.apply(requestPath)

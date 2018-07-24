@@ -59,7 +59,7 @@ trait DefaultValueImplicits {
 
   implicit def BigDecimalDefaultValue: DefaultValue[BigDecimal] = default(BigDecimal(0))
 
-  implicit def TraversableDefaultValue[CC <: Traversable[_]](implicit cbf: Factory[Nothing, CC]): DefaultValue[CC] =
+  implicit def IterableDefaultValue[CC <: Iterable[_]](implicit cbf: Factory[Nothing, CC]): DefaultValue[CC] =
     default(cbf.newBuilder.result)
 
   // Not implicit to ensure implicitly[DefaultValue[NodeSeq]].default === NodeSeqDefaultValue.default
