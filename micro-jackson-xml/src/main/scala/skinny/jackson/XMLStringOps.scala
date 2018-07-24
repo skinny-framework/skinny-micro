@@ -6,13 +6,15 @@ import com.fasterxml.jackson.dataformat.xml.util.DefaultXmlPrettyPrinter
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import skinny.jackson.JSONStringOps._
+import skinny.logging.LoggerProvider
 
+import scala.collection.immutable.HashMap
 import scala.util.{ Failure, Success, Try }
 
 /**
  * Easy-to-use XML String Operation.
  */
-trait XMLStringOps {
+trait XMLStringOps extends LoggerProvider {
 
   /**
    * Default key policy.
@@ -60,6 +62,9 @@ trait XMLStringOps {
       fromJSONString[Map[String, Any]](toJSONString(value, underscoreKeys, prettify)) match {
         case Success(mapValue) => Some(mapValue)
         case Failure(e) =>
+          if (logger.isDebugEnabled) {
+            logger.debug(e.getMessage, e)
+          }
           // try to extract top level array value
           fromJSONString[Array[Map[String, Any]]](toJSONString(value, underscoreKeys, prettify)).toOption
       }
@@ -76,6 +81,8 @@ trait XMLStringOps {
       xml
         .replaceAll("<Map\\d+>", "").replaceAll("</Map\\d+>", "")
         .replaceAll("<Maps>", "").replaceAll("</Maps>", "")
+        // since Scala 2.13.0-M4
+        .replaceAll("<ChampHashMap>", "").replaceAll("</ChampHashMap>", "")
     }
     s"""<?xml version="1.0" encoding="${charset}"?><${xmlRootName}>${entityXml}</${xmlRootName}>"""
   }

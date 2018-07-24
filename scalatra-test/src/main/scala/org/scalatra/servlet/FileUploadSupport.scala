@@ -1,13 +1,12 @@
 package org.scalatra.servlet
 
 import scala.collection.JavaConverters._
-import java.util.{ HashMap => JHashMap, Map => JMap }
+import java.util.{ HashMap => JHashMap }
 import org.scalatra.ScalatraBase
 import org.scalatra.util._
 import java.io.{ File, FileOutputStream }
 import javax.servlet.http._
 import org.scalatra.util.RicherString._
-import scala.io.Codec
 import org.scalatra.util.io
 
 /**
@@ -113,8 +112,10 @@ trait FileUploadSupport extends ServletBase with HasMultipartConfig {
             val item = FileItem(part)
 
             if (!(item.isFormField)) {
-              BodyParams(params.fileParams + ((
-                item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]()))), params.formParams)
+              val fileParams = new FileMultiParams(
+                params.fileParams + ((
+                  item.getFieldName, item +: params.fileParams.getOrElse(item.getFieldName, List[FileItem]()))))
+              BodyParams(fileParams, params.formParams)
             } else {
               BodyParams(params.fileParams, params.formParams)
             }
@@ -190,31 +191,6 @@ object FileUploadSupport {
 
 }
 
-class FileMultiParams(wrapped: Map[String, Seq[FileItem]] = Map.empty) extends Map[String, Seq[FileItem]] {
-
-  def get(key: String): Option[Seq[FileItem]] = {
-    (wrapped.get(key) orElse wrapped.get(key + "[]"))
-  }
-
-  def get(key: Symbol): Option[Seq[FileItem]] = get(key.name)
-
-  def +[B1 >: Seq[FileItem]](kv: (String, B1)) =
-    new FileMultiParams(wrapped + kv.asInstanceOf[(String, Seq[FileItem])])
-
-  def -(key: String) = new FileMultiParams(wrapped - key)
-
-  def iterator = wrapped.iterator
-
-  override def default(a: String): Seq[FileItem] = wrapped.default(a)
-}
-
-object FileMultiParams {
-  def apply() = new FileMultiParams
-
-  def apply[SeqType <: Seq[FileItem]](wrapped: Map[String, Seq[FileItem]]) =
-    new FileMultiParams(wrapped)
-}
-
 case class FileItem(part: Part) {
   val size = part.getSize
   val fieldName = part.getName
@@ -264,4 +240,3 @@ object Util {
     case _ => defaultValue
   }
 }
-

@@ -1,9 +1,8 @@
 package skinny.micro
 
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
-import javax.servlet.{ FilterConfig, ServletResponse, ServletRequest, FilterChain }
-
-import skinny.micro.context.SkinnyContext
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
+import javax.servlet._
+import skinny.micro.context.{ SkinnyContext, ThinServletBaseConfig }
 import skinny.micro.util.UriDecoder
 
 import scala.util.DynamicVariable
@@ -78,7 +77,11 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
 
   // see Initializable.initialize for why
   def init(filterConfig: FilterConfig): Unit = {
-    initialize(filterConfig)
+    initialize(new ThinServletBaseConfig {
+      override def getServletContext(): ServletContext = filterConfig.getServletContext
+      override def getInitParameter(name: String): String = filterConfig.getInitParameter(name)
+      override def getInitParameterNames(): java.util.Enumeration[String] = filterConfig.getInitParameterNames
+    })
   }
 
   def destroy(): Unit = {

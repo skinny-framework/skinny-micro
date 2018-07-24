@@ -140,8 +140,8 @@ trait SkinnyMicroBase
     /**
      * Invokes each filters with `invoke`. The results of the filters are discarded.
      */
-    def runFilters(filters: Traversable[Route]): Unit = {
-      val asyncFilters: Traversable[Future[Any]] = (for {
+    def runFilters(filters: Iterable[Route]): Unit = {
+      val asyncFilters: Iterable[Future[Any]] = (for {
         route: Route <- filters
         matchedRoute: MatchedRoute <- route(requestPath(context))
       } yield {
@@ -269,7 +269,7 @@ trait SkinnyMicroBase
     }
   }
 
-  private[this] def findMatchedRoutesAsStream(routes: Traversable[Route]): Stream[MatchedRoute] = {
+  private[this] def findMatchedRoutesAsStream(routes: Iterable[Route]): Stream[MatchedRoute] = {
     def saveMatchedRoute(matchedRoute: MatchedRoute): MatchedRoute = {
       request(context)("skinny.micro.MatchedRoute") = matchedRoute
       setMultiparams(Some(matchedRoute), multiParams(context))(context)
@@ -344,7 +344,7 @@ trait SkinnyMicroBase
     implicit
     ctx: SkinnyContext): Unit = {
     val routeParams = matchedRoute.map(_.multiParams).getOrElse(Map.empty).map {
-      case (key, values) =>
+      case (key, values: Seq[String]) =>
         key -> values.map(s => if (s.nonBlank) UriDecoder.secondStep(s) else s)
     }
     ctx.request(MultiParamsKey) = originalParams ++ routeParams

@@ -2,14 +2,13 @@ package skinny.micro.context
 
 import java.net.{ MalformedURLException, URL }
 import java.{ util => jutil }
+
 import javax.servlet.http.{ HttpServlet, HttpServletRequest }
-import javax.servlet.{ ServletRegistration, DispatcherType, Filter, ServletContext }
+import javax.servlet.{ DispatcherType, Filter, ServletContext, ServletRegistration }
 import skinny.micro._
 import skinny.micro.async.AsyncSupported
 import skinny.micro.data.AttributesMap
 import skinny.micro.multipart.HasMultipartConfig
-
-import scala.collection.mutable
 
 /**
  * Extension methods to the standard ServletContext.
@@ -197,31 +196,11 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     sys.props.get(EnvironmentKey) orElse initParameters.get(EnvironmentKey) getOrElse ("DEVELOPMENT")
   }
 
-  object initParameters extends mutable.Map[String, String] {
-
-    def get(key: String): Option[String] = Option(sc.getInitParameter(key))
-
-    def iterator: Iterator[(String, String)] = {
-      val theInitParams = sc.getInitParameterNames
-      new Iterator[(String, String)] {
-        override def hasNext: Boolean = theInitParams.hasMoreElements
-        override def next(): (String, String) = {
-          val nm = theInitParams.nextElement()
-          (nm, sc.getInitParameter(nm))
-        }
-      }
-    }
-
-    def +=(kv: (String, String)): this.type = {
-      sc.setInitParameter(kv._1, kv._2)
-      this
-    }
-
-    def -=(key: String): this.type = {
-      sc.setInitParameter(key, null)
-      this
-    }
-  }
+  lazy val initParameters = new InitParameters(new ThinServletBaseConfig {
+    override def getServletContext(): ServletContext = attributes
+    override def getInitParameter(name: String): String = attributes.getInitParameter(name)
+    override def getInitParameterNames(): java.util.Enumeration[String] = attributes.getInitParameterNames
+  })
 
   def contextPath: String = sc.getContextPath
 

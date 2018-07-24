@@ -4,8 +4,6 @@ package servlet
 import javax.servlet.ServletContext
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import java.{ util => ju }
-import scala.collection.immutable.DefaultMap
-import scala.collection.JavaConverters._
 
 import scala.language.implicitConversions
 import scala.language.reflectiveCalls
@@ -18,6 +16,7 @@ trait ServletBase
   extends ScalatraBase
   with SessionSupport
   with Initializable {
+
   type ConfigT <: {
     def getServletContext(): ServletContext
     def getInitParameter(name: String): String
@@ -25,15 +24,10 @@ trait ServletBase
   }
 
   protected implicit def configWrapper(config: ConfigT) = new Config {
+
     def context = config.getServletContext
 
-    object initParameters extends DefaultMap[String, String] {
-      def get(key: String): Option[String] = Option(config.getInitParameter(key))
-
-      def iterator: Iterator[(String, String)] =
-        for (name <- config.getInitParameterNames.asScala.toIterator)
-          yield (name, config.getInitParameter(name))
-    }
+    def initParameters = new InitParameters(context).toMap
   }
 
   override def handle(request: HttpServletRequest, response: HttpServletResponse): Unit = {
@@ -44,4 +38,5 @@ trait ServletBase
       request.setCharacterEncoding(defaultCharacterEncoding)
     super.handle(request, response)
   }
+
 }

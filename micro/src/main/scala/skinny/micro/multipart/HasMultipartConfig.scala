@@ -1,9 +1,9 @@
 package skinny.micro.multipart
 
 import javax.servlet.ServletContext
-
 import org.slf4j.LoggerFactory
 import skinny.micro.Initializable
+import skinny.micro.context.ThinServletBaseConfig
 
 /**
  * Presents that multipart config has been activated.
@@ -39,7 +39,7 @@ trait HasMultipartConfig extends Initializable { self: { def servletContext: Ser
 
   private[this] var providedConfig: Option[MultipartConfig] = None
 
-  abstract override def initialize(config: ConfigT): Unit = {
+  abstract override def initialize(config: ThinServletBaseConfig): Unit = {
     super.initialize(config)
     providedConfig.foreach(_.apply(config.context))
   }

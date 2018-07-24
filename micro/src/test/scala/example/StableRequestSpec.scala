@@ -181,7 +181,10 @@ class StableRequestSpec extends ScalatraFlatSpec {
     (1 to 20).foreach { _ =>
       get("/app/multiCookie", Map.empty, Map("Cookie" -> "cookie-name=foo")) {
         status should equal(200)
-        body should equal("ArrayBuffer(foo)")
+        body should (
+          equal("ArraySeq(foo)")
+          or
+          equal("ArrayBuffer(foo)"))
       }
     }
   }

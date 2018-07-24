@@ -1,6 +1,17 @@
 #!/bin/sh
 
-sbt ++2.12.6 \
+sbt ++2.13.0-M4 \
+  clean \
+  microCommon/publishSigned \
+  micro/publishSigned \
+  microJson4s/publishSigned \
+  microJackson/publishSigned \
+  microJacksonXml/publishSigned \
+  microScalate/publishSigned \
+  microServer/publishSigned \
+  microTest/publishSigned \
+  scalatraTest/publishSigned \
+  ++2.12.6 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \

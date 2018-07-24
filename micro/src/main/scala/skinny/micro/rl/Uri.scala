@@ -1,7 +1,9 @@
 // The MIT License (MIT)　Copyright (c) 2011 Mojolly Ltd.
 package skinny.micro.rl
 
-import java.net.{ URI, URISyntaxException, IDN }
+import java.net.{ IDN, URI, URISyntaxException }
+
+import scala.util.control.NonFatal
 
 trait UriNode {
   def uriPart: String
@@ -39,40 +41,75 @@ trait Uri {
   def withPath(path: String): this.type
 
   def asciiStringWithoutTrailingSlash = {
-    scheme.uriPart + authority.map(_.uriPart).getOrElse("") + segments.uriPartWithoutTrailingSlash + query.uriPart + fragment.uriPart
+    scheme.uriPart + authority.map(_.uriPart).getOrElse("") +
+      segments.uriPartWithoutTrailingSlash +
+      query.uriPart +
+      fragment.uriPart
   }
 
   def asciiString = {
-    scheme.uriPart + authority.map(_.uriPart).getOrElse("") + segments.uriPart + query.uriPart + fragment.uriPart
+    scheme.uriPart +
+      authority.map(_.uriPart).getOrElse("") +
+      segments.uriPart +
+      query.uriPart +
+      fragment.uriPart
   }
 
-  private[this] def ensureTrailingSlash(part: String) = if (part endsWith "/") part else part + "/"
 }
 
-case class AbsoluteUri(scheme: Scheme, authority: Option[Authority], segments: UriPath, query: QueryString, fragment: UriFragment, originalUri: String = "") extends Uri {
+case class AbsoluteUri(
+  scheme: Scheme,
+  authority: Option[Authority],
+  segments: UriPath,
+  query: QueryString,
+  fragment: UriFragment,
+  originalUri: String = "") extends Uri {
   val isAbsolute: Boolean = true
   val isRelative: Boolean = false
 
   def normalize(stripCommonPrefixFromHost: Boolean = false) =
-    copy(scheme.normalize, authority.map(_.normalize(stripCommonPrefixFromHost)), segments.normalize, query.normalize, fragment.normalize)
-  def withPath(path: String): this.type =
-    copy(segments = UriPath.parsePath(path.blankOption map UrlCodingUtils.ensureUrlEncoding).normalize).asInstanceOf[this.type]
+    copy(
+      scheme.normalize,
+      authority.map(_.normalize(stripCommonPrefixFromHost)),
+      segments.normalize,
+      query.normalize,
+      fragment.normalize)
+
+  def withPath(path: String): this.type = {
+    val segments = UriPath.parsePath(path.blankOption map UrlCodingUtils.ensureUrlEncoding).normalize
+    copy(segments = segments).asInstanceOf[this.type]
+  }
+
 }
 
-case class RelativeUri(authority: Option[Authority], segments: UriPath, query: QueryString, fragment: UriFragment, originalUri: String = "") extends Uri {
+case class RelativeUri(
+  authority: Option[Authority],
+  segments: UriPath,
+  query: QueryString,
+  fragment: UriFragment,
+  originalUri: String = "") extends Uri {
   val scheme = NoScheme
 
   val isAbsolute: Boolean = false
   val isRelative: Boolean = true
 
   def normalize(stripCommonPrefixFromHost: Boolean = false) =
-    copy(authority.map(_.normalize(stripCommonPrefixFromHost)), segments.normalize, query.normalize, fragment.normalize)
+    copy(
+      authority.map(_.normalize(stripCommonPrefixFromHost)),
+      segments.normalize,
+      query.normalize,
+      fragment.normalize)
 
-  def withPath(path: String): this.type =
-    copy(segments = UriPath.parsePath(path.blankOption map UrlCodingUtils.ensureUrlEncoding).normalize).asInstanceOf[this.type]
+  def withPath(path: String): this.type = {
+    val segments = UriPath.parsePath(path.blankOption map UrlCodingUtils.ensureUrlEncoding).normalize
+    copy(segments = segments).asInstanceOf[this.type]
+  }
+
 }
 
-case class FailedUri(throwable: Throwable, originalUri: String = "") extends Uri {
+case class FailedUri(
+  throwable: Throwable,
+  originalUri: String = "") extends Uri {
 
   private def noop = {
     val u = originalUri.blankOption getOrElse "not set"
@@ -143,7 +180,7 @@ object Uri {
       case e: NullPointerException => {
         FailedUri(e, originalUri getOrElse u.toString)
       }
-      case e: Throwable => {
+      case NonFatal(e) => {
         FailedUri(e, originalUri getOrElse u.toString)
       }
     }
