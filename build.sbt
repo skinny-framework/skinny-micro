@@ -15,7 +15,7 @@ lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.9.6"
 lazy val jacksonScalaVersion = "2.9.6"
-lazy val scalaTestVersion = "3.0.5"
+lazy val scalatestV = SettingKey[String]("scalatestVersion")
 lazy val collectionCompatVersion = "0.1.1"
 
 lazy val baseSettings = Seq(
@@ -30,10 +30,23 @@ lazy val baseSettings = Seq(
     "org.scala-lang" %  "scala-reflect"  % scalaVersion.value,
     "org.scala-lang" %  "scala-compiler" % scalaVersion.value
   ),
+  scalatestV := {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, v)) if v >= 13 => "3.0.6-SNAP1"
+      case _ =>                       "3.0.5"
+    }
+  },
+  unmanagedSourceDirectories in Compile += {
+    val base = (sourceDirectory in Compile).value.getParentFile / Defaults.nameForSrc(Compile.name)
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, v)) if v >= 13 => base / s"scala-2.13+"
+      case _ =>                       base / s"scala-2.13-"
+    }
+  },
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.12.6",
-  crossScalaVersions := Seq("2.12.6", "2.11.12"),
+  scalaVersion := "2.13.0-M4",
+  crossScalaVersions := Seq("2.13.0-M4", "2.12.6", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -87,7 +100,7 @@ lazy val baseSettings = Seq(
 lazy val microCommon = (project in file("micro-common")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-common",
   libraryDependencies ++= slf4jApiDependencies ++ Seq(
-    "org.scalatest"  %% "scalatest"       % scalaTestVersion % Test,
+    "org.scalatest"  %% "scalatest"       % scalatestV.value % Test,
     "org.mockito"    %  "mockito-core"    % mockitoVersion   % Test,
     "ch.qos.logback" %  "logback-classic" % logbackVersion   % Test
   )
@@ -108,7 +121,8 @@ lazy val microJackson = (project in file("micro-jackson")).settings(baseSettings
   name := "skinny-micro-jackson",
   libraryDependencies ++= servletApiDependencies ++ jacksonDependencies ++ Seq(
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
-  )
+  ),
+  libraryDependencies += "org.scala-lang" %  "scala-reflect"  % scalaVersion.value
 )).dependsOn(micro, scalatraTest % Test)
 
 lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseSettings ++ mimaSettings ++ Seq(
@@ -140,7 +154,7 @@ lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings
 lazy val microServer = (project in file("micro-server")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-server",
   libraryDependencies ++= jettyDependencies ++ Seq(
-    "org.scalatest"        %% "scalatest"          % scalaTestVersion % Test,
+    "org.scalatest"        %% "scalatest"          % scalatestV.value % Test,
     "org.mockito"          %  "mockito-core"       % mockitoVersion   % Test,
     "ch.qos.logback"       %  "logback-classic"    % logbackVersion   % Test
   )
@@ -158,7 +172,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
-    "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
+    "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
     "org.specs2"         %% "specs2-core"      % "4.3.2"          % Compile
   )
 ))
@@ -171,7 +185,7 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
-    "org.scalatest"      %% "scalatest"        % scalaTestVersion % Compile,
+    "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
   )
 )).dependsOn(micro)
