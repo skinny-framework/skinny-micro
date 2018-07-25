@@ -15,7 +15,7 @@ Taking a look at [skinny-micro-heroku-example](https://github.com/skinny-framewo
 When you start new sbt project, add the following dependencies:
 
 ```scala
-lazy val skinnyMicroVersion = "1.4.+"
+lazy val skinnyMicroVersion = "2.0.+"
 
 libraryDependencies ++= Seq(
   // micro Web framework
@@ -116,7 +116,7 @@ http://www.scala-sbt.org/0.13/docs/Scripts.html
 // or ./scalas app.scala
 /***
 scalaVersion := "2.12.6"
-libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "1.4.+"
+libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "2.0.+"
 */
 import skinny.micro._
 object HelloApp extends WebApp {
