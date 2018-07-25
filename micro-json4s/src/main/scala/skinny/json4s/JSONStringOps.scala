@@ -37,17 +37,31 @@ trait JSONStringOps {
   // Avoid extending org.json4s.jackson.JsonMethods due to #render method conflict
   // -------------------------------
 
-  private[this] lazy val _defaultMapper = {
+  private[this] lazy val _mapper_BigDecimalForDouble_TRUE = {
     val m = new ObjectMapper()
     m.registerModule(new Json4sScalaModule)
+    m.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, true)
     m
   }
-  private[this] def mapper = _defaultMapper
+  private[this] lazy val _mapper_BigDecimalForDouble_FALSE = {
+    val m = new ObjectMapper()
+    m.registerModule(new Json4sScalaModule)
+    m.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, false)
+    m
+  }
 
-  def defaultObjectMapper: ObjectMapper = mapper
+  private[this] def getObjectMapper(useBigDecimalForDouble: Boolean = false) = {
+    if (useBigDecimalForDouble) {
+      _mapper_BigDecimalForDouble_TRUE
+    } else {
+      _mapper_BigDecimalForDouble_FALSE
+    }
+  }
+
+  def defaultObjectMapper: ObjectMapper = getObjectMapper()
 
   private[this] def parse(in: JsonInput, useBigDecimalForDouble: Boolean = false): JValue = {
-    mapper.configure(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS, useBigDecimalForDouble)
+    val mapper = getObjectMapper(useBigDecimalForDouble)
     in match {
       case StringInput(s) => mapper.readValue(s, classOf[JValue])
       case ReaderInput(rdr) => mapper.readValue(rdr, classOf[JValue])
@@ -61,7 +75,7 @@ trait JSONStringOps {
   }
 
   private[this] def pretty(d: JValue): String = {
-    val writer: ObjectWriter = mapper.writerWithDefaultPrettyPrinter()
+    val writer: ObjectWriter = getObjectMapper().writerWithDefaultPrettyPrinter()
     writer.writeValueAsString(d)
   }
 
@@ -75,7 +89,7 @@ trait JSONStringOps {
    * @param value value
    */
   def compact(value: JValue): String = {
-    val json = mapper.writeValueAsString(value)
+    val json = getObjectMapper().writeValueAsString(value)
     if (useJSONVulnerabilityProtection) prefixForJSONVulnerabilityProtection + json
     else json
   }
