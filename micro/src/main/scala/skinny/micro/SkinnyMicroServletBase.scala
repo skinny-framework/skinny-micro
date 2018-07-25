@@ -87,14 +87,14 @@ trait SkinnyMicroServletBase extends HttpServlet with SkinnyMicroBase {
     }
   }
 
-  type ConfigT = ServletConfig
-
   override def init(config: ServletConfig): Unit = {
     super.init(config)
     initialize(new ThinServletBaseConfig {
       override def getServletContext(): ServletContext = config.getServletContext
       override def getInitParameter(name: String): String = config.getInitParameter(name)
       override def getInitParameterNames(): java.util.Enumeration[String] = config.getInitParameterNames
+      override def getBaseConfigType: BaseConfigType = BaseConfigType.ServletConfig
+      override def getServletConfig: Option[ServletConfig] = Some(config)
     }) // see Initializable.initialize for why
   }
 

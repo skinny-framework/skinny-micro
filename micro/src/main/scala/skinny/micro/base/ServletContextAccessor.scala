@@ -18,12 +18,11 @@ trait ServletContextAccessor
 
   import SkinnyMicroBase._
 
-  private trait NullConfig extends ThinServletBaseConfig with FilterConfig {
-    def getServletName: String = null
-    override def getFilterName: String = null
+  private class NullConfig extends ThinServletBaseConfig {
     override def getServletContext(): ServletContext = null
     override def getInitParameter(name: String): String = null
     override def getInitParameterNames(): java.util.Enumeration[String] = null
+    override def getBaseConfigType: BaseConfigType = BaseConfigType.Unknown
   }
 
   protected implicit def configWrapper(config: ThinServletBaseConfig) = new Config {

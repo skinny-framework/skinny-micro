@@ -73,14 +73,14 @@ trait SkinnyMicroFilterBase extends SkinnyMicroBase {
     filterChain.doFilter(request, response)
   }
 
-  type ConfigT = FilterConfig
-
   // see Initializable.initialize for why
   def init(filterConfig: FilterConfig): Unit = {
     initialize(new ThinServletBaseConfig {
       override def getServletContext(): ServletContext = filterConfig.getServletContext
       override def getInitParameter(name: String): String = filterConfig.getInitParameter(name)
       override def getInitParameterNames(): java.util.Enumeration[String] = filterConfig.getInitParameterNames
+      override def getBaseConfigType: BaseConfigType = BaseConfigType.FilterConfig
+      override def getFilterConfig: Option[FilterConfig] = Some(filterConfig)
     })
   }
 
