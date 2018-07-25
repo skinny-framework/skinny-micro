@@ -200,6 +200,7 @@ case class RichServletContext(sc: ServletContext) extends AttributesMap {
     override def getServletContext(): ServletContext = attributes
     override def getInitParameter(name: String): String = attributes.getInitParameter(name)
     override def getInitParameterNames(): java.util.Enumeration[String] = attributes.getInitParameterNames
+    override def getBaseConfigType: BaseConfigType = BaseConfigType.Unknown
   })
 
   def contextPath: String = sc.getContextPath
