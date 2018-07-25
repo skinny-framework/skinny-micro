@@ -2,7 +2,7 @@ package skinny.micro.context
 
 import javax.servlet.{ FilterConfig, ServletConfig, ServletContext }
 
-trait ThinServletBaseConfig {
+object ThinServletBaseConfig {
 
   sealed trait BaseConfigType
 
@@ -12,13 +12,17 @@ trait ThinServletBaseConfig {
     case object FilterConfig extends BaseConfigType
   }
 
+}
+
+trait ThinServletBaseConfig {
+
   def getServletContext(): ServletContext
 
   def getInitParameter(name: String): String
 
   def getInitParameterNames(): java.util.Enumeration[String]
 
-  def getBaseConfigType: BaseConfigType
+  def getBaseConfigType: ThinServletBaseConfig.BaseConfigType
 
   def getServletConfig: Option[ServletConfig] = None
 

@@ -7,6 +7,7 @@ import javax.servlet.http.{ HttpServlet, HttpServletRequest }
 import javax.servlet.{ DispatcherType, Filter, ServletContext, ServletRegistration }
 import skinny.micro._
 import skinny.micro.async.AsyncSupported
+import skinny.micro.context.ThinServletBaseConfig.BaseConfigType
 import skinny.micro.data.AttributesMap
 import skinny.micro.multipart.HasMultipartConfig
 

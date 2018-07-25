@@ -3,6 +3,7 @@ package skinny.micro.base
 import scala.language.reflectiveCalls
 import scala.language.implicitConversions
 import javax.servlet.{ FilterConfig, ServletContext }
+import skinny.micro.context.ThinServletBaseConfig.BaseConfigType
 import skinny.micro.implicits.{ RicherStringImplicits, ServletApiImplicits }
 import skinny.micro.{ Initializable, SkinnyMicroBase }
 import skinny.micro.context.{ InitParameters, SkinnyContext, ThinServletBaseConfig }

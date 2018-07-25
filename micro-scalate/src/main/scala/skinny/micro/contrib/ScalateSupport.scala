@@ -2,8 +2,8 @@ package skinny.micro.contrib
 
 import java.io.{ PrintWriter, StringWriter }
 
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import javax.servlet.{ FilterConfig, ServletConfig }
+import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import org.fusesource.scalate.layout.DefaultLayoutStrategy
 import org.fusesource.scalate.servlet.ServletTemplateEngine
 import org.fusesource.scalate.support.TemplateFinder
@@ -57,13 +57,23 @@ trait ScalateSupport extends SkinnyMicroBase {
       case "" => "ROOT"
       case path => path.substring(1)
     }
-    config match {
-      case filterConfig: FilterConfig =>
-        val templateEngine = new ServletTemplateEngine(filterConfig) with SkinnyMicroTemplateEngine
-        ScalateSupport.scalateTemplateEngine(contextPath, templateEngine)
-      case servletConfig: ServletConfig =>
-        val templateEngine = new ServletTemplateEngine(servletConfig) with SkinnyMicroTemplateEngine
-        ScalateSupport.scalateTemplateEngine(contextPath, templateEngine)
+    config.getBaseConfigType match {
+      case ThinServletBaseConfig.BaseConfigType.FilterConfig =>
+        config.getFilterConfig match {
+          case Some(filterConfig: FilterConfig) =>
+            val templateEngine = new ServletTemplateEngine(filterConfig) with SkinnyMicroTemplateEngine
+            ScalateSupport.scalateTemplateEngine(contextPath, templateEngine)
+          case _ => throw new IllegalStateException(
+            "ThinServletBaseConfig#getFilterConfig should return a Some value when BaseConfigType is FilterConfig")
+        }
+      case ThinServletBaseConfig.BaseConfigType.ServletConfig =>
+        config.getServletConfig match {
+          case Some(servletConfig: ServletConfig) =>
+            val templateEngine = new ServletTemplateEngine(servletConfig) with SkinnyMicroTemplateEngine
+            ScalateSupport.scalateTemplateEngine(contextPath, templateEngine)
+          case _ => throw new IllegalStateException(
+            "ThinServletBaseConfig#getServletConfig should return a Some value when BaseConfigType is ServletConfig")
+        }
       case _ =>
         // Don't know how to convert your Config to something that
         // ServletTemplateEngine can accept, so fall back to a TemplateEngine

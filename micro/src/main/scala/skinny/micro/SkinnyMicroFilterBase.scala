@@ -2,6 +2,7 @@ package skinny.micro
 
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import javax.servlet._
+import skinny.micro.context.ThinServletBaseConfig.BaseConfigType
 import skinny.micro.context.{ SkinnyContext, ThinServletBaseConfig }
 import skinny.micro.util.UriDecoder
 
