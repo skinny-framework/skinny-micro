@@ -1,6 +1,6 @@
 # Skinny Micro [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12)
 
-Skinny Micro is at once a micro Web framework to build Servlet applications in Scala and the core part of [Skinny Framework](http://skinny-framework.org/) 2.
+Skinny Micro is at once a micro Web framework to build Servlet applications in Scala and the core part of [Skinny Framework](http://skinny-framework.org/).
 
 Skinny Micro started as a fork of [Scalatra](http://scalatra.org/). After that, many improvements have been made to be safer and more efficient when working with Scala Future values upon it.
 
@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
   "org.skinny-framework" %% "skinny-micro-json4s"      % skinnyMicroVersion,
   // Scalate integration
   "org.skinny-framework" %% "skinny-micro-scalate"     % skinnyMicroVersion,
-  // Standalone Web server (Jetty 9.3 / Servlet 3.1)
+  // Standalone Web server (Jetty 9.4 / Servlet 3.1)
   "org.skinny-framework" %% "skinny-micro-server"      % skinnyMicroVersion
 )
 ```
@@ -73,8 +73,8 @@ class Bootstrap extends LifeCycle {
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
     <listener>
         <listener-class>skinny.micro.SkinnyListener</listener-class>
     </listener>
