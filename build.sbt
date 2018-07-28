@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.0"
+lazy val currentVersion = "2.0.1-SNAPSHOT"
 
 lazy val json4SVersion = "3.6.0"
 lazy val mockitoVersion = "2.20.1"
