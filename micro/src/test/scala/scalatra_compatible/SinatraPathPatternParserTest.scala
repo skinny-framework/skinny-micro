@@ -46,7 +46,7 @@ class SinatraPathPatternParserTest extends FunSuite with Matchers {
     names should equal(List("stuff"))
   }
 
-  test("should support seperate named params for filename and extension") {
+  test("should support separate named params for filename and extension") {
     val PathPattern(pattern, names) = SinatraPathPatternParser("/path-with/:file.:extension")
 
     pattern.toString should equal("""^/path-with/([^/?#]+)\.([^/?#]+)$""")

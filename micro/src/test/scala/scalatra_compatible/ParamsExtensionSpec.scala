@@ -61,7 +61,7 @@ class ParamsExtensionSpec extends Specification {
 
     }
 
-    "explicitely receive a custom TypeConverter" in {
+    "explicitly receive a custom TypeConverter" in {
 
       val params: Params = FakeParams(Map("a" -> "buffybuffy"))
 

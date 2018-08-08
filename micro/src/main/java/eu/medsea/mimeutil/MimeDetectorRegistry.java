@@ -24,7 +24,7 @@ class MimeDetectorRegistry {
 
     /**
      * This property holds an instance of the TextMimeDetector.
-     * This is the only pre-registerd MimeDetector and cannot be
+     * This is the only pre-registered MimeDetector and cannot be
      * de-registered or registered by your code
      */
     private TextMimeDetector TextMimeDetector = new TextMimeDetector(1);

@@ -16,7 +16,7 @@ object FlashMapSupport {
  * {{{
  * post("/article/create") {
  *   // create session
- *   flash("notice") = "article created succesfully"
+ *   flash("notice") = "article created successfully"
  *   redirect("/home")
  * }
  * get("/home") {
