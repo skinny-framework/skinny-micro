@@ -26,7 +26,7 @@ object UriDecoder {
 object ScalatraBase {
   /**
    * A key for request attribute that contains any exception
-   * that might have occured before the handling has been
+   * that might have occurred before the handling has been
    * propagated to ScalatraBase#handle (such as in
    * FileUploadSupport)
    */
@@ -543,7 +543,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
   /**
    * Prepends a new route for the given HTTP method.
    *
-   * Can be overriden so that subtraits can use their own logic.
+   * Can be overridden so that subtraits can use their own logic.
    * Possible examples:
    * $ - restricting protocols
    * $ - namespace routes based on class name
@@ -561,7 +561,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
 
   /**
    * Removes _all_ the actions of a given route for a given HTTP method.
-   * If addRoute is overridden then this should probably be overriden too.
+   * If addRoute is overridden then this should probably be overridden too.
    *
    * @see org.scalatra.ScalatraKernel#addRoute
    */
@@ -721,7 +721,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
   protected def contextPath: String = servletContext.contextPath
 
   /**
-   * Gets an init paramter from the config.
+   * Gets an init parameter from the config.
    *
    * @param name the name of the key
    *

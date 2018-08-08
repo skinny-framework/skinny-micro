@@ -502,7 +502,7 @@ trait SkinnyMicroBase
 
   /**
    * Removes _all_ the actions of a given route for a given HTTP method.
-   * If addRoute is overridden then this should probably be overriden too.
+   * If addRoute is overridden then this should probably be overridden too.
    */
   protected def removeRoute(method: HttpMethod, route: Route): Unit = {
     routes.removeRoute(method, route)
@@ -622,7 +622,7 @@ object SkinnyMicroBase {
   lazy val defaultExecutionContext: ExecutionContext = ExecutionContextFactory.create(300)
 
   /**
-   * A key for request attribute that contains any exception that might have occured
+   * A key for request attribute that contains any exception that might have occurred
    * before the handling has been propagated to SkinnyMicroBase#handle (such as in FileUploadSupport)
    */
   val CapturedExceptionBeforeRunActions: String = "skinny.micro.CapturedExceptionBeforeRunActions"

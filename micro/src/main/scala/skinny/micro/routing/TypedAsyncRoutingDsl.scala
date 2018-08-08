@@ -47,7 +47,7 @@ trait TypedAsyncRoutingDsl extends RoutingDslBase {
   /**
    * Prepends a new route for the given HTTP method.
    *
-   * Can be overriden so that subtraits can use their own logic.
+   * Can be overridden so that subtraits can use their own logic.
    * Possible examples:
    * $ - restricting protocols
    * $ - namespace routes based on class name

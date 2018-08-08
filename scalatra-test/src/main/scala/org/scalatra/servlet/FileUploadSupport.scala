@@ -66,7 +66,7 @@ trait FileUploadSupport extends ServletBase with HasMultipartConfig {
    * to detect whether it signifies a too large file being
    * uploaded or a too large request in general.
    *
-   * This can be overriden for the container being used if it
+   * This can be overridden for the container being used if it
    * doesn't throw `IllegalStateException` or if it throws
    * `IllegalStateException` for some other reason.
    */
