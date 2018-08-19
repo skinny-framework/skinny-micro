@@ -1,4 +1,4 @@
-# Skinny Micro [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.skinny-framework/skinny-micro_2.12)
+# Skinny Micro [![Maven Central](https://img.shields.io/maven-central/v/org.skinny-framework/skinny-micro_2.12.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.skinny-framework%22%20a%3A%22skinny-micro_2.12%22) [![Build Status](https://travis-ci.org/skinny-framework/skinny-micro.svg)](https://travis-ci.org/skinny-framework/skinny-micro)
 
 Skinny Micro is at once a micro Web framework to build Servlet applications in Scala and the core part of [Skinny Framework](http://skinny-framework.org/).
 
