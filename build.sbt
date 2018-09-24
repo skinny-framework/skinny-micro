@@ -8,13 +8,13 @@ import scala.language.postfixOps
 
 lazy val currentVersion = "2.0.1-SNAPSHOT"
 
-lazy val json4SVersion = "3.6.0"
-lazy val mockitoVersion = "2.20.1"
-lazy val jettyVersion = "9.4.11.v20180605"
+lazy val json4SVersion = "3.6.1"
+lazy val mockitoVersion = "2.22.0"
+lazy val jettyVersion = "9.4.12.v20180830"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
-lazy val jacksonVersion = "2.9.6"
-lazy val jacksonScalaVersion = "2.9.6"
+lazy val jacksonVersion = "2.9.7"
+lazy val jacksonScalaVersion = "2.9.7"
 lazy val scalatestV = SettingKey[String]("scalatestVersion")
 lazy val collectionCompatVersion = "0.1.1"
 
@@ -32,7 +32,7 @@ lazy val baseSettings = Seq(
   ),
   scalatestV := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.6-SNAP1"
+      case Some((2, v)) if v >= 13 => "3.0.6-SNAP2"
       case _ =>                       "3.0.5"
     }
   },
@@ -168,12 +168,12 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.testng"         %  "testng"           % "6.14.3"         % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.7"            % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
-    "org.specs2"         %% "specs2-core"      % "4.3.2"          % Compile
+    "org.specs2"         %% "specs2-core"      % "4.3.4"          % Compile
   )
 ))
 
@@ -181,7 +181,7 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
   name := "skinny-micro-test",
   libraryDependencies ++= servletApiDependencies ++ Seq(
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.7"            % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
