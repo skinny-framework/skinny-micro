@@ -48,11 +48,12 @@ class GZipSupportServletTest extends ContentEncodingSupportTest(ContentEncoding.
 abstract class ContentEncodingSupportTest(e: ContentEncoding) extends ScalatraFunSuite with Matchers {
   implicit val encoding = e
 
-  test("should decode request if Content-Encoding is supported") {
-    post("/", Helper.compress(Helper.body), Map("Content-Encoding" -> encoding.name)) {
-      response.body should equal(Helper.body)
-    }
-  }
+  // NOTE: Jetty 9.1.12+ no longer supports accepting Content-Encoding requests
+  //  test("should decode request if Content-Encoding is supported") {
+  //    post("/", Helper.compress(Helper.body), Map("Content-Encoding" -> encoding.name)) {
+  //      response.body should equal(Helper.body)
+  //    }
+  //  }
 
   test("should encode response if Accept-Encoding is supported") {
     session {
