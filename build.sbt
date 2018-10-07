@@ -9,7 +9,7 @@ import scala.language.postfixOps
 lazy val currentVersion = "2.0.1-SNAPSHOT"
 
 lazy val json4SVersion = "3.6.1"
-lazy val mockitoVersion = "2.22.0"
+lazy val mockitoVersion = "2.23.0"
 lazy val jettyVersion = "9.4.12.v20180830"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
