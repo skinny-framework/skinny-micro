@@ -8,7 +8,7 @@ import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.concurrent.ExecutionContextFactory
 import skinny.micro.contrib.ContentEncodingSupport
 import skinny.micro.routing.RoutingDsl
-import skinny.micro.{ ContentEncoding, SkinnyMicroBase, SkinnyMicroServlet }
+import skinny.micro.{ ContentEncoding, SkinnyMicroServlet }
 
 import scala.concurrent.{ ExecutionContext, Future }
 

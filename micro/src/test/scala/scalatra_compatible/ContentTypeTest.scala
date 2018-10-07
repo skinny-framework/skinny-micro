@@ -2,8 +2,6 @@ package scalatra_compatible
 
 import skinny.micro.SkinnyMicroServlet
 
-import scala.language.postfixOps
-
 import java.nio.charset.Charset
 
 import org.eclipse.jetty.servlet.ServletHolder
@@ -11,8 +9,6 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.implicits.RicherStringImplicits._
 
-import scala.concurrent.Await
-import scala.concurrent.duration._
 import scala.xml.Text
 
 class ContentTypeTestServlet extends SkinnyMicroServlet {

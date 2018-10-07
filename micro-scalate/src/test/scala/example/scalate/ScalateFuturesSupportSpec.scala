@@ -1,7 +1,6 @@
 package example.scalate
 
 import org.scalatra.test.specs2.MutableScalatraSpec
-import org.specs2.specification._
 
 class ScalateFuturesSupportSpec extends MutableScalatraSpec {
 

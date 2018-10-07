@@ -3,7 +3,6 @@ package tests
 
 import org.specs2.Specification
 import skinny.micro.rl.UrlCodingUtils._
-import collection.immutable.BitSet
 
 class UrlCodingSpec extends Specification {
   def is =

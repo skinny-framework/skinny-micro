@@ -1,7 +1,5 @@
 package org.scalatra
 
-import javax.servlet.ServletContext
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import servlet.ServletApiImplicits
 
 /**

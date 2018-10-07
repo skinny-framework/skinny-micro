@@ -1,7 +1,6 @@
 package org.scalatra
 
 import util.MutableMapWithIndifferentAccess
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import collection.JavaConverters._
 import java.util.concurrent.{ ConcurrentSkipListSet, ConcurrentHashMap }
 

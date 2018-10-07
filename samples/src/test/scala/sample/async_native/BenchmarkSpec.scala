@@ -1,7 +1,6 @@
 package sample.async_native
 
 import skinny.test.SkinnyFunSpec
-import java.util.concurrent.Executors
 
 import org.scalatest.Assertion
 

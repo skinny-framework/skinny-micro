@@ -4,9 +4,7 @@ package servlet
 import util.RicherString._
 
 import java.io.{ OutputStream, PrintWriter }
-import javax.servlet.http.{ HttpServletResponse, HttpServletResponseWrapper, Cookie => ServletCookie }
-import scala.collection.JavaConverters._
-import scala.collection.mutable.Map
+import javax.servlet.http.{ HttpServletResponse, Cookie => ServletCookie }
 
 case class RichResponse(res: HttpServletResponse) {
   /**

@@ -14,7 +14,6 @@ import skinny.micro.contrib.scalate.SkinnyScalateRenderContext
 
 import scala.collection.concurrent.{ TrieMap, Map => CMap }
 import scala.collection.mutable
-import scala.language.{ implicitConversions, reflectiveCalls }
 
 /**
  * ScalateSupport creates and configures a template engine and provides

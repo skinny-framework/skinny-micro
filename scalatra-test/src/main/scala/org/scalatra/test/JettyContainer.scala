@@ -2,11 +2,10 @@ package org.scalatra
 package test
 
 import servlet.{ ScalatraAsyncSupport, HasMultipartConfig }
-import javax.servlet.{ ServletConfig, DispatcherType, Filter }
-import javax.servlet.http.{ HttpServletResponse, HttpServletRequest, HttpServlet }
+import javax.servlet.{ DispatcherType, Filter }
+import javax.servlet.http.HttpServlet
 import java.util.EnumSet
 import org.eclipse.jetty.servlet._
-import scala.deprecated
 import java.util
 
 object JettyContainer {

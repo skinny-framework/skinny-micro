@@ -2,7 +2,6 @@ package org.scalatra
 package test
 package specs2
 
-import org.specs2.specification.core.SpecificationStructure
 import org.specs2.specification.BeforeAfterAll
 
 /**

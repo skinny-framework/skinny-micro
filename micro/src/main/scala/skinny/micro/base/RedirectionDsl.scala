@@ -1,6 +1,5 @@
 package skinny.micro.base
 
-import skinny.SkinnyEnv
 import skinny.micro._
 import skinny.micro.context.SkinnyContext
 

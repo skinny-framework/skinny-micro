@@ -1,7 +1,6 @@
 package skinny.micro.context
 
 import scala.collection.mutable
-import scala.collection.JavaConverters._
 
 class InitParameters(config: ThinServletBaseConfig) extends mutable.Map[String, String] {
 

@@ -48,6 +48,14 @@ lazy val baseSettings = Seq(
   scalaVersion := "2.13.0-M4",
   crossScalaVersions := Seq("2.13.0-M4", "2.12.7", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
+  scalacOptions += {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, 11)) =>
+        "-Ywarn-unused-import"
+      case _ =>
+        "-Ywarn-unused:imports"
+    }
+  },
   scalacOptions in (Compile, doc) ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, v)) if v <= 11 => Nil

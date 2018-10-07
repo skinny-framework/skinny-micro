@@ -6,8 +6,6 @@ import java.net.IDN
 import org.specs2.matcher.DataTables
 import org.specs2.execute.Result
 
-import skinny.micro.rl._
-
 class IDNASpec extends Specification with DataTables {
   def is =
 

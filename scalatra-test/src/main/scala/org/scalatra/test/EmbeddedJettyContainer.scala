@@ -1,6 +1,6 @@
 package org.scalatra.test
 
-import org.eclipse.jetty.server.{ Connector, Server }
+import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.ServerConnector
 import org.eclipse.jetty.servlet.ServletContextHandler
 

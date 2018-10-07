@@ -19,7 +19,6 @@ package skinny.http
 import java.io._
 import java.net.{ URLEncoder, HttpURLConnection }
 import scala.collection.JavaConverters._
-import scala.collection.mutable
 import scala.concurrent.{ Future, ExecutionContext }
 import scala.util.control.NonFatal
 import skinny.logging.LoggerProvider

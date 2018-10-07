@@ -3,7 +3,6 @@ package org.scalatra.servlet
 import javax.servlet.ServletContext
 
 import scala.collection.mutable
-import scala.collection.JavaConverters._
 
 class InitParameters(sc: ServletContext) extends mutable.Map[String, String] {
   def get(key: String): Option[String] = Option(sc.getInitParameter(key))
