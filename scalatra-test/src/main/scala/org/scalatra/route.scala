@@ -1,7 +1,6 @@
 package org.scalatra
 
 import util.MultiMap
-import javax.activation.MimetypesFileTypeMap
 import javax.servlet.http.HttpServletRequest
 
 /**
