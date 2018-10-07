@@ -3,8 +3,6 @@ package tests
 
 import org.specs2.Specification
 import skinny.micro.rl._
-import Uri._
-import java.net.{ URI, URISyntaxException, IDN }
 
 class NotImplementedException(msg: String) extends RuntimeException(msg)
 object TestParser {

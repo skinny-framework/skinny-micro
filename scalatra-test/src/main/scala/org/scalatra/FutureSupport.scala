@@ -6,7 +6,7 @@ import javax.servlet.{ ServletContext, AsyncEvent, AsyncListener }
 import servlet.AsyncSupport
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import scala.concurrent.{ ExecutionContext, Future }
-import scala.util.{ Failure, Success, Try }
+import scala.util.{ Failure, Success }
 
 import scala.language.postfixOps
 

@@ -1,12 +1,11 @@
 package org.scalatra
 
-import java.io.{ ByteArrayOutputStream, OutputStream, IOException, PrintWriter }
+import java.io.PrintWriter
 import java.util.zip.GZIPOutputStream
 import javax.servlet.{ WriteListener, ServletOutputStream }
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpServletResponseWrapper
-import java.nio.charset.Charset
 
 /**
  * Scalatra handler for gzipped responses.

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import skinny.jackson.JSONStringOps._
 import skinny.logging.LoggerProvider
 
-import scala.collection.immutable.HashMap
 import scala.util.{ Failure, Success, Try }
 
 /**

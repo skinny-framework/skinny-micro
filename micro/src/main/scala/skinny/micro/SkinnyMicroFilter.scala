@@ -1,14 +1,6 @@
 package skinny.micro
 
 import javax.servlet._
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
-
-import skinny.micro.base.MainThreadLocalEverywhere
-import skinny.micro.context.SkinnyContext
-import skinny.micro.routing.RoutingDsl
-import skinny.micro.util.UriDecoder
-
-import scala.util.DynamicVariable
 
 /**
  * An implementation of the SkinnyMicro DSL in a filter.  You may prefer a filter

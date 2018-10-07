@@ -2,7 +2,6 @@ package org.scalatra.test
 
 import scala.util.DynamicVariable
 import java.net.URLEncoder.encode
-import java.io.File
 
 trait Client extends ImplicitConversions {
   private val _response = new DynamicVariable[ClientResponse](null)

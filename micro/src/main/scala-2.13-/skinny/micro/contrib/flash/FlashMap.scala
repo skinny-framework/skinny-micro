@@ -1,7 +1,6 @@
 package skinny.micro.contrib.flash
 
 import java.util.concurrent.{ ConcurrentHashMap, ConcurrentSkipListSet }
-import skinny.micro.contrib.FlashMapSupport
 import skinny.micro.data.MutableMapWithIndifferentAccess
 import scala.collection.JavaConverters._
 

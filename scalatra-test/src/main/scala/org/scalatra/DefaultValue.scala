@@ -31,7 +31,7 @@ object DefaultValueMethods extends DefaultValueMethods
 trait DefaultValueImplicits {
   import DefaultValueMethods._
 
-  import xml.{ Elem, Node, NodeSeq }
+  import xml.{ Elem, Node }
 
   implicit def UnitDefaultValue: DefaultValue[Unit] = default(())
 

@@ -4,7 +4,6 @@ import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 import servlet.ServletApiImplicits
 import util.{ MapWithIndifferentAccess, MultiMapHeadView }
 import javax.servlet.ServletContext
-import annotation.implicitNotFound
 
 class ScalatraParams(protected val multiMap: Map[String, Seq[String]]) extends MultiMapHeadView[String, String] with MapWithIndifferentAccess[String]
 

@@ -5,7 +5,6 @@ import java.util.concurrent.ConcurrentHashMap
 import org.scalatra.util.RicherString._
 import java.util.Locale.ENGLISH
 import scala.collection.concurrent
-import collection.mutable
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 
 object ApiFormats {

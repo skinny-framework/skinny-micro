@@ -1,6 +1,6 @@
 package org.scalatra.test
 
-import java.io.{ InputStream, FileInputStream, ByteArrayOutputStream, File }
+import java.io.{ FileInputStream, ByteArrayOutputStream, File }
 import annotation.tailrec
 
 abstract class Uploadable {

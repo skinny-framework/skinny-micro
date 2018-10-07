@@ -1,8 +1,8 @@
 package org.scalatra
 
 import collection._
-import java.util.{ Calendar, TimeZone, Date, Locale }
-import javax.servlet.http.{ HttpServletRequest, HttpServletResponse, Cookie => ServletCookie }
+import java.util.{ Date, Locale }
+import javax.servlet.http.HttpServletResponse
 import servlet.ServletApiImplicits
 import util.DateUtil
 import util.RicherString._

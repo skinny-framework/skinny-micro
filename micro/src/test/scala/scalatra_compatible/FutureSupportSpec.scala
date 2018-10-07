@@ -1,7 +1,5 @@
 package scalatra_compatible
 
-import scala.language.postfixOps
-
 import java.security.SecureRandom
 import java.util.concurrent.Executors
 

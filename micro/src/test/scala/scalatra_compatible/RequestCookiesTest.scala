@@ -1,7 +1,5 @@
 package scalatra_compatible
 
-import javax.servlet.http.{ Cookie => ServletCookie }
-
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.SkinnyMicroServlet
 
