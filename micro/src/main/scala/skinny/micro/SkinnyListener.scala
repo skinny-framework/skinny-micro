@@ -96,7 +96,7 @@ class SkinnyListener extends ServletContextListener with LoggerProvider {
       logger.warn(s"${OldDefaultLifeCycle} for a boot class will be removed eventually. " +
         s"Please use ${DefaultLifeCycle} instead as class name.")
     }
-    cycle = cycleClass.newInstance.asInstanceOf[LifeCycle]
+    cycle = cycleClass.getDeclaredConstructor().newInstance().asInstanceOf[LifeCycle]
     logger.info("Initializing life cycle class: %s".format(cycleClassName))
     cycle.init(servletContext)
   }
