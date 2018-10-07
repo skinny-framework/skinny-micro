@@ -2,15 +2,15 @@ language: scala
 sudo: false
 scala:
   - 2.11.12
-  - 2.12.6
+  - 2.12.7
   - 2.13.0-M4
 jdk:
   - oraclejdk8
 matrix:
   include:
-  - scala: 2.12.6
+  - scala: 2.12.7
     jdk: oraclejdk9
-  - scala: 2.12.6
+  - scala: 2.12.7
     jdk: oraclejdk10
 cache:
   directories:

@@ -10,7 +10,7 @@ sbt ++2.13.0-M4 \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal \
-  ++2.12.6 \
+  ++2.12.7 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \
