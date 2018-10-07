@@ -47,7 +47,7 @@ class MimeDetectorRegistry {
         }
         // Create the mime detector if we can
         try {
-            MimeDetector md = (MimeDetector) Class.forName(mimeDetector).newInstance();
+            MimeDetector md = (MimeDetector) Class.forName(mimeDetector).getDeclaredConstructor().newInstance();
             md.init();
             if (log.isDebugEnabled()) {
                 log.debug("Registering MimeDetector with name [" + md.getName() + "] and description [" + md.getDescription() + "]");
