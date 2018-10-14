@@ -45,6 +45,24 @@ abstract class ClientResponse {
       headers.keys.map(name => (name -> this(name))).iterator
     }
 
+    // Since Scala 2.13.0-M5
+    //// These two methods are not in MapOps so that MapView is not forced to implement them
+    //@deprecated("Use - or remove on an immutable Map", "2.13.0")
+    //def - (key: K): Map[K, V]
+    //@deprecated("Use -- or removeAll on an immutable Map", "2.13.0")
+    //def - (key1: K, key2: K, keys: K*): Map[K, V]
+
+    override def -(key: String): collection.Map[String, String] = {
+      headers.keys
+        .filter(_ != key)
+        .map(name => (name -> this(name))).toMap
+    }
+
+    override def -(key1: String, key2: String, keys: String*): collection.Map[String, String] = {
+      headers.keys
+        .filter(name => name != key1 && name != key2 && keys.contains(name) == false)
+        .map(name => (name -> this(name))).toMap
+    }
   }
 
   def charset = {

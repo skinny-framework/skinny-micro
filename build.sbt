@@ -14,9 +14,9 @@ lazy val jettyVersion = "9.4.12.v20180830"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.9.7"
-lazy val jacksonScalaVersion = "2.9.7"
+lazy val jacksonScalaVersion = "2.9.8-fork-20181014"
 lazy val scalatestV = SettingKey[String]("scalatestVersion")
-lazy val collectionCompatVersion = "0.1.1"
+lazy val collectionCompatVersion = "0.2.0"
 
 lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
@@ -32,7 +32,7 @@ lazy val baseSettings = Seq(
   ),
   scalatestV := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.6-SNAP2"
+      case Some((2, v)) if v >= 13 => "3.0.6-SNAP3"
       case _ =>                       "3.0.5"
     }
   },
@@ -45,8 +45,8 @@ lazy val baseSettings = Seq(
   },
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.13.0-M4",
-  crossScalaVersions := Seq("2.13.0-M4", "2.12.7", "2.11.12"),
+  scalaVersion := "2.13.0-M5",
+  crossScalaVersions := Seq("2.13.0-M5", "2.12.7", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions += {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -154,7 +154,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.0"        % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.1-RC1"    % Compile excludeAll(fullExclusionRules: _*),
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -181,7 +181,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
-    "org.specs2"         %% "specs2-core"      % "4.3.4"          % Compile
+    "org.specs2"         %% "specs2-core"      % "4.3.5"          % Compile
   )
 ))
 
@@ -225,7 +225,9 @@ lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
 lazy val jacksonDependencies = Seq(
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+  // TODO: https://github.com/FasterXML/jackson-module-scala/pull/392
+  // "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+  "org.skinny-framework.com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),

@@ -527,7 +527,7 @@ trait SkinnyMicroBase
   private[this] def handleFuture(f: Future[_], timeout: Duration)(implicit ctx: SkinnyContext): Unit = {
 
     val asyncContext: AsyncContext = ctx.request.startAsync(ctx.request, ctx.response)
-    if (timeout.isFinite()) asyncContext.setTimeout(timeout.toMillis)
+    if (timeout.isFinite) asyncContext.setTimeout(timeout.toMillis)
     else asyncContext.setTimeout(-1)
 
     def withinAsyncContext(asyncContext: javax.servlet.AsyncContext)(thunk: => Any): Unit = {

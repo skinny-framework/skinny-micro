@@ -1,6 +1,5 @@
 package org.scalatra
 
-import collection.compat._
 import annotation.implicitNotFound
 
 /*
@@ -58,9 +57,6 @@ trait DefaultValueImplicits {
   implicit def BigIntDefaultValue: DefaultValue[BigInt] = default(BigInt(0))
 
   implicit def BigDecimalDefaultValue: DefaultValue[BigDecimal] = default(BigDecimal(0))
-
-  implicit def IterableDefaultValue[CC <: Iterable[_]](implicit cbf: Factory[Nothing, CC]): DefaultValue[CC] =
-    default(cbf.newBuilder.result)
 
   // Not implicit to ensure implicitly[DefaultValue[NodeSeq]].default === NodeSeqDefaultValue.default
   def NodeDefaultValue: DefaultValue[Node] = new DefaultValue[Node] {
