@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.1-SNAPSHOT"
+lazy val currentVersion = "2.0.1-RC1"
 
 lazy val json4SVersion = "3.6.1"
 lazy val mockitoVersion = "2.23.0"
@@ -171,7 +171,10 @@ lazy val microServer = (project in file("micro-server")).settings(baseSettings +
 lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings ++ Seq(
   name := "scalatra-test",
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-    "org.scala-lang.modules" %% "scala-collection-compat" % collectionCompatVersion,
+    "org.scala-lang.modules" %% "scala-collection-compat" % {
+       // TODO https://github.com/scala/scala-collection-compat/pull/152
+       if (scalaVersion.value == "2.13.0-M5") "0.2.0" else "0.1.1"
+    },
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.testng"         %  "testng"           % "6.14.3"         % Compile,
