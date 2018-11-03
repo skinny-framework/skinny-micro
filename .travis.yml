@@ -11,8 +11,6 @@ matrix:
   - scala: 2.12.7
     jdk: oraclejdk9
   - scala: 2.12.7
-    jdk: oraclejdk10
-  - scala: 2.12.7
     jdk: openjdk11
 cache:
   directories:
