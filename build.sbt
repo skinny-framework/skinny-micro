@@ -8,7 +8,7 @@ import scala.language.postfixOps
 
 lazy val currentVersion = "2.0.1-RC1"
 
-lazy val json4SVersion = "3.6.1"
+lazy val json4SVersion = "3.6.2"
 lazy val mockitoVersion = "2.23.0"
 lazy val jettyVersion = "9.4.12.v20180830"
 lazy val logbackVersion = "1.2.3"
@@ -145,8 +145,8 @@ lazy val microJacksonXml = (project in file("micro-jackson-xml")).settings(baseS
 lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
-    "joda-time"         %  "joda-time"          % "2.10"         % Compile,
-    "org.joda"          %  "joda-convert"       % "2.1.1"        % Compile,
+    "joda-time"         %  "joda-time"          % "2.10.1"         % Compile,
+    "org.joda"          %  "joda-convert"       % "2.1.2"        % Compile,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
