@@ -32,7 +32,7 @@ lazy val baseSettings = Seq(
   ),
   scalatestV := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.6-SNAP3"
+      case Some((2, v)) if v >= 13 => "3.0.6-SNAP4"
       case _ =>                       "3.0.5"
     }
   },
