@@ -1,7 +1,7 @@
 #!/usr/bin/env scalas
 // or ./scalas Hello.scala
 /***
-scalaVersion := "2.12.7"
+scalaVersion := "2.12.8"
 resolvers += "sonatype releases" at "https://oss.sonatype.org/content/repositories/releases"
 libraryDependencies += "org.skinny-framework" %% "skinny-micro-server" % "2.0.+"
 */
