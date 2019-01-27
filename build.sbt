@@ -6,15 +6,15 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.1-RC1"
+lazy val currentVersion = "2.0.1-RC2-SNAPSHOT"
 
-lazy val json4SVersion = "3.6.2"
-lazy val mockitoVersion = "2.23.0"
-lazy val jettyVersion = "9.4.12.v20180830"
+lazy val json4SVersion = "3.6.4"
+lazy val mockitoVersion = "2.23.4"
+lazy val jettyVersion = "9.4.14.v20181114"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.25"
 lazy val jacksonVersion = "2.9.7"
-lazy val jacksonScalaVersion = "2.9.8-fork-20181014"
+lazy val jacksonScalaVersion = "2.9.8"
 lazy val scalatestV = SettingKey[String]("scalatestVersion")
 lazy val collectionCompatVersion = "0.2.0"
 
@@ -32,7 +32,7 @@ lazy val baseSettings = Seq(
   ),
   scalatestV := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.6-SNAP4"
+      case Some((2, v)) if v >= 13 => "3.0.6-SNAP6"
       case _ =>                       "3.0.5"
     }
   },
@@ -146,7 +146,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
   name := "skinny-micro-json4s",
   libraryDependencies ++= servletApiDependencies ++ json4sDependencies ++ Seq(
     "joda-time"         %  "joda-time"          % "2.10.1"         % Compile,
-    "org.joda"          %  "joda-convert"       % "2.1.2"        % Compile,
+    "org.joda"          %  "joda-convert"       % "2.2.0"        % Compile,
     "ch.qos.logback"    %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -181,10 +181,10 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile, // TODO: 4.5.7 behaves differently
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
-    "org.specs2"         %% "specs2-core"      % "4.3.5"          % Compile
+    "org.specs2"         %% "specs2-core"      % "4.4.0"          % Compile
   )
 ))
 
@@ -194,7 +194,7 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
-    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile,
+    "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile, // TODO: 4.5.7 behaves differently
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion   % Test
@@ -228,9 +228,7 @@ lazy val slf4jApiDependencies   = Seq(
   "org.slf4j"     % "slf4j-api"         % slf4jApiVersion % Compile
 )
 lazy val jacksonDependencies = Seq(
-  // TODO: https://github.com/FasterXML/jackson-module-scala/pull/392
-  // "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
-  "org.skinny-framework.com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),
