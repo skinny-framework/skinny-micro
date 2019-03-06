@@ -6,7 +6,7 @@ import com.typesafe.tools.mima.plugin.MimaKeys.{mimaPreviousArtifacts, mimaRepor
  * MiMa settings of Skinny-Micro libs.
  */
 object MimaSettings {
-  val previousVersions = Seq(0).map(patch => s"2.0.$patch").toSet
+  val previousVersions = Seq(0, 1).map(patch => s"2.0.$patch").toSet
   //val previousVersions = Set[String]()
 
   val mimaSettings = MimaPlugin.mimaDefaultSettings ++ Seq(
