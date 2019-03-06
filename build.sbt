@@ -6,14 +6,14 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.1-RC2-SNAPSHOT"
+lazy val currentVersion = "2.0.1"
 
 lazy val json4SVersion = "3.6.4"
-lazy val mockitoVersion = "2.23.4"
-lazy val jettyVersion = "9.4.14.v20181114"
+lazy val mockitoVersion = "2.25.0"
+lazy val jettyVersion = "9.4.15.v20190215"
 lazy val logbackVersion = "1.2.3"
-lazy val slf4jApiVersion = "1.7.25"
-lazy val jacksonVersion = "2.9.7"
+lazy val slf4jApiVersion = "1.7.26"
+lazy val jacksonVersion = "2.9.8"
 lazy val jacksonScalaVersion = "2.9.8"
 lazy val scalatestV = SettingKey[String]("scalatestVersion")
 lazy val collectionCompatVersion = "0.2.0"
@@ -22,7 +22,7 @@ lazy val baseSettings = Seq(
   organization := "org.skinny-framework",
   version := currentVersion,
   resolvers ++= Seq(
-    "sonatype releases"  at "https://oss.sonatype.org/content/repositories/releases"
+    "sonatype staging" at "https://oss.sonatype.org/content/repositories/staging",
     //, "sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
   ),
   dependencyOverrides := Seq(
@@ -32,8 +32,8 @@ lazy val baseSettings = Seq(
   ),
   scalatestV := {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.6-SNAP6"
-      case _ =>                       "3.0.5"
+      case Some((2, v)) if v >= 13 => "3.1.0-SNAP7"
+      case _ =>                       "3.0.6"
     }
   },
   unmanagedSourceDirectories in Compile += {
@@ -154,7 +154,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.1-RC1"    % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.1"    % Compile excludeAll(fullExclusionRules: _*),
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -173,7 +173,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
     "org.scala-lang.modules" %% "scala-collection-compat" % {
        // TODO https://github.com/scala/scala-collection-compat/pull/152
-       if (scalaVersion.value == "2.13.0-M5") "0.2.0" else "0.1.1"
+       if (scalaVersion.value == "2.13.0-M5") "0.2.1" else "0.1.1"
     },
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
@@ -184,7 +184,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile, // TODO: 4.5.7 behaves differently
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
     "org.scalatest"      %% "scalatest"        % scalatestV.value % Compile,
-    "org.specs2"         %% "specs2-core"      % "4.4.0"          % Compile
+    "org.specs2"         %% "specs2-core"      % "4.4.1"          % Compile
   )
 ))
 
@@ -206,7 +206,7 @@ lazy val samples = (project in file("samples")).settings(baseSettings ++ Seq(
     // Slick dropped Scala 2.10 support
     //"com.typesafe.slick" %% "slick"            % "3.2.0-M2",
     "org.slf4j"          %  "slf4j-nop"        % slf4jApiVersion,
-    "com.h2database"     %  "h2"               % "1.4.197",
+    "com.h2database"     %  "h2"               % "1.4.198",
     "ch.qos.logback"     %  "logback-classic"  % logbackVersion
   )
 )).dependsOn(micro, microJackson, microJacksonXml, microJson4s, microScalate, microServer, microTest % Test)
