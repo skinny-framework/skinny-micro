@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.2-RC1"
+lazy val currentVersion = "2.0.2-RC2"
 
 lazy val json4SVersion = "3.6.5"
 lazy val mockitoVersion = "2.26.0"
@@ -118,7 +118,8 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
   name := "skinny-micro",
   libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-      "org.scala-lang.modules" %% "scala-parser-combinators"    % "1.1.2" % Compile,
+      // 1.1.2 is not bin-compatible in Scala 2.11
+      "org.scala-lang.modules" %% "scala-parser-combinators"    % (if (scalaVersion.value.startsWith("2.11")) "1.1.1" else "1.1.2") % Compile,
       "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3" % Compile,
       "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test
     )
