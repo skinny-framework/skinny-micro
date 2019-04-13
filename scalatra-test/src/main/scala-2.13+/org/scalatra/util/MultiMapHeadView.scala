@@ -32,7 +32,7 @@ trait MultiMapHeadView[A, B] extends Map[A, B] {
 
   override def +[B1 >: B](kv: (A, B1)): Map[A, B1] = Map() ++ this + kv
 
-  override def remove(key: A): Map[A, B] = {
+  override def removed(key: A): Map[A, B] = {
     (multiMap - key).filterNot(_._2.isEmpty).map { case (k, vs) => k -> vs.head }
   }
 

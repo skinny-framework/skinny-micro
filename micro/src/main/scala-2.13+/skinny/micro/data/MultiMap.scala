@@ -30,7 +30,7 @@ class MultiMap(wrapped: Map[String, Seq[String]] = Map.empty) extends Map[String
 
   override def default(a: String): Seq[String] = wrapped.default(a)
 
-  override def remove(key: String): Map[String, Seq[String]] = {
+  override def removed(key: String): Map[String, Seq[String]] = {
     new MultiMap(wrapped - key)
   }
 

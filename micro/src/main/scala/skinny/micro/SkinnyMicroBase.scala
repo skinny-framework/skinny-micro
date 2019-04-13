@@ -386,7 +386,7 @@ trait SkinnyMicroBase
       actionResult.headers.find {
         case (name, value) => name equalsIgnoreCase "CONTENT-TYPE"
       }.getOrElse(("Content-Type", contentTypeInferrer(actionResult.body)))._2
-    //    case Unit | _: Unit => null
+    //    case () | _: Unit => null
     case _ => "text/html"
   }
 
@@ -397,7 +397,7 @@ trait SkinnyMicroBase
    */
   protected def renderResponseBody(actionResult: Any)(implicit ctx: SkinnyContext): Unit = {
     @tailrec def loop(ar: Any): Any = ar match {
-      case _: Unit | Unit => runRenderCallbacks(Success(actionResult))(ctx)
+      case _: Unit | () => runRenderCallbacks(Success(actionResult))(ctx)
       case a => loop(renderPipeline(ctx).lift(a).getOrElse(()))
     }
     def handle(e: Throwable) = {
@@ -453,9 +453,9 @@ trait SkinnyMicroBase
         in => util.io.zeroCopy(in, ctx.response.outputStream)
       }
     // If an action returns Unit, it assumes responsibility for the response
-    case _: Unit | Unit | null =>
+    case _: Unit | () | null =>
     // If an action returns Unit, it assumes responsibility for the response
-    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _, contentType, charset, cs) =>
+    case ActionResult(ResponseStatus(404, _), _: Unit | (), _, contentType, charset, cs) =>
       contentType.foreach(ct => this.contentType = ct)
       charset.foreach(c => response.setCharacterEncoding(c))
       cookies ++= cs
@@ -477,7 +477,7 @@ trait SkinnyMicroBase
     try {
       var rendered = false
       e match {
-        case HaltException(Some(404), _, _, _: Unit | Unit) |
+        case HaltException(Some(404), _, _, _: Unit | ()) |
           HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _, _, _, _, _)) =>
           renderResponse(doNotFound())(ctx)
           rendered = true

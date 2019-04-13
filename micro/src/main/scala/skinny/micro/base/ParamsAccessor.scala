@@ -20,9 +20,11 @@ trait ParamsAccessor extends ServletApiImplicits {
   def multiParams(implicit ctx: SkinnyContext): MultiParams = {
     val req = ctx.request
     val read = req.contains("MultiParamsRead")
-    val found = req.get(MultiParamsKey)
-      .map(_.asInstanceOf[MultiParams] ++ (if (read) Map.empty else req.multiParameters))
-    val multi = found.getOrElse(req.multiParameters)
+    val found: Option[Map[String, Seq[String]]] = req.get(MultiParamsKey).map { attribute: Any =>
+      val m = attribute.asInstanceOf[Map[String, Seq[String]]]
+      m ++ (if (read) Map.empty else req.multiParameters)
+    }
+    val multi: Map[String, Seq[String]] = found.getOrElse(req.multiParameters)
     req("MultiParamsRead") = new {}
     req(MultiParamsKey) = multi
     multi.withDefaultValue(Seq.empty)

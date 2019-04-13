@@ -33,14 +33,15 @@ object RouteMetadataSpec {
 
   def servlet = new SkinnyMicroServlet {
     val zero: Route = get("/zero/:key") {
+      // TODO: Since Scala 2.13.0-RC1 need to use view.filterKeys
       zero.metadata.filterKeys(_ != skinny.micro.Handler.RouteMetadataHttpMethodCacheKey).size.toString
     }
 
-    val one: Route = get("/one/:key", meta('foo, "bar")) {
+    val one: Route = get("/one/:key", meta(Symbol("foo"), "bar")) {
       renderMeta(one, Symbol(params("key")))
     }
 
-    val two: Route = get("/two/:key", meta('foo, "bar"), meta('foo, "baz")) {
+    val two: Route = get("/two/:key", meta(Symbol("foo"), "bar"), meta(Symbol("foo"), "baz")) {
       renderMeta(two, Symbol(params("key")))
     }
 

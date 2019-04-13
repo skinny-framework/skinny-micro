@@ -31,11 +31,11 @@ class ParamsTestServlet extends SkinnyMicroServlet {
   }
 
   get("/symbol/:sym") {
-    params('sym)
+    params(Symbol("sym"))
   }
 
   get("/twoSymbols/:sym1/:sym2") {
-    params('sym1) + " and " + params('sym2)
+    params(Symbol("sym1")) + " and " + params(Symbol("sym2"))
   }
 
   post("/read-body") {
