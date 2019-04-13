@@ -6,7 +6,7 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.2-RC3-SNAPSHOT"
+lazy val currentVersion = "2.0.2-RC3"
 
 lazy val json4SVersion = "3.6.5"
 lazy val mockitoVersion = "2.26.0"
@@ -154,7 +154,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.2"    % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.3"    % Compile excludeAll(fullExclusionRules: _*),
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
