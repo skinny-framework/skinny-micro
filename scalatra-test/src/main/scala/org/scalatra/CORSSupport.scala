@@ -66,7 +66,7 @@ object CorsSupport {
     "Content-Type").mkString(",")
 
 }
-trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
+trait CorsSupport extends Handler with Initializable { self: ScalatraBase =>
 
   import CorsSupport._
 
@@ -147,7 +147,7 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
 
   private[this] def isSimpleHeader(header: String) = {
     val ho = header.blankOption
-    ho.isDefined && (ho forall { h ⇒
+    ho.isDefined && (ho forall { h =>
       val hu = h.toUpperCase(ENGLISH)
       SimpleHeaders.contains(hu) || (hu == "CONTENT-TYPE" &&
         SimpleContentTypes.exists((request.contentType.getOrElse("")).toUpperCase(ENGLISH).startsWith))
@@ -189,18 +189,18 @@ trait CorsSupport extends Handler with Initializable { self: ScalatraBase ⇒
     withRequestResponse(req, res) {
       //      logger debug "the headers are: %s".format(req.getHeaderNames.mkString(", "))
       request.requestMethod match {
-        case Options if isPreflightRequest ⇒ {
+        case Options if isPreflightRequest => {
           handlePreflightRequest()
         }
-        case Get | Post | Head if isSimpleRequest ⇒ {
+        case Get | Post | Head if isSimpleRequest => {
           augmentSimpleRequest()
           super.handle(req, res)
         }
-        case _ if isCORSRequest ⇒ {
+        case _ if isCORSRequest => {
           augmentSimpleRequest()
           super.handle(req, res)
         }
-        case _ ⇒ super.handle(req, res)
+        case _ => super.handle(req, res)
       }
     }
   }

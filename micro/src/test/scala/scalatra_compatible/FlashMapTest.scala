@@ -13,7 +13,7 @@ class FlashMapTest extends FunSuite with Matchers with BeforeAndAfterEach {
 
   override def beforeEach = flash = new FlashMap()
 
-  test("values are visible immmediately") {
+  test("values are visible immediately") {
     flash("foo") = "bar"
     flash.get("foo") should equal(Some("bar"))
   }
@@ -126,7 +126,7 @@ class FlashMapTest extends FunSuite with Matchers with BeforeAndAfterEach {
   test("supports symbols as keys") {
     flash("foo") = "bar"
     flash.sweep()
-    flash('foo) should equal("bar")
+    flash(Symbol("foo")) should equal("bar")
   }
 
   test("is serializable") {

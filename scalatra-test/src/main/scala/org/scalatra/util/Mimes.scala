@@ -82,7 +82,7 @@ trait Mimes {
     }
   }
 
-  private def detectMime(fallback: String = DefaultMime)(mimeDetect: ⇒ String) = {
+  private def detectMime(fallback: String = DefaultMime)(mimeDetect: => String) = {
     def errorHandler(t: Throwable) = {
       internalLogger.warn("There was an error detecting the mime type. ", t)
       fallback
@@ -92,7 +92,7 @@ trait Mimes {
 
   def isTextMime(mime: String) = MimeUtil2.isTextMimeType(new MimeType(mime))
 
-  private def quiet(fn: ⇒ Unit) =
+  private def quiet(fn: => Unit) =
     allCatch.withApply(internalLogger.warn("An error occurred while registering a mime type detector.", _))(fn)
 
   def apply(input: InputStream) = inputStreamMime(input)

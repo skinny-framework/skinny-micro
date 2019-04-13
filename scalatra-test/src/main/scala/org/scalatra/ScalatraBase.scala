@@ -393,7 +393,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
    */
   protected def renderResponseBody(actionResult: Any): Unit = {
     @tailrec def loop(ar: Any): Any = ar match {
-      case _: Unit | Unit => runRenderCallbacks(Success(actionResult))
+      case _: Unit | () => runRenderCallbacks(Success(actionResult))
       case a => loop(renderPipeline.lift(a) getOrElse ((): Unit))
     }
     try {
@@ -439,9 +439,9 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
         in => zeroCopy(in, response.outputStream)
       }
     // If an action returns Unit, it assumes responsibility for the response
-    case _: Unit | Unit | null =>
+    case _: Unit | () | null =>
     // If an action returns Unit, it assumes responsibility for the response
-    case ActionResult(ResponseStatus(404, _), _: Unit | Unit, _) => doNotFound()
+    case ActionResult(ResponseStatus(404, _), _: Unit | (), _) => doNotFound()
     case actionResult: ActionResult =>
       response.status = actionResult.status
       actionResult.headers.foreach {
@@ -496,7 +496,7 @@ trait ScalatraBase extends ScalatraContext with CoreDsl with DynamicScope with I
     try {
       var rendered = false
       e match {
-        case HaltException(Some(404), _, _, _: Unit | Unit) | HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _: Unit | Unit, _)) =>
+        case HaltException(Some(404), _, _, _: Unit | ()) | HaltException(_, _, _, ActionResult(ResponseStatus(404, _), _: Unit | (), _)) =>
           renderResponse(doNotFound())
           rendered = true
         case HaltException(Some(status), Some(reason), _, _) =>

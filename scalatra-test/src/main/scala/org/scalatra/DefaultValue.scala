@@ -101,7 +101,7 @@ trait DefaultValueImplicits {
   implicit def Tuple4DefaultValue[A, B, C, D](implicit az: DefaultValue[A], bz: DefaultValue[B], cz: DefaultValue[C], dz: DefaultValue[D]): DefaultValue[(A, B, C, D)] =
     default((az.default, bz.default, cz.default, dz.default))
 
-  implicit def Function1ABDefaultValue[A, B: DefaultValue]: DefaultValue[A ⇒ B] = default((_: A) ⇒ mdefault[B])
+  implicit def Function1ABDefaultValue[A, B: DefaultValue]: DefaultValue[A => B] = default((_: A) => mdefault[B])
 
   import java.util._
   import java.util.concurrent._

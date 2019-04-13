@@ -25,7 +25,7 @@ trait FutureSupport extends AsyncSupport {
 
   implicit protected def executor: ExecutionContext
 
-  override def asynchronously(f: ⇒ Any): Action = () ⇒ Future(f)
+  override def asynchronously(f: => Any): Action = () => Future(f)
 
   // Still thinking of the best way to specify this before making it public.
   // In the meantime, this gives us enough control for our test.
@@ -40,9 +40,9 @@ trait FutureSupport extends AsyncSupport {
 
   override protected def renderResponse(actionResult: Any): Unit = {
     actionResult match {
-      case r: AsyncResult ⇒ handleFuture(r.is, r.timeout)
-      case f: Future[_] ⇒ handleFuture(f, asyncTimeout)
-      case a ⇒ super.renderResponse(a)
+      case r: AsyncResult => handleFuture(r.is, r.timeout)
+      case f: Future[_] => handleFuture(f, asyncTimeout)
+      case a => super.renderResponse(a)
     }
   }
 
@@ -56,17 +56,17 @@ trait FutureSupport extends AsyncSupport {
         // Loop until we have a non-future result
         case Success(f2: Future[_]) => renderFutureResult(f2)
         case Success(r: AsyncResult) => renderFutureResult(r.is)
-        case t ⇒ {
+        case t => {
 
           if (gotResponseAlready.compareAndSet(false, true)) {
             withinAsyncContext(context) {
               try {
-                t map { result ⇒
+                t map { result =>
                   renderResponse(result)
                 } recover {
-                  case e: HaltException ⇒
+                  case e: HaltException =>
                     renderHaltException(e)
-                  case e ⇒
+                  case e =>
                     try {
                       renderResponse(errorHandler(e))
                     } catch {

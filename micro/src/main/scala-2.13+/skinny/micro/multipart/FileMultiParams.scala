@@ -16,7 +16,7 @@ class FileMultiParams(
 
   override def default(a: String): Seq[FileItem] = wrapped.default(a)
 
-  override def remove(key: String): Map[String, Seq[FileItem]] = {
+  override def removed(key: String): Map[String, Seq[FileItem]] = {
     wrapped - key
   }
 

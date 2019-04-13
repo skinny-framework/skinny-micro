@@ -17,11 +17,11 @@ class SessionTestServlet extends SkinnyMicroServlet {
     sessionOption map { _ => "Some" } getOrElse "None"
   }
   get("/session-symbol") {
-    session.getOrElse('val, "failure!")
+    session.getOrElse(Symbol("val"), "failure!")
   }
 
   post("/session-symbol-update") {
-    session('val) = "set with symbol"
+    session(Symbol("val")) = "set with symbol"
   }
 }
 

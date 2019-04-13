@@ -9,9 +9,9 @@ private object ActionResultHelpers {
 import ActionResultHelpers._
 import skinny.micro.cookie.Cookie
 
-object Ok extends ActionResult(responseStatus(200), Unit, Map.empty) {
+object Ok extends ActionResult(responseStatus(200), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -24,9 +24,9 @@ object Ok extends ActionResult(responseStatus(200), Unit, Map.empty) {
     cookies)
 }
 
-object Created extends ActionResult(responseStatus(201), Unit, Map.empty) {
+object Created extends ActionResult(responseStatus(201), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -39,9 +39,9 @@ object Created extends ActionResult(responseStatus(201), Unit, Map.empty) {
     cookies)
 }
 
-object Accepted extends ActionResult(responseStatus(202), Unit, Map.empty) {
+object Accepted extends ActionResult(responseStatus(202), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -54,9 +54,9 @@ object Accepted extends ActionResult(responseStatus(202), Unit, Map.empty) {
     cookies)
 }
 
-object NonAuthoritativeInformation extends ActionResult(responseStatus(203), Unit, Map.empty) {
+object NonAuthoritativeInformation extends ActionResult(responseStatus(203), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -69,37 +69,37 @@ object NonAuthoritativeInformation extends ActionResult(responseStatus(203), Uni
     cookies)
 }
 
-object NoContent extends ActionResult(responseStatus(204), Unit, Map.empty) {
+object NoContent extends ActionResult(responseStatus(204), (), Map.empty) {
   def apply(
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(204),
-    Unit,
+    (),
     headers,
     contentType,
     charset,
     cookies)
 }
 
-object ResetContent extends ActionResult(responseStatus(205), Unit, Map.empty) {
+object ResetContent extends ActionResult(responseStatus(205), (), Map.empty) {
   def apply(
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(205),
-    Unit,
+    (),
     headers,
     contentType,
     charset,
     cookies)
 }
 
-object PartialContent extends ActionResult(responseStatus(206), Unit, Map.empty) {
+object PartialContent extends ActionResult(responseStatus(206), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -112,9 +112,9 @@ object PartialContent extends ActionResult(responseStatus(206), Unit, Map.empty)
     cookies)
 }
 
-object MultiStatus extends ActionResult(responseStatus(207), Unit, Map.empty) {
+object MultiStatus extends ActionResult(responseStatus(207), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -127,9 +127,9 @@ object MultiStatus extends ActionResult(responseStatus(207), Unit, Map.empty) {
     cookies)
 }
 
-object AlreadyReported extends ActionResult(responseStatus(208), Unit, Map.empty) {
+object AlreadyReported extends ActionResult(responseStatus(208), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -142,9 +142,9 @@ object AlreadyReported extends ActionResult(responseStatus(208), Unit, Map.empty
     cookies)
 }
 
-object IMUsed extends ActionResult(responseStatus(226), Unit, Map.empty) {
+object IMUsed extends ActionResult(responseStatus(226), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -157,9 +157,9 @@ object IMUsed extends ActionResult(responseStatus(226), Unit, Map.empty) {
     cookies)
 }
 
-object MultipleChoices extends ActionResult(responseStatus(300), Unit, Map.empty) {
+object MultipleChoices extends ActionResult(responseStatus(300), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -180,7 +180,7 @@ object MovedPermanently {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(301),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
@@ -195,7 +195,7 @@ object Found {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(302),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
@@ -210,21 +210,21 @@ object SeeOther {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(303),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
     cookies)
 }
 
-object NotModified extends ActionResult(responseStatus(304), Unit, Map.empty) {
+object NotModified extends ActionResult(responseStatus(304), (), Map.empty) {
   def apply(
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(304),
-    Unit,
+    (),
     headers,
     contentType,
     charset,
@@ -239,7 +239,7 @@ object UseProxy {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(305),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
@@ -254,7 +254,7 @@ object TemporaryRedirect {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(307),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
@@ -269,16 +269,16 @@ object PermanentRedirect {
     charset: Option[String] = None,
     cookies: Seq[Cookie] = Seq.empty) = ActionResult(
     responseStatus(308),
-    Unit,
+    (),
     Map("Location" -> location) ++ headers,
     contentType,
     charset,
     cookies)
 }
 
-object BadRequest extends ActionResult(responseStatus(400), Unit, Map.empty) {
+object BadRequest extends ActionResult(responseStatus(400), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -291,9 +291,9 @@ object BadRequest extends ActionResult(responseStatus(400), Unit, Map.empty) {
     cookies)
 }
 
-object Unauthorized extends ActionResult(responseStatus(401), Unit, Map.empty) {
+object Unauthorized extends ActionResult(responseStatus(401), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -306,9 +306,9 @@ object Unauthorized extends ActionResult(responseStatus(401), Unit, Map.empty) {
     cookies)
 }
 
-object PaymentRequired extends ActionResult(responseStatus(402), Unit, Map.empty) {
+object PaymentRequired extends ActionResult(responseStatus(402), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -321,9 +321,9 @@ object PaymentRequired extends ActionResult(responseStatus(402), Unit, Map.empty
     cookies)
 }
 
-object Forbidden extends ActionResult(responseStatus(403), Unit, Map.empty) {
+object Forbidden extends ActionResult(responseStatus(403), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -336,9 +336,9 @@ object Forbidden extends ActionResult(responseStatus(403), Unit, Map.empty) {
     cookies)
 }
 
-object NotFound extends ActionResult(responseStatus(404), Unit, Map.empty) {
+object NotFound extends ActionResult(responseStatus(404), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -351,9 +351,9 @@ object NotFound extends ActionResult(responseStatus(404), Unit, Map.empty) {
     cookies)
 }
 
-object MethodNotAllowed extends ActionResult(responseStatus(405), Unit, Map.empty) {
+object MethodNotAllowed extends ActionResult(responseStatus(405), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -366,9 +366,9 @@ object MethodNotAllowed extends ActionResult(responseStatus(405), Unit, Map.empt
     cookies)
 }
 
-object NotAcceptable extends ActionResult(responseStatus(406), Unit, Map.empty) {
+object NotAcceptable extends ActionResult(responseStatus(406), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -381,9 +381,9 @@ object NotAcceptable extends ActionResult(responseStatus(406), Unit, Map.empty) 
     cookies)
 }
 
-object ProxyAuthenticationRequired extends ActionResult(responseStatus(407), Unit, Map.empty) {
+object ProxyAuthenticationRequired extends ActionResult(responseStatus(407), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -396,9 +396,9 @@ object ProxyAuthenticationRequired extends ActionResult(responseStatus(407), Uni
     cookies)
 }
 
-object RequestTimeout extends ActionResult(responseStatus(408), Unit, Map.empty) {
+object RequestTimeout extends ActionResult(responseStatus(408), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -411,9 +411,9 @@ object RequestTimeout extends ActionResult(responseStatus(408), Unit, Map.empty)
     cookies)
 }
 
-object Conflict extends ActionResult(responseStatus(409), Unit, Map.empty) {
+object Conflict extends ActionResult(responseStatus(409), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -426,9 +426,9 @@ object Conflict extends ActionResult(responseStatus(409), Unit, Map.empty) {
     cookies)
 }
 
-object Gone extends ActionResult(responseStatus(410), Unit, Map.empty) {
+object Gone extends ActionResult(responseStatus(410), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -441,9 +441,9 @@ object Gone extends ActionResult(responseStatus(410), Unit, Map.empty) {
     cookies)
 }
 
-object LengthRequired extends ActionResult(responseStatus(411), Unit, Map.empty) {
+object LengthRequired extends ActionResult(responseStatus(411), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -456,9 +456,9 @@ object LengthRequired extends ActionResult(responseStatus(411), Unit, Map.empty)
     cookies)
 }
 
-object PreconditionFailed extends ActionResult(responseStatus(412), Unit, Map.empty) {
+object PreconditionFailed extends ActionResult(responseStatus(412), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -471,9 +471,9 @@ object PreconditionFailed extends ActionResult(responseStatus(412), Unit, Map.em
     cookies)
 }
 
-object RequestEntityTooLarge extends ActionResult(responseStatus(413), Unit, Map.empty) {
+object RequestEntityTooLarge extends ActionResult(responseStatus(413), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -486,9 +486,9 @@ object RequestEntityTooLarge extends ActionResult(responseStatus(413), Unit, Map
     cookies)
 }
 
-object RequestURITooLong extends ActionResult(responseStatus(414), Unit, Map.empty) {
+object RequestURITooLong extends ActionResult(responseStatus(414), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -501,9 +501,9 @@ object RequestURITooLong extends ActionResult(responseStatus(414), Unit, Map.emp
     cookies)
 }
 
-object UnsupportedMediaType extends ActionResult(responseStatus(415), Unit, Map.empty) {
+object UnsupportedMediaType extends ActionResult(responseStatus(415), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -516,9 +516,9 @@ object UnsupportedMediaType extends ActionResult(responseStatus(415), Unit, Map.
     cookies)
 }
 
-object RequestedRangeNotSatisfiable extends ActionResult(responseStatus(416), Unit, Map.empty) {
+object RequestedRangeNotSatisfiable extends ActionResult(responseStatus(416), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -531,9 +531,9 @@ object RequestedRangeNotSatisfiable extends ActionResult(responseStatus(416), Un
     cookies)
 }
 
-object ExpectationFailed extends ActionResult(responseStatus(417), Unit, Map.empty) {
+object ExpectationFailed extends ActionResult(responseStatus(417), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -546,9 +546,9 @@ object ExpectationFailed extends ActionResult(responseStatus(417), Unit, Map.emp
     cookies)
 }
 
-object UnprocessableEntity extends ActionResult(responseStatus(422), Unit, Map.empty) {
+object UnprocessableEntity extends ActionResult(responseStatus(422), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -561,9 +561,9 @@ object UnprocessableEntity extends ActionResult(responseStatus(422), Unit, Map.e
     cookies)
 }
 
-object Locked extends ActionResult(responseStatus(423), Unit, Map.empty) {
+object Locked extends ActionResult(responseStatus(423), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -576,9 +576,9 @@ object Locked extends ActionResult(responseStatus(423), Unit, Map.empty) {
     cookies)
 }
 
-object FailedDependency extends ActionResult(responseStatus(424), Unit, Map.empty) {
+object FailedDependency extends ActionResult(responseStatus(424), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -591,9 +591,9 @@ object FailedDependency extends ActionResult(responseStatus(424), Unit, Map.empt
     cookies)
 }
 
-object UpgradeRequired extends ActionResult(responseStatus(426), Unit, Map.empty) {
+object UpgradeRequired extends ActionResult(responseStatus(426), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -606,9 +606,9 @@ object UpgradeRequired extends ActionResult(responseStatus(426), Unit, Map.empty
     cookies)
 }
 
-object PreconditionRequired extends ActionResult(responseStatus(428), Unit, Map.empty) {
+object PreconditionRequired extends ActionResult(responseStatus(428), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -621,9 +621,9 @@ object PreconditionRequired extends ActionResult(responseStatus(428), Unit, Map.
     cookies)
 }
 
-object TooManyRequests extends ActionResult(responseStatus(429), Unit, Map.empty) {
+object TooManyRequests extends ActionResult(responseStatus(429), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -636,9 +636,9 @@ object TooManyRequests extends ActionResult(responseStatus(429), Unit, Map.empty
     cookies)
 }
 
-object RequestHeaderFieldsTooLarge extends ActionResult(responseStatus(431), Unit, Map.empty) {
+object RequestHeaderFieldsTooLarge extends ActionResult(responseStatus(431), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -651,9 +651,9 @@ object RequestHeaderFieldsTooLarge extends ActionResult(responseStatus(431), Uni
     cookies)
 }
 
-object InternalServerError extends ActionResult(responseStatus(500), Unit, Map.empty) {
+object InternalServerError extends ActionResult(responseStatus(500), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -666,9 +666,9 @@ object InternalServerError extends ActionResult(responseStatus(500), Unit, Map.e
     cookies)
 }
 
-object NotImplemented extends ActionResult(responseStatus(501), Unit, Map.empty) {
+object NotImplemented extends ActionResult(responseStatus(501), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -681,9 +681,9 @@ object NotImplemented extends ActionResult(responseStatus(501), Unit, Map.empty)
     cookies)
 }
 
-object BadGateway extends ActionResult(responseStatus(502), Unit, Map.empty) {
+object BadGateway extends ActionResult(responseStatus(502), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -696,9 +696,9 @@ object BadGateway extends ActionResult(responseStatus(502), Unit, Map.empty) {
     cookies)
 }
 
-object ServiceUnavailable extends ActionResult(responseStatus(503), Unit, Map.empty) {
+object ServiceUnavailable extends ActionResult(responseStatus(503), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -711,9 +711,9 @@ object ServiceUnavailable extends ActionResult(responseStatus(503), Unit, Map.em
     cookies)
 }
 
-object GatewayTimeout extends ActionResult(responseStatus(504), Unit, Map.empty) {
+object GatewayTimeout extends ActionResult(responseStatus(504), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -726,9 +726,9 @@ object GatewayTimeout extends ActionResult(responseStatus(504), Unit, Map.empty)
     cookies)
 }
 
-object HTTPVersionNotSupported extends ActionResult(responseStatus(505), Unit, Map.empty) {
+object HTTPVersionNotSupported extends ActionResult(responseStatus(505), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -741,9 +741,9 @@ object HTTPVersionNotSupported extends ActionResult(responseStatus(505), Unit, M
     cookies)
 }
 
-object VariantAlsoNegotiates extends ActionResult(responseStatus(506), Unit, Map.empty) {
+object VariantAlsoNegotiates extends ActionResult(responseStatus(506), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -756,9 +756,9 @@ object VariantAlsoNegotiates extends ActionResult(responseStatus(506), Unit, Map
     cookies)
 }
 
-object InsufficientStorage extends ActionResult(responseStatus(507), Unit, Map.empty) {
+object InsufficientStorage extends ActionResult(responseStatus(507), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -771,9 +771,9 @@ object InsufficientStorage extends ActionResult(responseStatus(507), Unit, Map.e
     cookies)
 }
 
-object LoopDetected extends ActionResult(responseStatus(508), Unit, Map.empty) {
+object LoopDetected extends ActionResult(responseStatus(508), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -786,9 +786,9 @@ object LoopDetected extends ActionResult(responseStatus(508), Unit, Map.empty) {
     cookies)
 }
 
-object NotExtended extends ActionResult(responseStatus(510), Unit, Map.empty) {
+object NotExtended extends ActionResult(responseStatus(510), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
@@ -801,9 +801,9 @@ object NotExtended extends ActionResult(responseStatus(510), Unit, Map.empty) {
     cookies)
 }
 
-object NetworkAuthenticationRequired extends ActionResult(responseStatus(511), Unit, Map.empty) {
+object NetworkAuthenticationRequired extends ActionResult(responseStatus(511), (), Map.empty) {
   def apply(
-    body: Any = Unit,
+    body: Any = (),
     headers: Map[String, String] = Map.empty,
     contentType: Option[String] = None,
     charset: Option[String] = None,
