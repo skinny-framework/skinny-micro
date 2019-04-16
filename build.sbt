@@ -179,7 +179,7 @@ lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.testng"         %  "testng"           % "6.14.3"         % Compile,
     "org.mockito"        %  "mockito-core"     % mockitoVersion   % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.9"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile, // TODO: 4.5.7 behaves differently
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
@@ -192,7 +192,7 @@ lazy val microTest = (project in file("micro-test")).settings(baseSettings ++ mi
   name := "skinny-micro-test",
   libraryDependencies ++= servletApiDependencies ++ Seq(
     "junit"              %  "junit"            % "4.12"           % Compile,
-    "org.apache.commons" %  "commons-lang3"    % "3.8.1"          % Compile,
+    "org.apache.commons" %  "commons-lang3"    % "3.9"            % Compile,
     "org.eclipse.jetty"  %  "jetty-webapp"     % jettyVersion     % Compile,
     "org.apache.httpcomponents" % "httpclient" % "4.5.6"          % Compile, // TODO: 4.5.7 behaves differently
     "org.apache.httpcomponents" % "httpmime"   % "4.5.6"          % Compile,
