@@ -5,11 +5,12 @@ scala:
   - 2.12.8
   - 2.13.0
 jdk:
-  - oraclejdk8
+  - openjdk8
+dist: xenial
 matrix:
   include:
   - scala: 2.12.8
-    jdk: oraclejdk9
+    jdk: openjdk9
   - scala: 2.12.8
     jdk: openjdk11
 cache:
