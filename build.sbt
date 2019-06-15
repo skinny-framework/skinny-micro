@@ -6,15 +6,15 @@ import sbt.Keys._
 
 import scala.language.postfixOps
 
-lazy val currentVersion = "2.0.2-RC3"
+lazy val currentVersion = "2.1.0"
 
 lazy val json4SVersion = "3.6.6"
 lazy val mockitoVersion = "2.26.0"
 lazy val jettyVersion = "9.4.16.v20190411"
 lazy val logbackVersion = "1.2.3"
 lazy val slf4jApiVersion = "1.7.26"
-lazy val jacksonVersion = "2.9.8"
-lazy val jacksonScalaVersion = "2.9.8"
+lazy val jacksonVersion = "2.9.9"
+lazy val jacksonScalaVersion = "2.9.9"
 lazy val scalatestV = SettingKey[String]("scalatestVersion")
 
 lazy val baseSettings = Seq(
@@ -29,12 +29,7 @@ lazy val baseSettings = Seq(
     "org.scala-lang" %  "scala-reflect"  % scalaVersion.value,
     "org.scala-lang" %  "scala-compiler" % scalaVersion.value
   ),
-  scalatestV := {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, v)) if v >= 13 => "3.0.8-RC2"
-      case _ =>                       "3.0.6"
-    }
-  },
+  scalatestV := "3.0.8",
   unmanagedSourceDirectories in Compile += {
     val base = (sourceDirectory in Compile).value.getParentFile / Defaults.nameForSrc(Compile.name)
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -44,8 +39,8 @@ lazy val baseSettings = Seq(
   },
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.13.0-RC1",
-  crossScalaVersions := Seq("2.13.0-RC1", "2.12.8", "2.11.12"),
+  scalaVersion := "2.13.0",
+  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xfuture"),
   scalacOptions += {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -154,7 +149,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.3"    % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.4"    % Compile excludeAll(fullExclusionRules: _*),
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -171,10 +166,7 @@ lazy val microServer = (project in file("micro-server")).settings(baseSettings +
 lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings ++ Seq(
   name := "scalatra-test",
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-    "org.scala-lang.modules" %% "scala-collection-compat" % {
-      if (scalaVersion.value == "2.13.0-RC1") "1.0.0"
-      else "0.1.1" // for backward compatibilities
-    },
+    "org.scala-lang.modules" %% "scala-collection-compat" % "2.0.0",
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "junit"              %  "junit"            % "4.12"           % Compile,
     "org.testng"         %  "testng"           % "6.14.3"         % Compile,
@@ -230,9 +222,8 @@ lazy val slf4jApiDependencies   = Seq(
 lazy val jacksonDependencies = Seq(
   "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
-// TODO: replacae with officially released one
 lazy val jacksonDependencies213 = Seq(
-  "org.skinny-framework.com.fasterxml.jackson.module" %% "jackson-module-scala" % (jacksonScalaVersion + "-fork-20190413") % Compile
+  "com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonScalaVersion % Compile
 )
 lazy val json4sDependencies = Seq(
   "org.json4s"    %% "json4s-jackson"     % json4SVersion    % Compile  excludeAll(fullExclusionRules: _*),

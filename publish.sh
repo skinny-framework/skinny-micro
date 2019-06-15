@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sbt ++2.13.0-RC1 \
+sbt ++2.13.0 \
   clean \
   microCommon/publishSigned \
   micro/publishSigned \
