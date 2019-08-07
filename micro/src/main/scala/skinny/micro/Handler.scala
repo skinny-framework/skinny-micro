@@ -85,6 +85,6 @@ object Handler {
   /**
    * To save the HTTP method into route's metadata.
    */
-  val RouteMetadataHttpMethodCacheKey: Symbol = 'HttpMethodSavedBySkinnyFramework
+  val RouteMetadataHttpMethodCacheKey: Symbol = Symbol("HttpMethodSavedBySkinnyFramework")
 
 }
