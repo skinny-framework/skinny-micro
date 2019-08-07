@@ -84,7 +84,7 @@ trait ApiFormats extends SkinnyMicroBase with RicherStringImplicits {
   /**
    * The default format.
    */
-  def defaultFormat: Symbol = 'html
+  def defaultFormat: Symbol = Symbol("html")
 
   /**
    * A list of formats accepted by default.
