@@ -1,8 +1,10 @@
 package skinny
 
 import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class SkinnyEnvSpec extends FlatSpec with Matchers {
+class SkinnyEnvSpec extends AnyFlatSpec with Matchers {
 
   behavior of "SkinnyEnv"
 

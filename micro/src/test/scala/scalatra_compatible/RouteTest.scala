@@ -4,7 +4,7 @@
 package scalatra_compatible
 
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import org.scalatestplus.junit.JUnitRunner
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.SkinnyMicroServlet
 import skinny.micro.routing.RouteMatcher

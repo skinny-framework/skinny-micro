@@ -2,10 +2,11 @@ package scalatra_compatible
 
 import java.util.MissingResourceException
 
-import org.scalatest.{ Matchers, WordSpec }
 import skinny.micro.contrib.i18n.Messages
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class MessagesSpec extends WordSpec with Matchers {
+class MessagesSpec extends AnyWordSpec with Matchers {
   val messages = Messages()
   "Messages" when {
     "able to find a message" should {

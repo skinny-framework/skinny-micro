@@ -2,8 +2,10 @@ package scalatra_compatible
 
 import org.scalatest._
 import skinny.micro.SkinnyMicroServletBase
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class ScalatraServletRequestPathSpec extends WordSpec with MustMatchers {
+class ScalatraServletRequestPathSpec extends AnyWordSpec with Matchers {
 
   "a ScalatraServlet requestPath" should {
 

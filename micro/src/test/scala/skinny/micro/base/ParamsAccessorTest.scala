@@ -4,13 +4,14 @@ import javax.servlet.ServletContext
 import javax.servlet.http.{ HttpServletRequest, HttpServletResponse }
 import org.mockito.Mockito
 import org.mockito.stubbing.Stubber
-import org.scalatest.{ FunSuite, Matchers }
 import org.scalatestplus.mockito.MockitoSugar
 import skinny.micro.UnstableAccessValidation
 import skinny.micro.context.SkinnyContext
 import skinny.micro.implicits.ServletApiImplicits
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-class ParamsAccessorTest extends FunSuite with Matchers with MockitoSugar with ServletApiImplicits {
+class ParamsAccessorTest extends AnyFunSuite with Matchers with MockitoSugar with ServletApiImplicits {
 
   test("Compatibility with Scala 2.13.0-RC1") {
     val paramsAccessor = new ParamsAccessor {}

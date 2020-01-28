@@ -7,9 +7,11 @@ import org.scalatest._
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 class HttpComponentsClientSpec
-  extends WordSpec
+  extends AnyWordSpec
   with Matchers
   with BeforeAndAfter
   with HttpComponentsClient

@@ -1,7 +1,7 @@
 package scalatra_compatible
 
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import org.scalatestplus.junit.JUnitRunner
 import org.scalatra.test.scalatest.ScalatraFunSuite
 import skinny.micro.context.SkinnyContext
 import skinny.micro.{ SkinnyMicroServlet, SkinnyMicroFilter }

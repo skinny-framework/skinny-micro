@@ -28,7 +28,7 @@ class TypedMinimumAppSpec extends SkinnyFunSpec {
         status should equal(200)
         body should equal("Hello, World!")
         header("Content-Type") should equal("text/plain;charset=utf-8")
-        header("Set-Cookie") should equal("theme=light;Path=/")
+        header("Set-Cookie") should equal("theme=light; Path=/")
       }
 
       get("/hello-with-cookie-2") {

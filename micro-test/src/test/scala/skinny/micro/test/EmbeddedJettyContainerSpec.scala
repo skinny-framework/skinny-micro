@@ -3,8 +3,10 @@ package skinny.micro.test
 import javax.servlet.http._
 
 import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class EmbeddedJettyContainerSpec extends WordSpec
+class EmbeddedJettyContainerSpec extends AnyWordSpec
   with Matchers
   with BeforeAndAfter
   with EmbeddedJettyContainer

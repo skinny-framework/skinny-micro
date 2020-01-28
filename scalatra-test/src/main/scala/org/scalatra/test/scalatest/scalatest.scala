@@ -3,8 +3,15 @@ package scalatest
 
 import org.junit.runner.RunWith
 import org.scalatest._
-import org.scalatest.junit.{ JUnitSuite, JUnit3Suite, JUnitRunner }
-import org.scalatest.testng.TestNGSuite
+import org.scalatestplus.junit.{ JUnitSuite, JUnit3Suite, JUnitRunner }
+import org.scalatestplus.testng.TestNGSuite
+import org.scalatest.featurespec.AnyFeatureSpec
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 @RunWith(classOf[JUnitRunner]) /**
  * Provides Scalatra test support to ScalaTest suites.  The servlet tester
@@ -33,29 +40,29 @@ trait ScalatraTestNGSuite extends TestNGSuite with ScalatraSuite
 /**
  * Convenience trait to add Scalatra test support to FeatureSpec.
  */
-trait ScalatraFeatureSpec extends FeatureSpec with ScalatraSuite
+trait ScalatraFeatureSpec extends AnyFeatureSpec with ScalatraSuite
 
 /**
  * Convenience trait to add Scalatra test support to Spec.
  */
-trait ScalatraSpec extends FunSpec with ScalatraSuite
+trait ScalatraSpec extends AnyFunSpec with ScalatraSuite
 
 /**
  * Convenience trait to add Scalatra test support to FlatSpec.
  */
-trait ScalatraFlatSpec extends FlatSpec with ScalatraSuite
+trait ScalatraFlatSpec extends AnyFlatSpec with ScalatraSuite
 
 /**
  * Convenience trait to add Scalatra test support to FreeSpec.
  */
-trait ScalatraFreeSpec extends FreeSpec with ScalatraSuite
+trait ScalatraFreeSpec extends AnyFreeSpec with ScalatraSuite
 
 /**
  * Convenience trait to add Scalatra test support to WordSpec.
  */
-trait ScalatraWordSpec extends WordSpec with ScalatraSuite
+trait ScalatraWordSpec extends AnyWordSpec with ScalatraSuite
 
 /**
  * Convenience trait to add Scalatra test support to FunSuite.
  */
-trait ScalatraFunSuite extends FunSuite with ScalatraSuite
+trait ScalatraFunSuite extends AnyFunSuite with ScalatraSuite

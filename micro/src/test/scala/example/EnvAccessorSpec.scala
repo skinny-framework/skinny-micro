@@ -2,8 +2,10 @@ package example
 
 import org.scalatest._
 import skinny.micro.WebApp
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class EnvAccessorSpec extends FlatSpec with Matchers {
+class EnvAccessorSpec extends AnyFlatSpec with Matchers {
 
   behavior of "EnvFeature"
 
