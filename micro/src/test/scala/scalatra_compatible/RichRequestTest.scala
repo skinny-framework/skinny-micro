@@ -6,12 +6,13 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.{ ReadListener, ServletInputStream }
 
 import org.mockito.Mockito._
-import org.scalatest.{ FunSuite, Matchers }
 import skinny.micro.request.RichRequest
 
 import scala.language.implicitConversions
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-class RichRequestTest extends FunSuite with Matchers {
+class RichRequestTest extends AnyFunSuite with Matchers {
   implicit def requestWrapper(r: HttpServletRequest) = RichRequest(r)
 
   test("decodes body according to the character encoding") {

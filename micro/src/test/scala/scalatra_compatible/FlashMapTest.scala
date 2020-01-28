@@ -3,12 +3,14 @@ package scalatra_compatible
 import java.io.{ ByteArrayOutputStream, ObjectOutputStream }
 
 import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ BeforeAndAfterEach, FunSuite, Matchers }
+import org.scalatestplus.junit.JUnitRunner
+import org.scalatest.BeforeAndAfterEach
 import skinny.micro.contrib.flash.FlashMap
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 @RunWith(classOf[JUnitRunner])
-class FlashMapTest extends FunSuite with Matchers with BeforeAndAfterEach {
+class FlashMapTest extends AnyFunSuite with Matchers with BeforeAndAfterEach {
   var flash: FlashMap = _
 
   override def beforeEach = flash = new FlashMap()

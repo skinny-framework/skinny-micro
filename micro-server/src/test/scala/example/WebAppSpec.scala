@@ -9,8 +9,10 @@ import skinny.micro.contrib.jackson.JSONSupport
 
 import scala.concurrent._
 import scala.util.control.NonFatal
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class WebAppSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
+class WebAppSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll {
 
   object Database {
     def findMessage(name: Option[String])(implicit ctx: ExecutionContext) = Future {

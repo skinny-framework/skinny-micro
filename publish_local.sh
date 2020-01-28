@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sbt ++2.13.0-RC1 \
+sbt ++2.13.1 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \
@@ -10,7 +10,7 @@ sbt ++2.13.0-RC1 \
   microScalate/publishLocal \
   microServer/publishLocal \
   microTest/publishLocal \
-  ++2.12.8 \
+  ++2.12.10 \
   clean \
   microCommon/publishLocal \
   micro/publishLocal \

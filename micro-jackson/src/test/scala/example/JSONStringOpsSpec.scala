@@ -2,11 +2,13 @@ package example
 
 import org.scalatest._
 import skinny.jackson.JSONStringOps
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
 case class SomeGroup(name: String, groupMembers: Seq[Member])
 case class Member(id: Long, name: Option[String])
 
-class JSONStringOpsSpec extends FunSpec with Matchers with JSONStringOps {
+class JSONStringOpsSpec extends AnyFunSpec with Matchers with JSONStringOps {
 
   val members = Seq(
     Member(1, Some("Alice")),

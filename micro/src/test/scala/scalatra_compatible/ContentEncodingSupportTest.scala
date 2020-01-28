@@ -11,6 +11,7 @@ import skinny.micro.routing.RoutingDsl
 import skinny.micro.{ ContentEncoding, SkinnyMicroServlet }
 
 import scala.concurrent.{ ExecutionContext, Future }
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Test servlet using ContentEncodingSupport.

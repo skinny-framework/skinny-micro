@@ -3,8 +3,10 @@ package example
 import org.scalatest._
 import skinny.micro._
 import skinny.micro.routing.RouteRegistry
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class RouteRegistryWithoutBootstrapSpec extends FlatSpec with Matchers {
+class RouteRegistryWithoutBootstrapSpec extends AnyFlatSpec with Matchers {
 
   RouteRegistry.init()
 

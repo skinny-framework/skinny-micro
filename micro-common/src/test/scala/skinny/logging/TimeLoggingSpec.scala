@@ -1,8 +1,10 @@
 package skinny.logging
 
 import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class TimeLoggingSpec extends FlatSpec with Matchers with TimeLogging {
+class TimeLoggingSpec extends AnyFlatSpec with Matchers with TimeLogging {
 
   behavior of "TimeLogging"
 

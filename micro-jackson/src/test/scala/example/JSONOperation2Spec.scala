@@ -2,12 +2,14 @@ package example
 
 import org.scalatest._
 import skinny.jackson.JSONStringOps
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 case class Samples(samples: Seq[Sample])
 case class Sample(id: Long, firstName: String)
 case class SamplePerson(name: Option[String] = None, parent: SamplePerson, children: Seq[SamplePerson] = Nil)
 
-class JSONOperation2Spec extends FlatSpec with JSONStringOps with Matchers {
+class JSONOperation2Spec extends AnyFlatSpec with JSONStringOps with Matchers {
 
   def toJSONString1 = toJSONString(Sample(1, "Alice"))
   def toJSONString2 = toJSONString(List(Sample(1, "Alice"), Sample(2, "Bob")))

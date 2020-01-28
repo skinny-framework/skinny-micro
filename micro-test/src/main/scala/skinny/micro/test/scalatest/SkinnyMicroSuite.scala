@@ -2,9 +2,10 @@ package skinny.micro.test.scalatest
 
 import org.junit.runner.RunWith
 import org.scalatest.exceptions.TestFailedException
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{ BeforeAndAfterAll, Matchers, Suite }
+import org.scalatestplus.junit.JUnitRunner
+import org.scalatest.{ BeforeAndAfterAll, Suite }
 import skinny.micro.test.SkinnyMicroTests
+import org.scalatest.matchers.should.Matchers
 
 /**
  * Provides Skinny Micro test support to ScalaTest suites.

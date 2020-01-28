@@ -1,8 +1,14 @@
 package skinny.test
 
 import org.scalatest._
-import org.scalatest.junit.{ JUnit3Suite, JUnitSuite }
+import org.scalatestplus.junit.{ JUnit3Suite, JUnitSuite }
 import skinny.micro.test.scalatest.SkinnyMicroSuite
+import org.scalatest.featurespec.AnyFeatureSpecLike
+import org.scalatest.flatspec.AnyFlatSpecLike
+import org.scalatest.freespec.AnyFreeSpecLike
+import org.scalatest.funspec.AnyFunSpecLike
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.wordspec.AnyWordSpecLike
 
 /**
  * Convenience trait to add Skinny test support to JUnit3Suite.
@@ -22,47 +28,47 @@ trait SkinnyJUnitSuite
  * Convenience trait to add Skinny test support to FeatureSpec.
  */
 trait SkinnyFeatureSpec
-  extends FeatureSpecLike
+  extends AnyFeatureSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to Spec.
  */
 trait SkinnySpec
-  extends FunSpecLike
+  extends AnyFunSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to FlatSpec.
  */
 trait SkinnyFlatSpec
-  extends FlatSpecLike
+  extends AnyFlatSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to FunSpec.
  */
 trait SkinnyFunSpec
-  extends FunSpecLike
+  extends AnyFunSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to FreeSpec.
  */
 trait SkinnyFreeSpec
-  extends FreeSpecLike
+  extends AnyFreeSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to WordSpec.
  */
 trait SkinnyWordSpec
-  extends WordSpecLike
+  extends AnyWordSpecLike
   with SkinnyMicroSuite
 
 /**
  * Convenience trait to add Skinny test support to FunSuite.
  */
 trait SkinnyFunSuite
-  extends FunSuite
+  extends AnyFunSuite
   with SkinnyMicroSuite

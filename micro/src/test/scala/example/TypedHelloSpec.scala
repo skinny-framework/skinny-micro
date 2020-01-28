@@ -82,7 +82,7 @@ class TypedHelloSpec extends ScalatraFlatSpec {
 
   it should "return cookies in the ActionResult" in {
     get("/cookie") {
-      header("Set-Cookie") should equal("foo=bar;Path=/")
+      header("Set-Cookie") should equal("foo=bar; Path=/")
       status should equal(200)
       body should equal("ok")
     }
