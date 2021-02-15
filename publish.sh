@@ -10,27 +10,4 @@ sbt ++2.13.1 \
   microScalate/publishSigned \
   microServer/publishSigned \
   microTest/publishSigned \
-  scalatraTest/publishSigned \
-  ++2.12.10 \
-  clean \
-  microCommon/publishSigned \
-  micro/publishSigned \
-  microJson4s/publishSigned \
-  microJackson/publishSigned \
-  microJacksonXml/publishSigned \
-  microScalate/publishSigned \
-  microServer/publishSigned \
-  microTest/publishSigned \
-  scalatraTest/publishSigned \
-  ++2.11.12 \
-  clean \
-  microCommon/publishSigned \
-  micro/publishSigned \
-  microJson4s/publishSigned \
-  microJackson/publishSigned \
-  microJacksonXml/publishSigned \
-  microScalate/publishSigned \
-  microServer/publishSigned \
-  microTest/publishSigned \
-  scalatraTest/publishSigned \
-  sonatypeRelease
+  scalatraTest/publishSigned
