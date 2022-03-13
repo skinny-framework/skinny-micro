@@ -134,7 +134,7 @@ class ScalateFuturesSupportSpec extends MutableScalatraSpec {
   }
 
   def e23 = get("/render-to-string") {
-    header("X-Template-Output") must_== "<div>SSP template</div>"
+    header("X-Template-Output") must_== "<div>Jade template</div>"
   }
 
 }

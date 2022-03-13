@@ -214,7 +214,7 @@ class ScalateSupportSpec extends ScalatraSpec {
 
   def e23 = get("/render-to-string") {
     val hdr = header("X-Template-Output")
-    hdr must_== "<div>SSP template</div>"
+    hdr must_== "<div>Jade template</div>"
   }
 
   def e24 = get("/barf") {

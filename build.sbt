@@ -9,8 +9,8 @@ import scala.language.postfixOps
 lazy val currentVersion = "2.3.0"
 
 lazy val json4SVersion = "3.6.7"
-lazy val jettyVersion = "9.4.26.v20200117"
-lazy val logbackVersion = "1.2.3"
+lazy val jettyVersion = "9.4.45.v20220203"
+lazy val logbackVersion = "1.2.11"
 lazy val slf4jApiVersion = "1.7.30"
 lazy val jacksonVersion = "2.10.2"
 lazy val jacksonScalaVersion = "2.10.2"
@@ -38,8 +38,8 @@ lazy val baseSettings = Seq(
   },
   publishMavenStyle := true,
   sbtPlugin := false,
-  scalaVersion := "2.13.1",
-  crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
+  scalaVersion := "2.13.8",
+  crossScalaVersions := Seq("2.13.8", "2.12.10", "2.11.12"),
   scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature"),
   scalacOptions += {
     CrossVersion.partialVersion(scalaVersion.value) match {
@@ -111,7 +111,7 @@ lazy val micro = (project in file("micro")).settings(baseSettings ++ mimaSetting
   name := "skinny-micro",
   libraryDependencies ++= {
     servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-      "org.scala-lang.modules" %% "scala-parser-combinators"    % "1.1.2" % Compile,
+      "org.scala-lang.modules" %% "scala-parser-combinators"    % "2.1.1" % Compile,
       "com.googlecode.juniversalchardet" %  "juniversalchardet" % "1.0.3" % Compile,
       "ch.qos.logback"    %  "logback-classic" % logbackVersion           % Test
     )
@@ -147,7 +147,7 @@ lazy val microJson4s = (project in file("micro-json4s")).settings(baseSettings +
 lazy val microScalate = (project in file("micro-scalate")).settings(baseSettings ++ mimaSettings ++ Seq(
   name := "skinny-micro-scalate",
   libraryDependencies ++= slf4jApiDependencies ++ servletApiDependencies ++ Seq(
-    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.5"    % Compile excludeAll(fullExclusionRules: _*),
+    "org.scalatra.scalate"  %% "scalate-core"       % "1.9.7"    % Compile excludeAll(fullExclusionRules: _*),
     "ch.qos.logback"        %  "logback-classic"    % logbackVersion % Test
   )
 )).dependsOn(micro, scalatraTest % Test)
@@ -164,7 +164,7 @@ lazy val microServer = (project in file("micro-server")).settings(baseSettings +
 lazy val scalatraTest = (project in file("scalatra-test")).settings(baseSettings ++ Seq(
   name := "scalatra-test",
   libraryDependencies ++= servletApiDependencies ++ slf4jApiDependencies ++ Seq(
-    "org.scala-lang.modules" %% "scala-collection-compat" % "2.1.3",
+    "org.scala-lang.modules" %% "scala-collection-compat" % "2.6.0",
     "com.googlecode.juniversalchardet" % "juniversalchardet" % "1.0.3" % Compile,
     "org.scalatestplus"  %% "testng-6-7"       % "3.1.0.0"        % Compile,
     "org.scalatestplus"  %% "junit-4-12"       % "3.1.0.0"        % Compile,
